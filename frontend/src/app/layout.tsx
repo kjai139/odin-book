@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
+import Script from 'next/script'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -17,6 +18,21 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>{children}</body>
+      {/* <Script src='https://connect.facebook.net/en_US/sdk.js' async defer crossOrigin='anonymous'>
+        {`
+          window.fbAsyncInit = function() {
+            FB.init({
+              appId            : '882816520134852',
+              xfbml            : true,
+              version          : 'v18.0'
+            });
+          };
+        `}
+      </Script> */}
+      
+        <Script async defer crossOrigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v18.0&appId=882816520134852" nonce="N8ofKH8K">
+           
+        </Script>
     </html>
   )
 }
