@@ -19,3 +19,13 @@
 body {
   color: rgb(var(--foreground-rgb));
 }
+
+.ht {
+  font-size: 4rem;
+  font-weight: bold;
+  color: #16a34a;
+}
+
+input[type='text'], input[type='password'] {
+  padding: 8px;
+}

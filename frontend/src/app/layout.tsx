@@ -30,9 +30,9 @@ export default function RootLayout({
         `}
       </Script> */}
       
-        <Script async defer crossOrigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v18.0&appId=882816520134852" nonce="N8ofKH8K">
+        {/* <Script async defer crossOrigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v18.0&appId=882816520134852" nonce="N8ofKH8K"> 
            
-        </Script>
+        </Script> */}
     </html>
   )
 }

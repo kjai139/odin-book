@@ -16,6 +16,7 @@ const config: Config = {
       backgroundColor: {
         'login-bg': '#bbf7d0',
       },
+      
     },
   },
   plugins: [],
