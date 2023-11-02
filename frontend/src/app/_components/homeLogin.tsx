@@ -1,20 +1,35 @@
 "use client"
-import { useState } from "react"
+import { ChangeEvent, useState } from "react"
 
 
 export default function HomeLogin () {
 
-    const [username, setUsername] = useState('')
-    const [password, setPassword] = useState('')
+    const [username, setUsername] = useState<string>('')
+    const [password, setPassword] = useState<string>('')
+
+    const handleUsernameInput = (e: ChangeEvent<HTMLInputElement>) => {
+        setUsername(e.target.value)
+    }
+
+    const handlePwInput = (e:ChangeEvent<HTMLInputElement>) => {
+        setPassword(e.target.value)
+    }
+ 
     return (
         <div className="flex-1 flex">
             <form className="flex flex-col flex-1 p-4 gap-4">
                 
-                <input type="text" placeholder="Email or phone number"></input>
-                <input type="password" placeholder="Enter password"></input>
+                <input type="text" placeholder="Email or phone number" onChange={handleUsernameInput} autoComplete="off"></input>
+                <input type="password" placeholder="Enter password" onChange={handlePwInput} autoComplete="off"></input>
+                <div className="flex justify-center">
                 <button type="submit">Log in</button>
-                <button type="button">Forgot password?</button>
-                <button>Create new account</button>
+                </div>
+                <div className="flex justify-center text-sm">
+                <button type="button" className="text-blue-500">Forgot password?</button>
+                </div>
+                <div className="justify-center flex">
+                <button className="bg-blue-500 rounded py-2 px-4" >Create new account</button>
+                </div>
             </form>
             
 
