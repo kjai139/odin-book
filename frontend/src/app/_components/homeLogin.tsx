@@ -1,6 +1,6 @@
 "use client"
 import { ChangeEvent, useState } from "react"
-
+import axiosInstance from '../../../axios'
 
 export default function HomeLogin () {
 
@@ -13,6 +13,13 @@ export default function HomeLogin () {
 
     const handlePwInput = (e:ChangeEvent<HTMLInputElement>) => {
         setPassword(e.target.value)
+    }
+
+    const handleSubmit = async () => {
+        const response = await axiosInstance.post('/api/user/create', {
+            username: username,
+            
+        })
     }
  
     return (
