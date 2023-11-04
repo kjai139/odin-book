@@ -1,33 +1,105 @@
 "use client"
-import { ChangeEvent, useState } from "react"
+import { useEffect, useState } from "react"
 import axiosInstance from '../../../axios'
+import { AxiosError } from "axios"
+
+import { useForm, SubmitHandler } from "react-hook-form"
+import * as yup from "yup"
+import { yupResolver } from "@hookform/resolvers/yup"
 
 export default function HomeLogin () {
 
-    const [username, setUsername] = useState<string>('')
-    const [password, setPassword] = useState<string>('')
+    const schema = yup.object({
+        username: yup.string().required('email or phone number required'),
+        password: yup.string().required('Password is required').min(6, 'Password must have min length of 6 characters').matches(/^(?=.*[a-z])/, 'Password must contain at least one lowercase letter').matches(/^(?=.*[A-Z])/, 'must contain at least one uppercase letter').matches(/^(?=.*[!@#$%^&()_+-])/, 'must have at least one special character').max(12, 'Password cannot have more than 12 characters')
+    })
+    
 
-    const handleUsernameInput = (e: ChangeEvent<HTMLInputElement>) => {
-        setUsername(e.target.value)
+    type Inputs = {
+        username: string,
+        password: string
     }
 
-    const handlePwInput = (e:ChangeEvent<HTMLInputElement>) => {
-        setPassword(e.target.value)
-    }
+    const {
+        register,
+        handleSubmit,
+        watch,
+        reset,
+        formState,
+        formState: { errors, isSubmitSuccessful },
+    } = useForm<Inputs>({
+        resolver: yupResolver(schema)
+    })
 
-    const handleSubmit = async () => {
-        const response = await axiosInstance.post('/api/user/create', {
-            username: username,
+    const onSubmit = async (data:Inputs) => {
+        try {
+            const response = await axiosInstance.post('/api/user/create', {
+                username: data.username,
+                password: data.password
+            }, {
+                withCredentials: true
+            })
+        } catch (err) {
             
-        })
+            if (err instanceof AxiosError) {
+                if (err.response) {
+                    console.error('Response Status:', err.response.status)
+                    console.error('Response Data:', err.response.data)
+                } else {
+                    console.error('Axios error:', err)
+                }
+            } else {
+                console.error('non axios error', err)
+            }
+            
+        }
+    }
+    useEffect(() => {
+        if (formState.isSubmitSuccessful) {
+            reset({
+                username: '',
+                password: ''
+            })
+        }
+    }, [formState, reset])
+    console.log(watch('username'))
+
+    const onSubmitAxios = async (e:React.FormEvent) => {
+        e.preventDefault()
+        try {
+            const response = await axiosInstance.post('/api/user/create', {
+                
+            }, {
+                withCredentials: true
+            })
+        } catch (err) {
+            
+            if (err instanceof AxiosError) {
+                if (err.response) {
+                    console.error('Response Status:', err.response.status)
+                    console.error('Response Data:', err.response.data)
+                } else {
+                    console.error('Axios error:', err)
+                }
+            } else {
+                console.error('non axios error', err)
+            }
+            
+        }
     }
  
     return (
         <div className="flex-1 flex">
-            <form className="flex flex-col flex-1 p-4 gap-4">
-                
-                <input type="text" placeholder="Email or phone number" onChange={handleUsernameInput} autoComplete="off"></input>
-                <input type="password" placeholder="Enter password" onChange={handlePwInput} autoComplete="off"></input>
+            <form className="flex flex-col flex-1 p-4 gap-4" onSubmit={handleSubmit(onSubmit)}>
+                <div className="relative">
+                <input {...register('username', {required: true})} type="text" placeholder="Email or phone number" autoComplete="off" aria-invalid={errors.username ? true: false }>
+                </input>
+                <p className="error-msg">{errors.username?.message}</p>
+                </div>
+                <div className="relative">
+                <input type="password" placeholder="Enter password" autoComplete="off" {...register('password')}></input>
+                <p className="error-msg">{errors.password?.message}</p>
+                </div>
                 <div className="flex justify-center">
                 <button type="submit">Log in</button>
                 </div>
