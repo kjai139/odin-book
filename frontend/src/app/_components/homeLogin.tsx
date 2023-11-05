@@ -10,8 +10,8 @@ import { yupResolver } from "@hookform/resolvers/yup"
 export default function HomeLogin () {
 
     const schema = yup.object({
-        username: yup.string().required('email or phone number required'),
-        password: yup.string().required('Password is required').min(6, 'Password must have min length of 6 characters').matches(/^(?=.*[a-z])/, 'Password must contain at least one lowercase letter').matches(/^(?=.*[A-Z])/, 'must contain at least one uppercase letter').matches(/^(?=.*[!@#$%^&()_+-])/, 'must have at least one special character').max(12, 'Password cannot have more than 12 characters')
+        username: yup.string().required('Please enter your email or phone number.'),
+        password: yup.string().required('Please enter your password.')
     })
     
 
@@ -33,7 +33,7 @@ export default function HomeLogin () {
 
     const onSubmit = async (data:Inputs) => {
         try {
-            const response = await axiosInstance.post('/api/user/create', {
+            const response = await axiosInstance.post('/api/account/login', {
                 username: data.username,
                 password: data.password
             }, {
