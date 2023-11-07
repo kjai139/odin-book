@@ -6,8 +6,11 @@ import { AxiosError } from "axios"
 import { useForm, SubmitHandler } from "react-hook-form"
 import * as yup from "yup"
 import { yupResolver } from "@hookform/resolvers/yup"
+import SignUpModal from "../_modals/signupModal"
 
 export default function HomeLogin () {
+
+    const [isCreateFormOpen, setIsCreateFormOpen] = useState(false)
 
     const schema = yup.object({
         username: yup.string().required('Please enter your email or phone number.'),
@@ -62,7 +65,7 @@ export default function HomeLogin () {
             })
         }
     }, [formState, reset])
-    console.log(watch('username'))
+    // console.log(watch('username'))
 
     const onSubmitAxios = async (e:React.FormEvent) => {
         e.preventDefault()
@@ -107,9 +110,16 @@ export default function HomeLogin () {
                 <button type="button" className="text-blue-500">Forgot password?</button>
                 </div>
                 <div className="justify-center flex">
-                <button className="bg-blue-500 rounded py-2 px-4" >Create new account</button>
+                <button className="bg-blue-500 rounded py-2 px-4" type="button" onClick={() => setIsCreateFormOpen(true)}>Create new account</button>
                 </div>
             </form>
+            <div className={`overlay flex justify-center items-center ${isCreateFormOpen ? 'active' : 'inactive'}`}>
+            {isCreateFormOpen && 
+                
+                <SignUpModal closeModal={() => setIsCreateFormOpen(false)}></SignUpModal>
+                
+            }
+            </div>
             
 
         

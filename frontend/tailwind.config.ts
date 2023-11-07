@@ -16,6 +16,9 @@ const config: Config = {
       backgroundColor: {
         'login-bg': '#bbf7d0',
       },
+      maxWidth: {
+        'modal-i': '432px',
+      }
       
     },
   },
