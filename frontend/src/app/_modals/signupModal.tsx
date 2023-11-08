@@ -23,7 +23,7 @@ export default function SignUpModal({closeModal}:SignupModalProps) {
         password: yup.string().required('This field is required').min(6, 'Password must have min length of 6 characters').matches(/^(?=.*[a-z])/, 'Password must contain at least one lowercase letter').matches(/^(?=.*[A-Z])/, 'must contain at least one uppercase letter').matches(/^(?=.*[!@#$%^&()_+-])/, 'must have at least one special character').max(20, 'Password cannot have more than 20 characters'),
         firstName: yup.string().required('first name is required'),
         lastName: yup.string().required('last name is required'),
-        Phone: yup.string().optional().test('isValid', 'bad number', (value) => {
+        Phone: yup.string().optional().test('isValid', 'Invalid number', (value) => {
             if (value !== undefined) {
                 return isPossiblePhoneNumber(value)
             }

@@ -148,8 +148,8 @@ input[type='text'], input[type='password'], input[type='email'] {
   color: var(--labelC)
 }
 
-@media screen and (max-width: 1024px) {
+/* @media screen and (max-width: 1024px) {
   .signup-error.arr-right, .signup-error.arr-left {
     text-wrap: wrap;
   }
-}
+} */
