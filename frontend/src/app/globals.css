@@ -8,6 +8,8 @@
   --background-end-rgb: 255, 255, 255;
   --modalbg: #e2e8f0;
   --labelC: #334155;
+  --arrowSize: 7px;
+  --errorBg: #ef4444;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -36,6 +38,61 @@ body {
   
 }
 
+.signup-error.arr-right {
+  position: absolute;
+  right:calc(100% + 10px);
+  top:0;
+  font-size: small;
+  color: white;
+  background-color: var(--errorBg);
+  border-radius: 4px;
+  padding: 4px;
+  z-index: 1;
+  
+  text-wrap: nowrap;
+  
+  
+}
+
+.signup-error.arr-left {
+  position: absolute;
+  right:-110%;
+  top:0;
+  font-size: small;
+  color: white;
+  background-color: var(--errorBg);
+  border-radius: 4px;
+  padding: 4px;
+  z-index: 1;
+  text-align: center;
+  transform:translateX(-50%);
+  
+  
+}
+
+.signup-error.arr-right:before {
+  position:absolute;
+  top:4px;
+  left: calc(100% - 2px);
+  content: '';
+  border-top:8px solid transparent;
+  border-bottom: 8px solid transparent;
+  border-left: 8px solid var(--errorBg);
+  z-index: 0;
+  
+}
+
+.signup-error.arr-left:before {
+  position:absolute;
+  top:4px;
+  right: calc(100% - 2px);
+  content: '';
+  border-top:8px solid transparent;
+  border-bottom: 8px solid transparent;
+  border-right: 8px solid var(--errorBg);
+  z-index: 0;
+}
+
 .overlay {
   position: fixed;
   left:0;
@@ -51,6 +108,8 @@ body {
 
 
 }
+
+
 
 .active {
   opacity:1;

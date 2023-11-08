@@ -51,10 +51,14 @@ export default function SignUpModal({closeModal}:SignupModalProps) {
         resolver: yupResolver(schema)
     })
 
+    const onSubmit = async (data:Inputs) => {
+        console.log(data)
+    }
+
 
 
     return (
-        <form className='flex flex-col gap-2 rounded bg-white max-w-modal-i p-4'>
+        <form className='flex flex-col gap-2 rounded bg-white max-w-modal-i p-4' onSubmit={handleSubmit(onSubmit)}>
             
             <div className='flex justify-between relative'>
                 <span className='text-lg'>
@@ -68,25 +72,63 @@ export default function SignUpModal({closeModal}:SignupModalProps) {
             </div>
             <div className='flex flex-col gap-4'>
             <div className='flex gap-2'>
+                <div className='relative'>
                 <input className='modal-i' {...register('firstName')} type='text' placeholder='Firstname'></input>
+                    { errors.firstName?.message &&
+                    <p className='signup-error arr-right'>{errors.firstName?.message}</p>
+                    }
+                    
+                
+                    
+                </div>
+                <div className='relative'>
                 <input className='modal-i' {...register('lastName')} type='text' placeholder='Lastname'></input>
+
+                    { errors.lastName?.message &&
+                        <p className='signup-error arr-left'>{errors.lastName?.message}</p>
+                    }
+                
+                    
+                </div>
             </div>
             <div>
+                <div className='relative'>
                 <input className='modal-i' {...register('password')} type='password' placeholder='Enter new password'></input>
+                {errors.password?.message &&
+                <p className='signup-error arr-right'>
+                    {errors.password?.message}
+                </p>
+                }
+                </div>
             </div>
             <div>
+                <div className='relative'>
                 <input className='modal-i' {...register('email')} type='email' placeholder='Enter your email'></input>
+                {errors.email?.message &&
+                <p className='signup-error arr-right'>
+                    {errors.email?.message}
+                </p>
+                }
+                </div>
             </div>
             </div>
             <div className='flex flex-col'>
                 <label htmlFor='gender' className='text-xs form-label'>Gender</label>
-                <div>
+                <div className='relative'>
                 <select id='gender' className='modal-i' {...register('gender')}>
                     <option value={'Male'}>Male</option>
                     <option value={'Female'}>Female</option>
                     <option value={'Other'}>Other</option>
                 </select>
+                {errors.gender?.message &&
+                <p className='signup-error arr-right'>
+                    {errors.gender?.message}
+                </p>
+                }
                 </div>
+            </div>
+            <div className='flex justify-center align-center'>
+                <button type='submit'>Create account</button>
             </div>
             
         </form>
