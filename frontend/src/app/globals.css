@@ -147,3 +147,9 @@ input[type='text'], input[type='password'], input[type='email'] {
 .form-label {
   color: var(--labelC)
 }
+
+@media screen and (max-width: 1024px) {
+  .signup-error.arr-right, .signup-error.arr-left {
+    text-wrap: wrap;
+  }
+}

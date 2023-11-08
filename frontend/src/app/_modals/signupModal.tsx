@@ -2,11 +2,13 @@
 import axiosInstance from '../../../axios'
 import { AxiosError } from "axios"
 
-import { useForm, SubmitHandler } from "react-hook-form"
+import { useForm, SubmitHandler, Controller } from "react-hook-form"
 import * as yup from "yup"
 import { yupResolver } from "@hookform/resolvers/yup"
 
 import CloseButton from '../_components/icons/closeBtn.svg'
+import 'react-phone-number-input/style.css'
+import PhoneInput, { isValidPhoneNumber, isPossiblePhoneNumber } from 'react-phone-number-input'
 
 interface SignupModalProps {
     closeModal: () => void
@@ -17,12 +19,17 @@ export default function SignUpModal({closeModal}:SignupModalProps) {
     type Gender = 'Male' | 'Female' | 'Other'
     
     const schema = yup.object({
-        email: yup.string().required('email or phone number required'),
-        password: yup.string().required('Password is required').min(6, 'Password must have min length of 6 characters').matches(/^(?=.*[a-z])/, 'Password must contain at least one lowercase letter').matches(/^(?=.*[A-Z])/, 'must contain at least one uppercase letter').matches(/^(?=.*[!@#$%^&()_+-])/, 'must have at least one special character').max(12, 'Password cannot have more than 12 characters'),
+        email: yup.string().required('This field is required'),
+        password: yup.string().required('This field is required').min(6, 'Password must have min length of 6 characters').matches(/^(?=.*[a-z])/, 'Password must contain at least one lowercase letter').matches(/^(?=.*[A-Z])/, 'must contain at least one uppercase letter').matches(/^(?=.*[!@#$%^&()_+-])/, 'must have at least one special character').max(20, 'Password cannot have more than 20 characters'),
         firstName: yup.string().required('first name is required'),
         lastName: yup.string().required('last name is required'),
-        phoneNumber: yup.string().required('Phone number is required'),
-        birthDate: yup.date().required('birthday is required'),
+        Phone: yup.string().optional().test('isValid', 'bad number', (value) => {
+            if (value !== undefined) {
+                return isPossiblePhoneNumber(value)
+            }
+            return true
+        }),
+        // birthDate: yup.date().required('birthday is required'),
         gender: yup.string().oneOf(['Male', 'Female', 'Other']).required('gender is required')
     })
     type Inputs = {
@@ -30,9 +37,8 @@ export default function SignUpModal({closeModal}:SignupModalProps) {
         password: string,
         firstName: string,
         lastName: string,
-        phoneNumber: string,
-       
-        birthDate: Date,
+        Phone:string,
+        // birthDate: Date,
         gender: Gender,
         
 
@@ -43,6 +49,7 @@ export default function SignUpModal({closeModal}:SignupModalProps) {
         register,
         handleSubmit,
         formState,
+        control,
         formState: {
             errors
         }
@@ -53,6 +60,8 @@ export default function SignUpModal({closeModal}:SignupModalProps) {
 
     const onSubmit = async (data:Inputs) => {
         console.log(data)
+        console.log(errors)
+        
     }
 
 
@@ -111,6 +120,35 @@ export default function SignUpModal({closeModal}:SignupModalProps) {
                 }
                 </div>
             </div>
+            </div>
+            <div className='flex flex-col relative'>
+                <label className='text-xs form-label' htmlFor='Phone'>Phone number</label>
+                <Controller
+                control={control}
+                name='Phone'
+                render={({field: {onChange, value }}) => (
+                    <PhoneInput 
+                    onChange={onChange}
+                    
+                    value={value}
+                    // error={value != undefined && (isPossiblePhoneNumber(value) ? undefined : 'invalid number')}
+                    placeholder="Optional phone number"
+                    defaultCountry='US'
+                    id='Phone'
+                    
+                    >
+
+                    </PhoneInput>
+                )
+
+                }
+                ></Controller>
+                {errors.Phone?.message &&
+                <p className='signup-error arr-right'>
+                    {errors.Phone?.message}
+                </p> }
+                
+                
             </div>
             <div className='flex flex-col'>
                 <label htmlFor='gender' className='text-xs form-label'>Gender</label>
