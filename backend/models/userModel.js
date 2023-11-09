@@ -6,7 +6,6 @@ const UserSchema = new Schema({
     name: {
         type:String,
         default: '',
-        unique: true,
         required: true,
         set: (value) => value.toLowerCase()
     },
@@ -17,7 +16,6 @@ const UserSchema = new Schema({
     phoneNumber: {
         type:String,
         unique:true,
-        required: true
     },
     email: {
         type:String,
@@ -38,7 +36,11 @@ const UserSchema = new Schema({
         type:Schema.Types.ObjectId,
         ref: 'User',
         default: null
-    }]
+    }],
+    gender: {
+        type:String,
+        enum:['Male', 'Female', 'Other']
+    }
 })
 
 

@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt')
 
 
 exports.create_user_post = [
-    body('username')
+    body('name')
     .trim()
     .isLength({min:1})
     .escape(),
@@ -27,10 +27,43 @@ exports.create_user_post = [
             })
         } else {
             try {
-                const { username, password, email, phoneNumber } = req.body
-                const salt = await bcrypt.genSalt(10)
-                const hashedPw = await bcrypt.hash(password, salt)
-                const normalized_username = username.toLowerCase()
+                const { name, password, phone, gender } = req.body
+
+                const formattedEmail = req.body.email.toLowerCase()
+
+                const existingUser = await User.findOne({email: formattedEmail})
+
+                if (existingUser) {
+                    res.status(400).json({
+                        error: 'email',
+                        message: 'Email already registered.'
+                    })
+                } else {
+                    const salt = await bcrypt.genSalt(10)
+                    const hashedPw = await bcrypt.hash(password, salt)
+                    const normalized_username = username.toLowerCase()
+
+                    const newUser = new User({
+                        name: name,
+                        password: hashedPw,
+                        phoneNumber: phone,
+                        gender: gender,
+                        email: formattedEmail
+
+                    })
+
+                    await newUser.save()
+                    res.json({
+                        message: 'User created',
+                        success: true
+                    })
+
+                }
+
+
+
+
+                
 
 
 
