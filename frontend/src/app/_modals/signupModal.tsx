@@ -33,7 +33,7 @@ export default function SignUpModal({closeModal}:SignupModalProps) {
         firstName: yup.string().trim().required('first name is required'),
         lastName: yup.string().trim().required('last name is required'),
         Phone: yup.string().optional().test('isValid', 'Invalid number', (value) => {
-            if (value !== undefined) {
+            if (value !== undefined && value.length > 1 ) {
                 return isPossiblePhoneNumber(value)
             }
             return true
@@ -189,6 +189,7 @@ export default function SignUpModal({closeModal}:SignupModalProps) {
                     onChange={onChange}
                     autoComplete='off'
                     value={value}
+                    international={false}
                     // error={value != undefined && (isPossiblePhoneNumber(value) ? undefined : 'invalid number')}
                     placeholder="Optional phone number"
                     defaultCountry='US'
