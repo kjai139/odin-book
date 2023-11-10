@@ -12,7 +12,7 @@ export default function LoadingModal() {
 
 
     return (
-        <div className="overlay-inner">
+        <div className="overlay-inner flex items-center justify-center">
             <ProgressBar
             width={80}
             height={80}

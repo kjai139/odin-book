@@ -11,11 +11,11 @@ exports.create_user_post = [
     .escape(),
     body('password')
     .trim()
-    .min(6).withMessage('Password must have min length of 6 characters')
+    .isLength({min:6}).withMessage('Password must have min length of 6 characters')
     .matches(/^(?=.*[a-z])/).withMessage('Password must contain at least one lowercase letter')
     .matches(/^(?=.*[A-Z])/).withMessage('must contain at least one uppercase letter')
     .matches(/^(?=.*[!@#$%^&()_+-])/).withMessage('must have at least one special character')
-    .max(12).withMessage('Password cannot have more than 12 characters'),
+    .isLength({max:20}).withMessage('Password cannot have more than 20 characters'),
 
     async (req, res) => {
         const errors = validationResult(req)
@@ -33,6 +33,20 @@ exports.create_user_post = [
 
                 const existingUser = await User.findOne({email: formattedEmail})
 
+                if (phone !== undefined && phone !== null) {
+                    debug('phone is not undefined')
+                    const existingPhone = await User.findOne({
+                        phoneNumber: phone
+                    })
+
+                    if (existingPhone) {
+                        res.status(400).json({
+                            error:'phone',
+                            message: 'Phone number already registered'
+                        })
+                    }
+                }
+
                 if (existingUser) {
                     res.status(400).json({
                         error: 'email',
@@ -41,14 +55,16 @@ exports.create_user_post = [
                 } else {
                     const salt = await bcrypt.genSalt(10)
                     const hashedPw = await bcrypt.hash(password, salt)
-                    const normalized_username = username.toLowerCase()
+                    
 
                     const newUser = new User({
                         name: name,
                         password: hashedPw,
-                        phoneNumber: phone,
                         gender: gender,
-                        email: formattedEmail
+                        email: formattedEmail,
+                        ...(phone && {
+                            phoneNumber: phone,
+                        })
 
                     })
 
@@ -68,6 +84,7 @@ exports.create_user_post = [
 
 
             } catch (err) {
+                
                 res.status(500).json({
                     message: err
                 })
@@ -79,3 +96,8 @@ exports.create_user_post = [
 
     }
 ]
+
+
+exports.user_login_post = async (req, res) => {
+    
+}

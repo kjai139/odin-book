@@ -24,6 +24,24 @@ body {
   color: rgb(var(--foreground-rgb));
 }
 
+
+
+@keyframes pulse {
+  25% {
+    transform:scale(1.1);
+  }
+  75% {
+    transform: scale(.9)
+  }
+}
+
+button:hover {
+  animation-name: pulse;
+  animation-duration: 1s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
 .ht {
   font-size: 4rem;
   font-weight: bold;

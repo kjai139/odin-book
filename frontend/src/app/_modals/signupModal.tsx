@@ -25,6 +25,8 @@ export default function SignUpModal({closeModal}:SignupModalProps) {
     
     const [resultMsg, setResultMsg] = useState('')
 
+    const [isUserCreated, setIsUserCreated] = useState(false)
+
 
 
     const schema = yup.object({
@@ -71,15 +73,18 @@ export default function SignUpModal({closeModal}:SignupModalProps) {
     })
 
     useEffect(() => {
-        reset({
-            email: '',
-            password: '',
-            firstName: '',
-            lastName: '',
-            gender: 'Male',
-            Phone: ''
-
-        })
+        if (isUserCreated) {
+            reset({
+                email: '',
+                password: '',
+                firstName: '',
+                lastName: '',
+                gender: 'Male',
+                Phone: ''
+    
+            })
+        }
+        
     }, [isSubmitSuccessful])
 
     const onSubmit = async (data:Inputs) => {
@@ -103,15 +108,22 @@ export default function SignUpModal({closeModal}:SignupModalProps) {
             console.log(response.data.message)
             if (response.data.success) {
                 setIsLoading(false)
+                setIsUserCreated(true)
                 setResultMsg(response.data.message)
 
             }
         } catch (err: any) {
             setIsLoading(false)
-            if (err.error === 'email') {
+            if (err.response.data.error === 'email') {
                 setError('email', {
                     type: 'server',
-                    message: err.message
+                    message: err.response.data.message
+                })
+            } else if (err.response.data.error === 'phone') {
+                setError('Phone', {
+                    type: 'server',
+                    message: err.response.data.message
+
                 })
             } else {
                 console.error(err)

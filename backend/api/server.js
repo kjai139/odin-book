@@ -7,6 +7,9 @@ const mongoose = require('mongoose')
 const cors = require('cors')
 const allowedOrigins = ['http://localhost:3000']
 
+
+const apiRouter = require('./routes/api')
+
 const main = async () => {
     try {
         mongoose.connect(mongodb)
@@ -17,6 +20,14 @@ const main = async () => {
 }
 
 main()
+
+app.use(cors({
+    origin: allowedOrigins,
+    credentials: true
+}))
+app.use(express.json())
+// app.use(express.urlencoded({extended: false}))
+app.use('/api', apiRouter)
 
 app.listen(port, () => {
     console.log(`server running on ${port}`)

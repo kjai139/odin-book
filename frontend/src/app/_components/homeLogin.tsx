@@ -36,24 +36,15 @@ export default function HomeLogin () {
 
     const onSubmit = async (data:Inputs) => {
         try {
-            const response = await axiosInstance.post('/api/account/login', {
+            const response = await axiosInstance.post('/api/user/login', {
                 username: data.username,
                 password: data.password
             }, {
                 withCredentials: true
             })
-        } catch (err) {
-            
-            if (err instanceof AxiosError) {
-                if (err.response) {
-                    console.error('Response Status:', err.response.status)
-                    console.error('Response Data:', err.response.data)
-                } else {
-                    console.error('Axios error:', err)
-                }
-            } else {
-                console.error('non axios error', err)
-            }
+        } catch (err:any) {
+            console.error(err)
+              
             
         }
     }
@@ -67,29 +58,7 @@ export default function HomeLogin () {
     }, [formState, reset])
     // console.log(watch('username'))
 
-    const onSubmitAxios = async (e:React.FormEvent) => {
-        e.preventDefault()
-        try {
-            const response = await axiosInstance.post('/api/user/create', {
-                
-            }, {
-                withCredentials: true
-            })
-        } catch (err) {
-            
-            if (err instanceof AxiosError) {
-                if (err.response) {
-                    console.error('Response Status:', err.response.status)
-                    console.error('Response Data:', err.response.data)
-                } else {
-                    console.error('Axios error:', err)
-                }
-            } else {
-                console.error('non axios error', err)
-            }
-            
-        }
-    }
+   
  
     return (
         <div className="flex-1 flex">
