@@ -6,7 +6,7 @@ const mongodb = process.env.MONGO_DB
 const mongoose = require('mongoose')
 const cors = require('cors')
 const allowedOrigins = ['http://localhost:3000']
-
+const passport = require('../passport')
 
 const apiRouter = require('./routes/api')
 
@@ -25,8 +25,10 @@ app.use(cors({
     origin: allowedOrigins,
     credentials: true
 }))
+
 app.use(express.json())
 // app.use(express.urlencoded({extended: false}))
+app.use(passport.initialize())
 app.use('/api', apiRouter)
 
 app.listen(port, () => {
