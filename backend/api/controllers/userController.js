@@ -2,6 +2,7 @@ const User = require('../../models/userModel')
 const { body, validationResult} = require('express-validator')
 const debug = require('debug')('odin-book:userController')
 const bcrypt = require('bcrypt')
+const passport = require('../../passport')
 
 
 exports.create_user_post = [
@@ -98,6 +99,35 @@ exports.create_user_post = [
 ]
 
 
-exports.user_login_post = async (req, res) => {
+exports.user_login_post = async (req, res, next) => {
+    
+    passport.authenticate('local', (err, user, info) => {
+        if (err) {
+            res.status(500).json({
+                message: err
+            })
+        } else if (!user) {
+            debug('info from !user: ', info)
+            res.status(401).json({
+                message: info?.message || 'Invalid login info.'
+            })
+        } else {
+            const token = user
+            
+
+            res.cookie('jwt', token, {
+                httpOnly: true,
+                secure: true,
+                maxAge: 60 * 60 * 1000,
+                sameSite: 'None'
+            })
+            debug('token sent to client', token)
+            res.json({
+                success: true
+            })
+        }
+
+
+    })(req, res, next) //IIFE
     
 }

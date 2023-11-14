@@ -7,8 +7,15 @@ import { useForm, SubmitHandler } from "react-hook-form"
 import * as yup from "yup"
 import { yupResolver } from "@hookform/resolvers/yup"
 import SignUpModal from "../_modals/signupModal"
+import { useRouter } from 'next/navigation'
+import LoadingModal from "../_modals/loadingModal"
+import ResultModal from "../_modals/resultModal"
 
 export default function HomeLogin () {
+
+    const router = useRouter()
+    const [isLoading, setIsLoading] = useState(false)
+    const [errorMsg, setErrorMsg] = useState('')
 
     const [isCreateFormOpen, setIsCreateFormOpen] = useState(false)
 
@@ -35,6 +42,7 @@ export default function HomeLogin () {
     })
 
     const onSubmit = async (data:Inputs) => {
+        setIsLoading(true)
         try {
             const response = await axiosInstance.post('/api/user/login', {
                 username: data.username,
@@ -42,10 +50,17 @@ export default function HomeLogin () {
             }, {
                 withCredentials: true
             })
+
+            if (response.data.success) {
+                setIsLoading(false)
+                router.push('/dashboard')
+            }
         } catch (err:any) {
+            setIsLoading(false)
             console.error(err)
-              
-            
+            setErrorMsg(err.response.data.message)
+
+                   
         }
     }
     useEffect(() => {
@@ -61,7 +76,7 @@ export default function HomeLogin () {
    
  
     return (
-        <div className="flex-1 flex">
+        <div className="flex-1 flex relative">
             <form className="flex flex-col flex-1 p-4 gap-4" onSubmit={handleSubmit(onSubmit)}>
                 <div className="relative">
                 <input {...register('username', {required: true})} type="text" placeholder="Email or phone number" autoComplete="off" aria-invalid={errors.username ? true: false }>
@@ -89,6 +104,8 @@ export default function HomeLogin () {
                 
             }
             </div>
+            {isLoading && <LoadingModal></LoadingModal>}
+            {errorMsg && <ResultModal resultMsg={errorMsg} closeModal={() => setErrorMsg('')}></ResultModal>}
             
 
         

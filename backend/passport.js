@@ -36,20 +36,11 @@ passport.use(new LocalStrategy(
                         expiresIn: '1hr'
                     })
 
-                    res.cookie('jwt', token, {
-                        httpOnly: true,
-                        secure: true,
-                        maxAge: 60 * 60 * 1000,
-                        samesite: 'None'
-                    })
+                    return done(null, token)
 
-                    res.json({
-                        success: true
-                    })
-
-                } else { //pw don't match
-                    res.status(400).json({
-                        message: 'password incorrect.'
+                } else { //pw don't match, null false for res status 401
+                    return done(null, false, {
+                        message: 'Incorrect password.'
                     })
                 }
             } else { //login with phone
@@ -59,33 +50,41 @@ passport.use(new LocalStrategy(
                 })
 
                 if (userPhone) {
-                    const token = jwt.sign({
-                        id: user._id,
-                        name: user.name,
-                        email: user.email,
-                        phoneNumber: user.phoneNumber,
-                        image: user.image,
-                        gender: user.gender,
-                        friendlist: user.friendlist,
-                        friendReq: user.friendReq
+                    const passwordMatch = await bcrypt.compare(password, user.password)
 
-
-                    }, process.env.JWT_SECRET_KEY, {
-                        expiresIn: '1hr'
-                    })
-
-                    return done(null, token)
+                    if (passwordMatch) {
+                        const token = jwt.sign({
+                            id: user._id,
+                            name: user.name,
+                            email: user.email,
+                            phoneNumber: user.phoneNumber,
+                            image: user.image,
+                            gender: user.gender,
+                            friendlist: user.friendlist,
+                            friendReq: user.friendReq
+    
+    
+                        }, process.env.JWT_SECRET_KEY, {
+                            expiresIn: '1hr'
+                        })
+    
+                        return done(null, token)
+                    } else {
+                        //pw not match
+                        return done(null, false, {
+                            message: 'Incorrect password.'
+                        })
+                    }
+                    
                 } else {//nothing matched login
-                    res.status(400).json({
+                    return done(null, false, {
                         message: 'Please enter valid email or phone number.'
                     })
                 }
             }
 
         } catch(err) {
-            res.status(500).json({
-                message: err
-            })
+            return done(err)
         }
     }
 ))
