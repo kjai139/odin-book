@@ -7,6 +7,7 @@ const mongoose = require('mongoose')
 const cors = require('cors')
 const allowedOrigins = ['http://localhost:3000']
 const passport = require('../passport')
+const cookieParser = require('cookie-parser')
 
 const apiRouter = require('./routes/api')
 
@@ -27,6 +28,7 @@ app.use(cors({
 }))
 
 app.use(express.json())
+app.use(cookieParser())
 // app.use(express.urlencoded({extended: false}))
 app.use(passport.initialize())
 app.use('/api', apiRouter)

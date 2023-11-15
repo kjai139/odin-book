@@ -1,11 +1,13 @@
 const JwtStrategy = require('passport-jwt').Strategy
-const { ExtractJwt } = require('passport-jwt')
+
 const jwt = require('jsonwebtoken')
 const User = require('./models/userModel')
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 const debug = require('debug')('odin-book:passport')
 const bcrypt = require('bcrypt')
+
+require('dotenv').config()
 
 passport.use(new LocalStrategy(
     // {
@@ -22,7 +24,7 @@ passport.use(new LocalStrategy(
 
                 if (passwordMatch) {
                     const token = jwt.sign({
-                        id: user._id,
+                        _id: user._id,
                         name: user.name,
                         email: user.email,
                         phoneNumber: user.phoneNumber,
@@ -54,7 +56,7 @@ passport.use(new LocalStrategy(
 
                     if (passwordMatch) {
                         const token = jwt.sign({
-                            id: user._id,
+                            _id: user._id,
                             name: user.name,
                             email: user.email,
                             phoneNumber: user.phoneNumber,
@@ -90,7 +92,36 @@ passport.use(new LocalStrategy(
 ))
 
 
+const cookieExtractor = (req) => {
+    let token = null
+    if (req && req.cookies) {
+        token = req.cookies['jwt']
+    }
 
+    return token
+}
+
+const options = {
+    jwtFromRequest: cookieExtractor,
+    secretOrKey: process.env.JWT_SECRET_KEY
+}
+
+passport.use(new JwtStrategy(options, async (jwt_payload, done) => {
+    debug('passport jwt started:', jwt_payload)
+
+    try {
+        
+        const user = await User.findById(jwt_payload._id)
+
+        if (user) {
+            return done(null, user)
+        } else {
+            return done(null, false)
+        }
+    } catch (err) {
+        return done(err)
+    }
+}))
 
 
 

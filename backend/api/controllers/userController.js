@@ -101,7 +101,7 @@ exports.create_user_post = [
 
 exports.user_login_post = async (req, res, next) => {
     
-    passport.authenticate('local', (err, user, info) => {
+    passport.authenticate('local', {session: false}, (err, user, info) => {
         if (err) {
             res.status(500).json({
                 message: err
@@ -128,6 +128,6 @@ exports.user_login_post = async (req, res, next) => {
         }
 
 
-    })(req, res, next) //IIFE
+    })(req, res, next) //IIFE, err user and info is passed in next
     
 }

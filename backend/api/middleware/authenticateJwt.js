@@ -1,19 +1,21 @@
-const passport = require('../../passport')
+
 const jwtStrategy = require('passport-jwt').Strategy
+require('dotenv').config()
+const User = require('../../models/userModel')
+const debug = require('debug')('odin-book:authenticatejwt')
 
 
-const options = {}
-const cookieExtractor = (req) => {
-    let token = null
-    if (req && req.cookies) {
-        token = req.cookies['jwt']
-    }
-
-    return token
-}
 
 
 
 exports.authenticateJwt = (req, res) => {
-
+    if (req.user) {
+        debug(`user authenticated: ${req.user}`)
+        res.json({
+            success: true,
+            user: req.user
+        })
+    } else {
+        debug('Invalid token', req.user)
+    }
 }
