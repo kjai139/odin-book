@@ -6,7 +6,8 @@ import {useRouter} from "next/navigation";
 
 interface AuthContexType {
     user: User | null,
-    isAuthenticated: () => Promise<boolean>
+    isAuthenticated: () => Promise<boolean>,
+    signOut: () => void
 }
 
 type User = {
@@ -56,6 +57,10 @@ const AuthProvider:React.FC<AuthProviderProps> = ({children}) => {
             const response = await axiosInstance.delete('/api/auth/signOut', {
                 withCredentials: true
             })
+
+            if (response.data.success) {
+                router.push('/')
+            }
         } catch (err) {
             console.error('error in signOut', err)
         }
@@ -63,7 +68,7 @@ const AuthProvider:React.FC<AuthProviderProps> = ({children}) => {
 
 
     return (
-        <AuthContext.Provider value={{user, isAuthenticated}}>
+        <AuthContext.Provider value={{user, isAuthenticated, signOut}}>
             {children}
         </AuthContext.Provider>
     )

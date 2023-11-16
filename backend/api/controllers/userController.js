@@ -131,3 +131,22 @@ exports.user_login_post = async (req, res, next) => {
     })(req, res, next) //IIFE, err user and info is passed in next
     
 }
+
+exports.user_signOut_delete = async (req, res) => {
+    debug('logging user out...')
+    try {
+        res.cookie('jwt', '', {
+            httpOnly: true,
+            maxAge: 0,
+            sameSite: 'None',
+            secure:true
+        })
+
+        res.json({
+            success: true,
+            message: 'You have signed out successfully.'
+        })
+    } catch (err) {
+        console.log(err)
+    }
+}
