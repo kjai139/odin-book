@@ -10,6 +10,8 @@
   --labelC: #334155;
   --arrowSize: 7px;
   --errorBg: #ef4444;
+  --headerHeight: 60px;
+  --dashbgC: #e2e8f0;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -46,6 +48,28 @@ button:hover {
   font-size: 4rem;
   font-weight: bold;
   color: #16a34a;
+}
+
+.hh {
+  height:var(--headerHeight);
+  justify-content: space-between;
+
+}
+
+.bc {
+  margin-top:var(--headerHeight);
+  background-color: var(--dashbgC);
+  flex: 1;
+}
+
+.head-btn {
+  padding: .5rem 1rem;
+  border-radius: 4px;
+  
+}
+
+.head-btn:hover {
+  background-color: #e2e8f0;
 }
 
 .error-msg {
@@ -174,6 +198,11 @@ input[type='text'], input[type='password'], input[type='email'] {
 
 .form-label {
   color: var(--labelC)
+}
+
+.db-g-cont {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
 }
 
 /* @media screen and (max-width: 1024px) {

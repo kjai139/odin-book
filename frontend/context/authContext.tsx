@@ -6,7 +6,7 @@ import {useRouter} from "next/navigation";
 
 interface AuthContexType {
     user: User | null,
-    isAuthenticated: () => Promise<boolean>,
+    isAuthenticated: () => void,
     signOut: () => void
 }
 
@@ -31,7 +31,7 @@ const AuthProvider:React.FC<AuthProviderProps> = ({children}) => {
     const [user, setUser] = useState<User | null >(null)
     const router = useRouter()
 
-    const isAuthenticated = async ():Promise<boolean> => {
+    const isAuthenticated = async () => {
         try {
             const response = await axiosInstance.get('/api/auth/check', {
                 withCredentials: true
@@ -40,15 +40,15 @@ const AuthProvider:React.FC<AuthProviderProps> = ({children}) => {
             if (response.data.success) {
                 
                 setUser(response.data.user)
-                return true
+                
             } else {
                 console.log('user is not authenticated')
-                return false
+                router.push('/')
             }
 
         } catch (err) {
             console.error('error in isAuthenticated:', err)
-            return false
+            router.push('/')
         }
     }
 

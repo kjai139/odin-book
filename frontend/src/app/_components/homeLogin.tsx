@@ -10,10 +10,12 @@ import SignUpModal from "../_modals/signupModal"
 import { useRouter } from 'next/navigation'
 import LoadingModal from "../_modals/loadingModal"
 import ResultModal from "../_modals/resultModal"
+import { useAuth } from "../../../context/authContext"
 
 export default function HomeLogin () {
 
     const router = useRouter()
+    const { isAuthenticated } = useAuth()
     const [isLoading, setIsLoading] = useState(false)
     const [errorMsg, setErrorMsg] = useState('')
 
@@ -72,6 +74,10 @@ export default function HomeLogin () {
         }
     }, [formState, reset])
     // console.log(watch('username'))
+
+    /* useEffect(() => {
+
+    }, []) */
 
    
  

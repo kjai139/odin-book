@@ -5,23 +5,21 @@ import { useAuth } from "../../../context/authContext"
 import { useRouter } from "next/navigation"
 
 
+import FriendsIcon from '../_components/icons/friends.svg'
+import HomeIcon from '../_components/icons/home.svg'
+import GroupIcon from '../_components/icons/group.svg'
+
+import UserPortrait from '../_components/icons/userPortrait.svg'
+import DashboardHeader from "../_components/dashboardHeader"
+
+
 export default function Dashboard () {
 
-    const { user, isAuthenticated } = useAuth()
+    const { user, isAuthenticated, signOut } = useAuth()
     const router = useRouter()
 
     useEffect(() => {
-        const checkAuth = async () => {
-            const result = await isAuthenticated()
-            if (!result) {
-                console.log('USER IS NOT SIGNED IN')
-                /* router.push('/') */
-            } else {
-                console.log('USER IS SIGNED IN')
-            }
-            
-        }
-        checkAuth()
+        isAuthenticated()
 
         
     }, [])
@@ -36,11 +34,14 @@ export default function Dashboard () {
 
     
     return (
-        <div>
-            <h1>
-                {user && `Welcome, ${user.name}`}
-            </h1>
-            <button>Sign out</button>
+        <div className="h-screen w-screen flex flex-col">
+            <DashboardHeader></DashboardHeader>
+            <div className="bc relative">
+                <div className="db-g-cont">
+                    
+                </div>
+            </div>
+            
         </div>
         
     )
