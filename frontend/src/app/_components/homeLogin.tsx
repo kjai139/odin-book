@@ -79,6 +79,10 @@ export default function HomeLogin () {
 
     }, []) */
 
+    useEffect(() => {
+        isAuthenticated()
+    }, [])
+
    
  
     return (

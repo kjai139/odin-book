@@ -2,7 +2,7 @@
 
 import React, {createContext, useState, useContext, ReactNode} from "react";
 import axiosInstance from '../axios'
-import {useRouter} from "next/navigation";
+import {useRouter, usePathname} from "next/navigation";
 
 interface AuthContexType {
     user: User | null,
@@ -30,6 +30,7 @@ const AuthContext = createContext<AuthContexType | undefined >(undefined)
 const AuthProvider:React.FC<AuthProviderProps> = ({children}) => {
     const [user, setUser] = useState<User | null >(null)
     const router = useRouter()
+    const pathname = usePathname()
 
     const isAuthenticated = async () => {
         try {
@@ -40,6 +41,12 @@ const AuthProvider:React.FC<AuthProviderProps> = ({children}) => {
             if (response.data.success) {
                 
                 setUser(response.data.user)
+                console.log('current pathname:', pathname)
+                if (pathname === '/') {
+                    router.push('/dashboard')
+                }
+                
+                
                 
             } else {
                 console.log('user is not authenticated')

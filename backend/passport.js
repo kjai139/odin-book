@@ -7,6 +7,7 @@ const LocalStrategy = require('passport-local').Strategy
 const debug = require('debug')('odin-book:passport')
 const bcrypt = require('bcrypt')
 
+const FacebookStrategy = require('passport-facebook')
 require('dotenv').config()
 
 passport.use(new LocalStrategy(
@@ -123,7 +124,44 @@ passport.use(new JwtStrategy(options, async (jwt_payload, done) => {
     }
 }))
 
+let callbackURL
+if (process.env.NODE_ENV === 'production') {
+    callbackURL = ''
+} else {
+    callbackURL = 'http://localhost/login/facebook'
+}
 
+passport.use(new FacebookStrategy({
+    clientID: process.env.FACEBOOK_APP_ID,
+    clientSecret: process.env.FACEBOOK_APP_SECRET,
+    callbackURL: ''
+    // the callback that gets called when a user successfully authenticates with fb
+}, async (accessToken, refreshToken, profile, done) => {
+    debug('facebook object:', profile)
+
+    const checkGender = (gender) => {
+        if (gender !== 'Male' && gender !== 'Female') {
+            return 'Other'
+        } else {
+            return gender
+        }
+    }
+    try {
+        const user = await User.findOne({email: profile.email})
+        if (!user) {
+            const newUser = new User({
+                name: profile.displayName,
+                email: profile.email,
+                gender: checkGender(profile.gender),
+
+
+            })
+        }
+    } catch (err) {
+        return done(err)
+    }
+    
+}))
 
 
 module.exports = passport;

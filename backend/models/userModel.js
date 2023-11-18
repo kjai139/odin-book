@@ -40,6 +40,10 @@ const UserSchema = new Schema({
     gender: {
         type:String,
         enum:['Male', 'Female', 'Other']
+    },
+    facebookId: {
+        type:String,
+        default: null
     }
 })
 

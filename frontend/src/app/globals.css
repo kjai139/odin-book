@@ -12,6 +12,9 @@
   --errorBg: #ef4444;
   --headerHeight: 60px;
   --dashbgC: #e2e8f0;
+  --roundedR: 4px;
+  --dashBtnhover: #f8fafc;
+  
 }
 
 @media (prefers-color-scheme: dark) {
@@ -64,7 +67,7 @@ button:hover {
 
 .head-btn {
   padding: .5rem 1rem;
-  border-radius: 4px;
+  border-radius: var(--roundedR);
   
 }
 
@@ -87,7 +90,7 @@ button:hover {
   font-size: small;
   color: white;
   background-color: var(--errorBg);
-  border-radius: 4px;
+  border-radius: var(--roundedR);
   padding: 4px;
   z-index: 1;
   
@@ -103,7 +106,7 @@ button:hover {
   font-size: small;
   color: white;
   background-color: var(--errorBg);
-  border-radius: 4px;
+  border-radius: var(--roundedR);
   padding: 4px;
   z-index: 1;
   text-align: center;
@@ -205,6 +208,27 @@ input[type='text'], input[type='password'], input[type='email'] {
   grid-template-columns: 1fr 2fr 1fr;
 }
 
+
+.dashb-l-side {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  padding: 1rem;
+}
+
+.dashb-l-side > li {
+  
+  display: flex;
+}
+
+.dashb-l-side > li > button:hover {
+  background-color: var(--dashBtnhover);
+}
+
+.dashb-l-side > li > button {
+  padding: .5rem 1rem;
+  border-radius: var(--roundedR);
+}
 /* @media screen and (max-width: 1024px) {
   .signup-error.arr-right, .signup-error.arr-left {
     text-wrap: wrap;

@@ -5,12 +5,9 @@ import { useAuth } from "../../../context/authContext"
 import { useRouter } from "next/navigation"
 
 
-import FriendsIcon from '../_components/icons/friends.svg'
-import HomeIcon from '../_components/icons/home.svg'
-import GroupIcon from '../_components/icons/group.svg'
 
-import UserPortrait from '../_components/icons/userPortrait.svg'
 import DashboardHeader from "../_components/dashboardHeader"
+import DashboardLeftSideBar from "../_components/dbLeftSideBar"
 
 
 export default function Dashboard () {
@@ -38,7 +35,7 @@ export default function Dashboard () {
             <DashboardHeader></DashboardHeader>
             <div className="bc relative">
                 <div className="db-g-cont">
-                    
+                    <DashboardLeftSideBar></DashboardLeftSideBar>
                 </div>
             </div>
             
