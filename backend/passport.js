@@ -6,6 +6,7 @@ const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 const debug = require('debug')('odin-book:passport')
 const bcrypt = require('bcrypt')
+const crypto = require('crypto')
 
 const FacebookStrategy = require('passport-facebook')
 require('dotenv').config()
@@ -139,6 +140,10 @@ passport.use(new FacebookStrategy({
 }, async (accessToken, refreshToken, profile, done) => {
     debug('facebook object:', profile)
 
+    const generateRandomString = (len) => {
+        return crypto.randomBytes(Math.ceil(len/2).toString('hex').slice(0, len))
+    }
+
     const checkGender = (gender) => {
         if (gender !== 'Male' && gender !== 'Female') {
             return 'Other'
@@ -153,9 +158,16 @@ passport.use(new FacebookStrategy({
                 name: profile.displayName,
                 email: profile.email,
                 gender: checkGender(profile.gender),
-
+                facebookId: profile.id,
+                password: `${generateRandomString(7)}Z!`
 
             })
+
+            await newUser.save()
+            return done(null, newUser)
+        } else {
+            return done(null, user)
+
         }
     } catch (err) {
         return done(err)
