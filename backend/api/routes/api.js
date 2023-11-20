@@ -12,4 +12,6 @@ router.get('/auth/check', passport.authenticate('jwt', {session: false}), authen
 
 router.delete('/auth/signOut', user_signOut_delete)
 
+router.get('/auth/facebook', passport.authenticate('facebook', {session: false}), authenticateJwt )
+
 module.exports = router

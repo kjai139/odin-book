@@ -65,7 +65,8 @@ passport.use(new LocalStrategy(
                             image: user.image,
                             gender: user.gender,
                             friendlist: user.friendlist,
-                            friendReq: user.friendReq
+                            friendReq: user.friendReq,
+                            facebookId: user.facebookId
     
     
                         }, process.env.JWT_SECRET_KEY, {
@@ -135,7 +136,8 @@ if (process.env.NODE_ENV === 'production') {
 passport.use(new FacebookStrategy({
     clientID: process.env.FACEBOOK_APP_ID,
     clientSecret: process.env.FACEBOOK_APP_SECRET,
-    callbackURL: ''
+    callbackURL: callbackURL,
+    profileFields: ['id', 'name', 'picture', 'gender', 'email']
     // the callback that gets called when a user successfully authenticates with fb
 }, async (accessToken, refreshToken, profile, done) => {
     debug('facebook object:', profile)
@@ -155,18 +157,55 @@ passport.use(new FacebookStrategy({
         const user = await User.findOne({email: profile.email})
         if (!user) {
             const newUser = new User({
-                name: profile.displayName,
+                name: profile.name,
                 email: profile.email,
                 gender: checkGender(profile.gender),
                 facebookId: profile.id,
-                password: `${generateRandomString(7)}Z!`
+                password: `${generateRandomString(7)}Z!`,
+                image: profile.picture
 
             })
 
             await newUser.save()
-            return done(null, newUser)
+
+            const token = jwt.sign({
+                _id: newUser._id,
+                name: newUser.name,
+                email: newUser.email,
+                phoneNumber: newUser.phoneNumber,
+                image: newUser.image,
+                gender: newUser.gender,
+                friendlist: newUser.friendlist,
+                friendReq: newUser.friendReq,
+                facebookId: newUser.facebookId
+            }, process.env.JWT_SECRET_KEY, {
+                expiresIn: '1hr'
+            })
+            return done(null, token)
         } else {
-            return done(null, user)
+
+            user.name = profile.name
+            user.email = profile.email
+            user.image = profile.image
+            
+
+            await user.save()
+
+            
+            const token = jwt.sign({
+                _id: user._id,
+                name: profile.name,
+                email: profile.email,
+                phoneNumber: user.phoneNumber,
+                image: profile.image,
+                gender: user.gender,
+                friendlist: user.friendlist,
+                friendReq: user.friendReq,
+                facebookId: user.facebookId
+            }, process.env.JWT_SECRET_KEY, {
+                expiresIn: '1hr'
+            })
+            return done(null, token)
 
         }
     } catch (err) {
