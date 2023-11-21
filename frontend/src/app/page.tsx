@@ -6,7 +6,7 @@ export default function Home() {
     <main className="flex justify-center items-center bg-login-bg h-screen w-screen">
       <div className="flex">
       <div className="flex-1">
-      <h1 className="ht">Odinbook</h1>
+      <h1 className="ht">Openchat</h1>
       <h2>Connect with friends and the world around you on odinbook</h2>
       </div>
       <HomeLogin></HomeLogin>

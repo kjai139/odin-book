@@ -40,12 +40,14 @@ body {
   }
 }
 
-button:hover {
+/* button:hover {
   animation-name: pulse;
   animation-duration: 1s;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
-}
+} */
+
+
 
 .ht {
   font-size: 4rem;
@@ -54,6 +56,7 @@ button:hover {
 }
 
 .hh {
+  z-index: 10;
   height:var(--headerHeight);
   justify-content: space-between;
 
@@ -73,6 +76,24 @@ button:hover {
 
 .head-btn:hover {
   background-color: #e2e8f0;
+}
+
+.header-modal {
+  position: absolute;
+  
+  right:0;
+  border-radius: 4px;
+  background-color: white;
+  
+
+}
+
+.header-modal > li {
+  padding:.5rem;
+}
+
+.hm-btn {
+  text-wrap: nowrap;
 }
 
 .error-msg {

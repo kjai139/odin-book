@@ -4,6 +4,7 @@ import './globals.css'
 import Script from 'next/script'
 import { AuthProvider } from '../../context/authContext'
 
+
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {

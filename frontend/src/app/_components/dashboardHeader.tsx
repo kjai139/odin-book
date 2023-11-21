@@ -4,7 +4,10 @@
 
 import { FriendsIcon, HomeIcon, UserPortrait, GroupIcon } from './SVGRComponent'
 import { useAuth } from '../../../context/authContext'
+import { Tooltip } from 'react-tooltip'
+import { useRef, useState } from 'react'
 
+import AccountDModal from '../_modals/accountDetailModal'
 
 interface DashboardProps {
   
@@ -12,9 +15,29 @@ interface DashboardProps {
 
 export default function DashboardHeader() {
 
+    const modalRef = useRef(null)
 
-    const { user, isAuthenticated, signOut } = useAuth()
-
+    const [showingModal, setShowingModal] = useState('')
+    
+    const topNav = [
+        {
+            icon: <HomeIcon></HomeIcon>,
+            tooltip: 'Home',
+            id: 'head-1'
+        }, 
+        {
+            icon: <FriendsIcon></FriendsIcon>,
+            tooltip: 'Friends',
+            id: 'head-2'
+        },
+        {
+            icon: <GroupIcon></GroupIcon>,
+            tooltip: 'Groups',
+            id: 'head-3'
+        }
+    ]
+    
+    
 
 
     return (
@@ -24,34 +47,36 @@ export default function DashboardHeader() {
                 </div>
                 
                 <ul className="flex gap-4 items-center">
-                    <li>
-                        <button type="button" className="head-btn">
-                            <HomeIcon></HomeIcon>
-                        </button>
+                {
+                    topNav.map((node) => {
+                        return (
+                            <li key={node.id}>
+                                <button className={`head-btn btn-${node.id}`}>
+                                {node.icon}
+                                </button>
+                                
+                                <Tooltip content={node.tooltip} anchorSelect={`.btn-${node.id}`}></Tooltip>
 
-                    </li>
-                    <li>
-                        <button type="button" className="head-btn">
-                            <FriendsIcon></FriendsIcon>
-                        </button>
-                    </li>
-                    <li>
-                        <button type="button" className="head-btn">
-                            <GroupIcon></GroupIcon>
-                        </button>
-                    </li>
+                            </li>
+                        )
+                    })
+                }
                 </ul>
 
                 
                 <ul className="flex gap-4 items-center">
-                    <li>
-                        <button type="button" className="head-btn">
+                    <li className='relative'>
+                        <button onClick={() => setShowingModal('Account')} type="button" className="head-btn" id='head-acc-btn'>
                             <UserPortrait height="34" width="34"></UserPortrait>
                         </button>
+                        {showingModal === 'Account' ? null :
+                        <Tooltip content='Account' anchorSelect='#head-acc-btn'></Tooltip> 
+                        }
+                        
+                        <AccountDModal isShowing={showingModal === 'Account' ? true : false } closeModal={() => setShowingModal('') }></AccountDModal>
                     </li>
-                    <li>
-                        <button type="button" onClick={signOut}>Sign out</button>
-                    </li>
+                    
+                   
 
                 </ul>
 

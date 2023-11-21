@@ -15,6 +15,21 @@ const PostSchema = new Schema({
     body: {
         type:String,
         required: true
+    },
+    comments: [
+        {
+            type:Schema.Types.ObjectId,
+            ref: 'Comment'
+        }
+
+    ],
+    likes: {
+        type: Number,
+        default: 0
+    },
+    dislikes: {
+        type:Number,
+        default: 0
     }
 })
 
