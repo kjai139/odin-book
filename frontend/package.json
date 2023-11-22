@@ -10,6 +10,9 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.2",
+    "@tiptap/pm": "^2.1.12",
+    "@tiptap/react": "^2.1.12",
+    "@tiptap/starter-kit": "^2.1.12",
     "axios": "^1.6.0",
     "next": "^14.0.3",
     "react": "^18",

@@ -2,11 +2,17 @@ import Image from 'next/image'
 import { useAuth } from '../../../context/authContext'
 import { PenIcon, UserPortrait, VideoIcon } from './SVGRComponent'
 
-export default function DashboardLeftSideBar () {
+interface LeftSideBarProps {
+    selectTab: React.Dispatch<React.SetStateAction<number>>
+}
+
+export default function DashboardLeftSideBar ({selectTab}:LeftSideBarProps) {
 
     const { user } = useAuth()
 
     type FullName = string
+
+    
 
     const formatUsername = (name: FullName) => {
         const splitname = name.split(' ')
@@ -14,49 +20,44 @@ export default function DashboardLeftSideBar () {
         const lastname = splitname[1].charAt(0).toUpperCase() + splitname[1].slice(1)
         return firstname + ' ' + lastname
     }
+
+    const sidebarContent = [
+        {
+            image: user && user.image? <Image src={user.image} width={30} height={30} alt='user profile picture'></Image> :
+            <UserPortrait width="30" height="30"></UserPortrait>,
+            title: user && user.name && formatUsername(user.name),
+            id: '0'
+        },
+        {
+            image: <PenIcon width="30" height="30"></PenIcon>,
+            title: 'Posts',
+            id: '1'
+        },
+        {
+            image:  <VideoIcon width="30" height="30"></VideoIcon>,
+            title: 'Videos',
+            id: '2'
+        }
+    ]
     
     
 
 
     return (
         <ul className='dashb-l-side'>
-            <li>
-                <button>
-                    <div className='flex gap-2 items-center align-center'>
-                        { user && user.image ?
-                        <Image src={user.image} width={30} height={30} alt='user profile picture'></Image> :
-                        <UserPortrait width="30" height="30"></UserPortrait>
-                        }
-                        <span>
-                            {user && user.name &&
-                            <p>{formatUsername(user.name)}</p>
-                            }
-                        </span>
-                    </div>
-                </button>
-            </li>
-            <li>
-                <button>
-                    <div className='flex gap-2 items-center align-center'>
-                        <PenIcon width="30" height="30"></PenIcon>
-                        <span>
-                            Posts
-                        </span>
-                    </div>
-                    
-                </button>
-            </li>
-            <li>
-                <button>
-                    <div className='flex gap-2 items-center align-center'>
-                        <VideoIcon width="30" height="30"></VideoIcon>
-                        <span>
-                            Videos
-                        </span>
-                    </div>
-                   
-                </button>
-            </li>
+            {user && sidebarContent.map((node) => {
+                return (
+                    <li key={`sb-${node.id}`}>
+                        <button onClick={() => selectTab(Number(node.id))}>
+                            <div className='flex gap-2 items-center align-center'>
+                                {node.image}
+                                <span>{node.title}</span>
+                            </div>
+                        </button>
+                    </li>
+                )
+            })}
+           
         </ul>
     )
 }

@@ -29,11 +29,13 @@ const AuthContext = createContext<AuthContexType | undefined >(undefined)
 
 const AuthProvider:React.FC<AuthProviderProps> = ({children}) => {
     const [user, setUser] = useState<User | null >(null)
+    
     const router = useRouter()
     const pathname = usePathname()
 
     const isAuthenticated = async () => {
         try {
+            
             const response = await axiosInstance.get('/api/auth/check', {
                 withCredentials: true
             })
@@ -50,12 +52,17 @@ const AuthProvider:React.FC<AuthProviderProps> = ({children}) => {
                 
             } else {
                 console.log('user is not authenticated')
-                router.push('/')
+                if (pathname !== '/'){
+                    router.push('/')
+                }
+                
             }
 
         } catch (err) {
             console.error('error in isAuthenticated:', err)
-            router.push('/')
+            if (pathname !== '/'){
+                router.push('/')
+            }
         }
     }
 

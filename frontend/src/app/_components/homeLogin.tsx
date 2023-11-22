@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation'
 import LoadingModal from "../_modals/loadingModal"
 import ResultModal from "../_modals/resultModal"
 import { useAuth } from "../../../context/authContext"
+import { getServerSideProps } from "next/dist/build/templates/pages"
 
 export default function HomeLogin () {
 
@@ -82,7 +83,7 @@ export default function HomeLogin () {
     useEffect(() => {
         isAuthenticated()
     }, [])
-
+    
    
  
     return (
