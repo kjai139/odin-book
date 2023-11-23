@@ -6,7 +6,7 @@ export default function UserPosts() {
 
 
     return (
-        <div>
+        <div className='dashb-mid-block'>
             <div>Content</div>
             <TipTap></TipTap>
         </div>

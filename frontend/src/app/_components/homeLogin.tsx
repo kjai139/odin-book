@@ -16,7 +16,7 @@ import { getServerSideProps } from "next/dist/build/templates/pages"
 export default function HomeLogin () {
 
     const router = useRouter()
-    const { isAuthenticated } = useAuth()
+    const { isAuthenticated, doneLoading } = useAuth()
     const [isLoading, setIsLoading] = useState(false)
     const [errorMsg, setErrorMsg] = useState('')
 
@@ -81,8 +81,11 @@ export default function HomeLogin () {
     }, []) */
 
     useEffect(() => {
-        isAuthenticated()
-    }, [])
+        if (doneLoading) {
+            isAuthenticated()
+        }
+        
+    }, [doneLoading])
     
    
  

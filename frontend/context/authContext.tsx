@@ -7,7 +7,8 @@ import {useRouter, usePathname} from "next/navigation";
 interface AuthContexType {
     user: User | null,
     isAuthenticated: () => void,
-    signOut: () => void
+    signOut: () => void,
+    doneLoading: boolean
 }
 
 type User = {
@@ -32,6 +33,7 @@ const AuthProvider:React.FC<AuthProviderProps> = ({children}) => {
     
     const router = useRouter()
     const pathname = usePathname()
+    const [doneLoading, setDoneLoading] = useState(true)
 
     const isAuthenticated = async () => {
         try {
@@ -82,7 +84,7 @@ const AuthProvider:React.FC<AuthProviderProps> = ({children}) => {
 
 
     return (
-        <AuthContext.Provider value={{user, isAuthenticated, signOut}}>
+        <AuthContext.Provider value={{user, isAuthenticated, signOut, doneLoading}}>
             {children}
         </AuthContext.Provider>
     )

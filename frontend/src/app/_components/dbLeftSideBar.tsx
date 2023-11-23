@@ -26,17 +26,17 @@ export default function DashboardLeftSideBar ({selectTab}:LeftSideBarProps) {
             image: user && user.image? <Image src={user.image} width={30} height={30} alt='user profile picture'></Image> :
             <UserPortrait width="30" height="30"></UserPortrait>,
             title: user && user.name && formatUsername(user.name),
-            id: '0'
+            id: '1'
         },
         {
             image: <PenIcon width="30" height="30"></PenIcon>,
             title: 'Posts',
-            id: '1'
+            id: '2'
         },
         {
             image:  <VideoIcon width="30" height="30"></VideoIcon>,
             title: 'Videos',
-            id: '2'
+            id: '3'
         }
     ]
     

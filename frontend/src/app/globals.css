@@ -14,6 +14,9 @@
   --dashbgC: #e2e8f0;
   --roundedR: 4px;
   --dashBtnhover: #f8fafc;
+  --dashbContentBg: white;
+  --ttBorderC: #94a3b8;
+  --ttactiveC: #e2e8f0;
   
 }
 
@@ -250,6 +253,41 @@ input[type='text'], input[type='password'], input[type='email'] {
   padding: .5rem 1rem;
   border-radius: var(--roundedR);
 }
+
+.dashb-mid-block {
+  max-width: 1000px;
+  padding: 1rem;
+  min-width: 0;
+  
+}
+
+.tt-cont {
+  background-color: var(--dashbContentBg);
+  border: 2px solid #64748b;
+}
+
+.tt-menu > button {
+  border-radius: .25rem;
+}
+
+.tt-active {
+  background-color: var(--ttactiveC);
+}
+
+.ProseMirror {
+  min-height: 10rem;
+  border-top: 2px solid var(--dashbgC);
+  border-bottom: 2px solid var(--dashbgC);
+  padding: .75rem;
+  
+}
+
+.ProseMirror:focus-visible{
+  outline: none;
+}
+
+
+
 /* @media screen and (max-width: 1024px) {
   .signup-error.arr-right, .signup-error.arr-left {
     text-wrap: wrap;
