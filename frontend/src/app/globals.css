@@ -32,6 +32,21 @@ body {
   color: rgb(var(--foreground-rgb));
 }
 
+h1 {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+h3 {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
 
 
 @keyframes pulse {
@@ -269,6 +284,10 @@ input[type='text'], input[type='password'], input[type='email'] {
 .tt-menu > button {
   border-radius: .25rem;
 }
+.tt-menu > div, .tt-menu > label {
+  display: flex;
+  align-items: center;
+}
 
 .tt-active {
   background-color: var(--ttactiveC);
@@ -283,6 +302,37 @@ input[type='text'], input[type='password'], input[type='email'] {
 }
 
 .ProseMirror:focus-visible{
+  outline: none;
+}
+
+.ProseMirror-selectednode {
+  outline: 3px solid #68cef8;
+}
+
+.tt-link-input {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 20px;
+  border: 2px solid;
+  border-radius: 3px;
+  min-width: 300px;
+  background-color: white;
+  z-index: 2;
+  padding: 8px;
+  gap: 5px;
+
+}
+
+.tiptap a {
+  color: #68cef8;
+}
+
+.tt-link-input > button {
+  padding:3px;
+}
+
+.tt-link-input > input:focus {
   outline: none;
 }
 
