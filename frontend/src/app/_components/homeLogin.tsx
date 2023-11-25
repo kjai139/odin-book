@@ -55,7 +55,7 @@ export default function HomeLogin () {
             })
 
             if (response.data.success) {
-                setIsLoading(false)
+                
                 router.push('/dashboard')
             }
         } catch (err:any) {
@@ -90,15 +90,15 @@ export default function HomeLogin () {
    
  
     return (
-        <div className="flex-1 flex relative">
+        <div className="flex-1 flex relative login-cont border shadow rounded bg-white">
             <form className="flex flex-col flex-1 p-4 gap-4" onSubmit={handleSubmit(onSubmit)}>
                 <div className="relative">
-                <input {...register('username', {required: true})} type="text" placeholder="Email or phone number" autoComplete="off" aria-invalid={errors.username ? true: false }>
+                <input className="border rounded" {...register('username', {required: true})} type="text" placeholder="Email or phone number" autoComplete="off" aria-invalid={errors.username ? true: false }>
                 </input>
                 <p className="error-msg">{errors.username?.message}</p>
                 </div>
                 <div className="relative">
-                <input type="password" placeholder="Enter password" autoComplete="off" {...register('password')}></input>
+                <input className="border rounded" type="password" placeholder="Enter password" autoComplete="off" {...register('password')}></input>
                 <p className="error-msg">{errors.password?.message}</p>
                 </div>
                 <div className="flex justify-center">
@@ -108,7 +108,7 @@ export default function HomeLogin () {
                 <button type="button" className="text-blue-500">Forgot password?</button>
                 </div>
                 <div className="justify-center flex">
-                <button className="bg-blue-500 rounded py-2 px-4" type="button" onClick={() => setIsCreateFormOpen(true)}>Create new account</button>
+                <button className="bg-blue-500 text-white rounded py-2 px-4" type="button" onClick={() => setIsCreateFormOpen(true)}>Create new account</button>
                 </div>
             </form>
             <div className={`overlay flex justify-center items-center ${isCreateFormOpen ? 'active' : 'inactive'}`}>

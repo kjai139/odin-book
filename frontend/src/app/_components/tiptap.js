@@ -101,6 +101,22 @@ const TipTap = () => {
         editor.chain().focus().unsetLink().run()
     }
 
+    const handleCodeToggle = () => {
+        editor.chain().focus().toggleCode().run()
+    }
+
+    const handleQuoteToggle = () => {
+        editor.chain().focus().toggleBlockquote().run()
+    }
+
+    const handleUnorderedList = () => {
+        editor.chain().focus().toggleBulletList().run()
+    }
+
+    const handleOrderedList = () => {
+        editor.chain().focus().toggleOrderedList().run()
+    }
+
     
 
     
@@ -168,16 +184,16 @@ const TipTap = () => {
                 <button onClick={handleUnsetLink}>
                     <RiLinkUnlink></RiLinkUnlink>
                 </button>
-                <button>
+                <button className={editor.isActive('code') ? 'tt-active' : ''} onClick={handleCodeToggle}>
                     <RiCodeBoxLine></RiCodeBoxLine>
                 </button>
-                <button>
+                <button onClick={handleQuoteToggle} className={editor.isActive('blockquote') ? 'tt-active' : ''}>
                     <RiDoubleQuotesL></RiDoubleQuotesL>
                 </button>
-                <button>
+                <button onClick={handleUnorderedList} className={editor.isActive('bulletList') ? 'tt-active' : ''}>
                     <RiListUnordered></RiListUnordered>
                 </button>
-                <button>
+                <button onClick={handleOrderedList} className={editor.isActive('orderedList') ? 'tt-active' : ''}>
                     <RiListOrdered></RiListOrdered>
                 </button>
 

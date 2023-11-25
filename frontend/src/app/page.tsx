@@ -1,17 +1,25 @@
+import HomeFooter from "./_components/homeFooter";
 import HomeLogin from "./_components/homeLogin";
 
 
 export default function Home() {
   return (
-    <main className="flex justify-center items-center bg-login-bg h-screen w-screen">
-      <div className="flex">
-      <div className="flex-1">
-      <h1 className="ht">Openchat</h1>
-      <h2>Connect with friends and the world around you on odinbook</h2>
+    <div className="home-grid">
+      
+    <main className="flex justify-center items-center bg-login-bg w-screen flex-col">
+      <div className="flex login-wrap">
+        <div className="flex-1">
+        <h1 className="ht">Openchat</h1>
+        <p>It's like facebook but not really.</p>
+        </div>
+        <HomeLogin></HomeLogin>
+        
       </div>
-      <HomeLogin></HomeLogin>
-      </div>
+      
     </main>
+      <HomeFooter></HomeFooter>
+    </div>
+    
   )
 }
 
