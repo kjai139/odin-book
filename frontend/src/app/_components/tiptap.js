@@ -21,6 +21,7 @@ import {
     RiParagraph
 } from 'react-icons/ri'
 import { useCallback, useRef, useState } from 'react'
+import axiosInstance from '../../../axios'
 
 
 const TipTap = () => {
@@ -121,15 +122,28 @@ const TipTap = () => {
 
     
 
-    const handleImageUpload = useCallback((e) => {
+    const handleImageUpload = useCallback(async (e) => {
         console.log(e.target.files[0])
         const file = e.target.files[0]
         
         if (file) {
             const imgUrl = URL.createObjectURL(file)
+            try {
+                const response = await axiosInstance.post('/image/temp/post', {
+                    imgUrl: imgUrl
+                }, {
+                    withCredentials: true
+                })
+
+                if (response.data.success) {
+                    editor.chain().focus().setImage({src: imgUrl}).run()
+                    imageRef.current.value = ''
+                }
+            } catch (err) {
+                console.error(err)
+                imageRef.current.value = ''
+            }
             
-            editor.chain().focus().setImage({src: imgUrl}).run()
-            imageRef.current.value = ''
         }
     }, [editor])
 
@@ -143,7 +157,7 @@ const TipTap = () => {
                 <button onClick={handleBoldClick} className={editor && editor.isActive('bold') ? 'tt-active' : ''}>
                     <RiBold></RiBold>
                 </button>
-                <button>
+                <button onClick={handleItalics} className={editor.getAttributes('italic') ? 'tt-active' : ''}>
                     <RiItalic></RiItalic>
                 </button>
                 <button className={editor.isActive('heading', {level: 1}) ? 'tt-active' : ''} onClick={() => handleHeadings(1)}>
