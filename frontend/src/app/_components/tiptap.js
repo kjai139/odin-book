@@ -130,7 +130,7 @@ const TipTap = () => {
             const imgUrl = URL.createObjectURL(file)
             try {
                 const response = await axiosInstance.post('/image/temp/post', {
-                    imgUrl: imgUrl
+                    image: imgUrl
                 }, {
                     withCredentials: true
                 })
