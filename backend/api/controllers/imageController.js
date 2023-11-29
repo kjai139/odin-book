@@ -2,6 +2,7 @@ const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3')
 require('dotenv').config()
 const crypto = require('crypto')
 const multer = require('multer')
+const debug = require('debug')('odin-book:imageController')
 
 const s3Client = new S3Client({
     region: 'us-east-2',
@@ -13,23 +14,24 @@ const s3Client = new S3Client({
 
 const generateRandomString = (len) => {
     const timestamp = Date.now()
-    return `${crypto.randomBytes(Math.ceil(len / 2)).toString('hex').slice(0, len)} + ${timestamp}`
+    return `${crypto.randomBytes(Math.ceil(len / 2)).toString('hex').slice(0, len)}${timestamp}`
 }
 
 
 
 exports.image_temp_upload_post = async (req, res) => {
+    debug('req.file', req.file)
     try {
         const imageFileName = req.file.originalname.replace(/ /g, '_')
         const bucketName = 'odinbookkjai'
-        const s3KeyName = generateRandomString(5)
+        const s3randomString = generateRandomString(5)
 
         const params = {
             Bucket: bucketName,
-            Key: `/temp/${imageFileName}_${s3KeyName}`,
+            Key: `images/temp/${s3randomString}_${imageFileName}`,
             Body: req.file.buffer,
             ACL: 'public-read',
-            ContentType: 'image/x-icon'
+            ContentType: 'image/svg+xml'
         }
 
         const command = new PutObjectCommand(params)
@@ -57,7 +59,7 @@ exports.image_temp_upload_post = async (req, res) => {
             }
         } else {
             res.status(500).json({
-                message: err
+                message: err.message
             })
         }
     }

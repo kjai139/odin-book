@@ -8,7 +8,8 @@ interface AuthContexType {
     user: User | null,
     isAuthenticated: () => void,
     signOut: () => void,
-    doneLoading: boolean
+    doneLoading: boolean,
+    pathname: string
 }
 
 type User = {
@@ -33,6 +34,7 @@ const AuthProvider:React.FC<AuthProviderProps> = ({children}) => {
     
     const router = useRouter()
     const pathname = usePathname()
+   
     const [doneLoading, setDoneLoading] = useState(true)
 
     const isAuthenticated = async () => {
@@ -84,7 +86,7 @@ const AuthProvider:React.FC<AuthProviderProps> = ({children}) => {
 
 
     return (
-        <AuthContext.Provider value={{user, isAuthenticated, signOut, doneLoading}}>
+        <AuthContext.Provider value={{user, isAuthenticated, signOut, doneLoading, pathname}}>
             {children}
         </AuthContext.Provider>
     )

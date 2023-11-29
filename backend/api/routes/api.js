@@ -19,6 +19,6 @@ router.delete('/auth/signOut', user_signOut_delete)
 
 router.get('/auth/facebook', passport.authenticate('facebook', {session: false}), authenticateJwt )
 
-router.post('/image/temp/post', authenticateJwt, upload('image'), image_temp_upload_post)
+router.post('/image/temp/post', authenticateJwt, upload.single('image'), image_temp_upload_post)
 
 module.exports = router

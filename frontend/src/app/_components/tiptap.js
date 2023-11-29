@@ -127,16 +127,17 @@ const TipTap = () => {
         const file = e.target.files[0]
         
         if (file) {
-            const imgUrl = URL.createObjectURL(file)
+            /* const imgUrl = URL.createObjectURL(file) */
+            const formData = new FormData()
+            formData.append('image', file)
             try {
-                const response = await axiosInstance.post('/image/temp/post', {
-                    image: imgUrl
-                }, {
+                const response = await axiosInstance.post('/api/image/temp/post', formData, {
                     withCredentials: true
                 })
 
                 if (response.data.success) {
-                    editor.chain().focus().setImage({src: imgUrl}).run()
+                    console.log(response.data.message)
+                    editor.chain().focus().setImage({src: response.data.url}).run()
                     imageRef.current.value = ''
                 }
             } catch (err) {
@@ -157,7 +158,7 @@ const TipTap = () => {
                 <button onClick={handleBoldClick} className={editor && editor.isActive('bold') ? 'tt-active' : ''}>
                     <RiBold></RiBold>
                 </button>
-                <button onClick={handleItalics} className={editor.getAttributes('italic') ? 'tt-active' : ''}>
+                <button onClick={handleItalics} className={editor.isActive('italic') ? 'tt-active' : ''}>
                     <RiItalic></RiItalic>
                 </button>
                 <button className={editor.isActive('heading', {level: 1}) ? 'tt-active' : ''} onClick={() => handleHeadings(1)}>
