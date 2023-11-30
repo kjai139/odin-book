@@ -1,16 +1,10 @@
-const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3')
+const { PutObjectCommand } = require('@aws-sdk/client-s3')
 require('dotenv').config()
 const crypto = require('crypto')
 const multer = require('multer')
 const debug = require('debug')('odin-book:imageController')
 
-const s3Client = new S3Client({
-    region: 'us-east-2',
-    credentials: {
-        accessKeyId: process.env.S3_ACCESS_KEY,
-        secretAccessKey: process.env.S3_SECRET
-    }
-})
+const s3Client = require('../../s3Client')
 
 const generateRandomString = (len) => {
     const timestamp = Date.now()
@@ -31,7 +25,7 @@ exports.image_temp_upload_post = async (req, res) => {
             Key: `images/temp/${s3randomString}_${imageFileName}`,
             Body: req.file.buffer,
             ACL: 'public-read',
-            ContentType: 'image/svg+xml'
+            ContentType: req.file.mimetype,
         }
 
         const command = new PutObjectCommand(params)
