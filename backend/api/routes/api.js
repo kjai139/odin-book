@@ -5,6 +5,7 @@ const passport = require('../../passport')
 const { authenticateJwt } = require('../middleware/authenticateJwt')
 const multer = require('multer')
 const { image_temp_upload_post } = require('../controllers/imageController')
+const { post_create_post } = require('../controllers/postController')
 
 const storage = multer.memoryStorage()
 const upload = multer({storage: storage, limits:{ fileSize: 2 * 1024 * 1024} })
@@ -19,6 +20,8 @@ router.delete('/auth/signOut', user_signOut_delete)
 
 router.get('/auth/facebook', passport.authenticate('facebook', {session: false}), authenticateJwt )
 
-router.post('/image/temp/post', authenticateJwt, upload.single('image'), image_temp_upload_post)
+router.post('/image/temp/post', passport.authenticate('jwt', {session: false}), upload.single('image'), image_temp_upload_post)
+
+router.post('/post/create', passport.authenticate('jwt', {session: false}), post_create_post)
 
 module.exports = router

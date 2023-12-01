@@ -2,9 +2,8 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const PostSchema = new Schema({
-    name: {
+    title: {
         type: String,
-        required: true,
 
     },
     author: {
@@ -30,6 +29,10 @@ const PostSchema = new Schema({
     dislikes: {
         type:Number,
         default: 0
+    },
+    createdAt: {
+        type:Date,
+        default:Date.now
     }
 })
 

@@ -315,10 +315,21 @@ input[type='text'], input[type='password'], input[type='email'] {
 
 .ProseMirror {
   min-height: 10rem;
+  /* max-height: 10rem; */
   border-top: 2px solid var(--dashbgC);
   border-bottom: 2px solid var(--dashbgC);
   padding: .75rem;
+  /* overflow-y: auto; */
   
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: gray;
 }
 
 .ProseMirror:focus-visible{

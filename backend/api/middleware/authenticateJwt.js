@@ -7,7 +7,7 @@ const debug = require('debug')('odin-book:authenticatejwt')
 
 
 
-
+//handle after passport jwt
 exports.authenticateJwt = (req, res, next) => {
     if (req.user) {
         debug(`user authenticated: ${req.user}`)
@@ -16,21 +16,14 @@ exports.authenticateJwt = (req, res, next) => {
             user: req.user
         })
     } else {
-        try {
-            const decodedToken = jwt.verify(req.cookies.jwt, process.env.JWT_SECRET_KEY)
-
-            req.user = decodedToken
-            debug('user is logged in:', req.user)
-            next()
-
-        } catch (err) {
-            debug('Invalid or expired token')
-            res.status(500).json({
-                message: err
-            })
-        }
         
-
-        
+        debug('Invalid or expired token')
+        res.status(500).json({
+            message: err,
+            reroute: '/'
+        })
     }
+        
+        
+    
 }

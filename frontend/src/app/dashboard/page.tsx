@@ -23,9 +23,6 @@ export default function Dashboard () {
         
     }, [])
 
-    useEffect(() => {
-        console.log('user updated -', user)
-    }, [user])
 
     interface ContentMapping {
         [key: number] : React.ReactNode

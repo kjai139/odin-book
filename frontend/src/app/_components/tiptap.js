@@ -22,6 +22,8 @@ import {
 } from 'react-icons/ri'
 import { useCallback, useRef, useState } from 'react'
 import axiosInstance from '../../../axios'
+import { useAuth } from '../../../context/authContext'
+import { useRouter } from 'next/navigation'
 
 
 const TipTap = () => {
@@ -44,17 +46,73 @@ const TipTap = () => {
 
     const [linkUrl, setLinkUrl] = useState('')
     const [displayLinkInput, setDisplayLinkInput] = useState(false)
+    const { user, setUser } = useAuth()
 
     const imageRef = useRef(null)
     const urlInputRef = useRef(null)
+
+    const router = useRouter()
 
     const handleBoldClick = () => {
         editor.chain().focus().toggleBold().run()
     }
 
-    const handleCreatePost = () => {
+    const BLOCK_TYPE_OBJECTS = {
+        'image': (block) => false
+    }
+
+    const checkIfcontentEmpty = (block) => {
+        if (!block || !block.type) {
+            return true
+        }
+        
+        if (block.type in BLOCK_TYPE_OBJECTS) {
+            return BLOCK_TYPE_OBJECTS[block.type](block)
+        }
+
+        if ('text' in block) {
+            console.log('text found in content:', block.text, !block.text?.trim())
+            return !block.text?.trim()
+        }
+        
+        return block.content ? block.content.every((_block) => checkIfcontentEmpty(_block)) : true
+    }
+
+    const handleCreatePost = async (format) => {
         const json = editor.getJSON()
         console.log('post json:', json)
+        console.log('is editor empty?:', editor.isEmpty)
+        if (!editor.isEmpty) {
+            if (!checkIfcontentEmpty(json)){
+                console.log('Posting...')
+                if (format === 'post') {
+                    try {
+                        const response = await axiosInstance.post('/api/post/create', {
+                            content: json
+                        }, {
+                            withCredentials: true
+                        })
+        
+                        console.log(response.data.message)
+        
+                        if (response.data.success) {
+                            setUser(response.data.updatedUser)
+                        }
+        
+                    } catch (err) {
+                        console.log('Error creating post:', err)
+                    }
+                } else if (format === 'comment') {
+
+                }
+            } else {
+                console.log('Editor is empty.')
+            }
+        } else {
+            console.log('Editor empty.')
+        } 
+        
+        
     }
 
     const handleItalics = () => {
@@ -143,6 +201,9 @@ const TipTap = () => {
             } catch (err) {
                 console.error(err)
                 imageRef.current.value = ''
+                if (err.response.status === 401) {
+                    router.push('/')
+                }
             }
             
         }

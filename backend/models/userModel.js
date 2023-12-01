@@ -44,7 +44,14 @@ const UserSchema = new Schema({
     facebookId: {
         type:String,
         default: null
-    }
+    },
+    posts: [
+        {
+            type:Schema.Types.ObjectId,
+            ref: 'Post',
+            default: null
+        }
+    ]
 })
 
 

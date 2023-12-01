@@ -76,16 +76,8 @@ export default function HomeLogin () {
     }, [formState, reset])
     // console.log(watch('username'))
 
-    /* useEffect(() => {
+   
 
-    }, []) */
-
-    useEffect(() => {
-        if (doneLoading && pathname) {
-            isAuthenticated()
-        }
-        
-    }, [doneLoading])
     
    
  

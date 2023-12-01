@@ -1,8 +1,20 @@
+'use client'
+
+import { useEffect } from "react";
+import { useAuth } from "../../context/authContext";
 import HomeFooter from "./_components/homeFooter";
 import HomeLogin from "./_components/homeLogin";
 
 
 export default function Home() {
+
+  const { isAuthenticated, doneLoading } = useAuth()
+
+  useEffect(() => {
+    isAuthenticated()
+  }, [])
+
+
   return (
     <div className="home-grid">
       

@@ -1,11 +1,12 @@
 'use client'
 
-import React, {createContext, useState, useContext, ReactNode} from "react";
+import React, {createContext, useState, useContext, ReactNode, useEffect} from "react";
 import axiosInstance from '../axios'
 import {useRouter, usePathname} from "next/navigation";
 
 interface AuthContexType {
     user: User | null,
+    setUser: React.Dispatch<React.SetStateAction<User | null>>
     isAuthenticated: () => void,
     signOut: () => void,
     doneLoading: boolean,
@@ -19,8 +20,9 @@ type User = {
     phoneNumber: string | undefined | null,
     image: string | undefined | null,
     gender: string,
-    friendlist: [] | string[],
-    friendReq: [] | string[]
+    friendlist: string[],
+    friendReq: string[],
+    posts: string[]
 }
 
 interface AuthProviderProps {
@@ -84,9 +86,13 @@ const AuthProvider:React.FC<AuthProviderProps> = ({children}) => {
         }
     }
 
+    useEffect(() => {
+        console.log('User object updated:', user)
+    }, [user])
+
 
     return (
-        <AuthContext.Provider value={{user, isAuthenticated, signOut, doneLoading, pathname}}>
+        <AuthContext.Provider value={{user, isAuthenticated, signOut, doneLoading, pathname, setUser}}>
             {children}
         </AuthContext.Provider>
     )

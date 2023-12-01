@@ -66,7 +66,8 @@ passport.use(new LocalStrategy(
                             gender: user.gender,
                             friendlist: user.friendlist,
                             friendReq: user.friendReq,
-                            facebookId: user.facebookId
+                            facebookId: user.facebookId,
+                            posts: user.posts
     
     
                         }, process.env.JWT_SECRET_KEY, {
@@ -119,7 +120,9 @@ passport.use(new JwtStrategy(options, async (jwt_payload, done) => {
         if (user) {
             return done(null, user)
         } else {
-            return done(null, false)
+            return done(null, false, {
+                reroute: true
+            })
         }
     } catch (err) {
         return done(err)

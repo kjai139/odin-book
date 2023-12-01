@@ -1,4 +1,5 @@
 const Post = require('../../models/postModel')
+const User = require('../../models/userModel')
 const debug = require('debug')('odin-book:postController')
 const { CopyObjectCommand } = require('@aws-sdk/client-s3')
 const s3Client = require('../../s3Client')
@@ -32,15 +33,36 @@ exports.post_create_post = async (req, res) => {
 
             }
         }
-
         //create the post
+        const newPost = new Post({
+            author: req.user._id,
+            body: content,
+
+        })
+
+        await newPost.save()
+
+        const theUser = await User.updateOne({_id: req.user._id}, {
+            $addToSet: {
+                posts: newPost._id
+            }
+        })
+
+
+
+
+        
         
 
         res.json({
-            message:
+            message: 'post created',
+            success: true,
+            updatedUser: theUser
         })
 
     } catch (err) {
-
+        res.status(500).json({
+            message: err.message
+        })
     }
 }
