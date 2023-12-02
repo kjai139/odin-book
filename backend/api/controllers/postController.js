@@ -8,8 +8,8 @@ exports.post_create_post = async (req, res) => {
     try {
         const content = req.body.content
         //turn temp imgs to perm in s3
-        for (node of content) {
-            if (node.type === 'image') {
+        for (const node of content.content) {
+            if (node.type && node.type === 'image') {
                 let url = node.attrs.src
                 debug('image url found:', url)
                 let urlParts = url.split('/')
@@ -20,13 +20,14 @@ exports.post_create_post = async (req, res) => {
                 const copyParams = {
                     Bucket: bucketName,
                     Key: `images/perm/${fileName}`,
-                    CopySource:`${bucketName}/images/temp/${fileName}`
+                    CopySource:`${bucketName}/images/temp/${fileName}`,
+                    ACL: 'public-read',
                 }
 
                 const copyCommand = new CopyObjectCommand(copyParams)
                 const response = await s3Client.send(copyCommand)
 
-                node.attrs.src = `https://${bucketName}.s3.us-east-2-amazonaws.com/${copyParams.Key}`
+                node.attrs.src = `https://${bucketName}.s3.us-east-2.amazonaws.com/${copyParams.Key}`
 
 
 
@@ -36,15 +37,27 @@ exports.post_create_post = async (req, res) => {
         //create the post
         const newPost = new Post({
             author: req.user._id,
-            body: content,
+            body: JSON.stringify(content),
 
         })
 
         await newPost.save()
 
-        const theUser = await User.updateOne({_id: req.user._id}, {
+        const theUser = await User.findOneAndUpdate({_id: req.user._id}, {
             $addToSet: {
                 posts: newPost._id
+            }, 
+        }, {new: true}).populate({
+            path: 'posts',
+            options: {
+                limit: 10,
+                sort : {
+                    createdAt: -1
+                },
+                populate: {
+                    path: 'author',
+                    
+                }
             }
         })
 

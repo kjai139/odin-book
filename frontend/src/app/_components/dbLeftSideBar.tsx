@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import { useAuth } from '../../../context/authContext'
 import { PenIcon, UserPortrait, VideoIcon } from './SVGRComponent'
+import { formatUsername } from '../_utils/formatStrings'
 
 interface LeftSideBarProps {
     selectTab: React.Dispatch<React.SetStateAction<number>>
@@ -10,16 +11,7 @@ export default function DashboardLeftSideBar ({selectTab}:LeftSideBarProps) {
 
     const { user } = useAuth()
 
-    type FullName = string
-
     
-
-    const formatUsername = (name: FullName) => {
-        const splitname = name.split(' ')
-        const firstname =  splitname[0].charAt(0).toUpperCase() + splitname[0].slice(1)
-        const lastname = splitname[1].charAt(0).toUpperCase() + splitname[1].slice(1)
-        return firstname + ' ' + lastname
-    }
 
     const sidebarContent = [
         {

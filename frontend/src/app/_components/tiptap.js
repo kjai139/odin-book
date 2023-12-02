@@ -26,7 +26,7 @@ import { useAuth } from '../../../context/authContext'
 import { useRouter } from 'next/navigation'
 
 
-const TipTap = () => {
+const TipTap = ({type}) => {
     const editor = useEditor({
         extensions: [
             StarterKit.configure({
@@ -78,14 +78,15 @@ const TipTap = () => {
         return block.content ? block.content.every((_block) => checkIfcontentEmpty(_block)) : true
     }
 
-    const handleCreatePost = async (format) => {
+    const handleCreatePost = async () => {
         const json = editor.getJSON()
         console.log('post json:', json)
         console.log('is editor empty?:', editor.isEmpty)
         if (!editor.isEmpty) {
             if (!checkIfcontentEmpty(json)){
                 console.log('Posting...')
-                if (format === 'post') {
+                // if used for posts
+                if (type === 'post') {
                     try {
                         const response = await axiosInstance.post('/api/post/create', {
                             content: json
@@ -97,12 +98,14 @@ const TipTap = () => {
         
                         if (response.data.success) {
                             setUser(response.data.updatedUser)
+                            editor.commands.clearContent()
                         }
         
                     } catch (err) {
                         console.log('Error creating post:', err)
                     }
-                } else if (format === 'comment') {
+                    // used for comments
+                } else if (type === 'comment') {
 
                 }
             } else {
