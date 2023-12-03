@@ -43,7 +43,7 @@ export default function DashboardHeader() {
 
 
     return (
-        <div className="fixed hh w-screen flex px-2">
+        <div className="fixed hh w-screen flex px-2 dash-head shadow">
                 <div>
 
                 </div>

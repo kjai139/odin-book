@@ -36,7 +36,8 @@ export default function DashboardLeftSideBar ({selectTab}:LeftSideBarProps) {
 
 
     return (
-        <ul className='dashb-l-side'>
+        <div className='relative'>
+        <ul className='dashb-l-side fixed'>
             {user && sidebarContent.map((node) => {
                 return (
                     <li key={`sb-${node.id}`}>
@@ -51,5 +52,6 @@ export default function DashboardLeftSideBar ({selectTab}:LeftSideBarProps) {
             })}
            
         </ul>
+        </div>
     )
 }

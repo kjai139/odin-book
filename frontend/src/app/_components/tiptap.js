@@ -42,6 +42,8 @@ const TipTap = ({type}) => {
         ],
         
         
+        
+        
     })
 
     const [linkUrl, setLinkUrl] = useState('')
@@ -278,7 +280,15 @@ const TipTap = ({type}) => {
 
             </div>
             
-            <EditorContent editor={editor}></EditorContent>
+            <EditorContent editor={editor} style={{
+                borderTop: '2px solid var(--dashbgC)',
+                borderBottom: '2px solid var(--dashbgC)',
+                minHeight: '5rem',
+                padding: '.75rem',
+
+                
+                
+            }}></EditorContent>
             
             <div className='flex justify-end'>
                 <div className='p-2'>

@@ -11,12 +11,16 @@
   --arrowSize: 7px;
   --errorBg: #ef4444;
   --headerHeight: 60px;
-  --dashbgC: #e2e8f0;
+  
   --roundedR: 4px;
   --dashBtnhover: #f8fafc;
-  --dashbContentBg: white;
+  
   --ttBorderC: #94a3b8;
   --ttactiveC: #e2e8f0;
+
+  --DashboardBGC: white;
+  --dashbgC: #e2e8f0;
+  --dashbContentBg: white;
   
 }
 
@@ -30,6 +34,7 @@
 
 body {
   color: rgb(var(--foreground-rgb));
+  
 }
 
 h1 {
@@ -314,13 +319,22 @@ input[type='text'], input[type='password'], input[type='email'] {
 }
 
 .ProseMirror {
-  min-height: 10rem;
-  /* max-height: 10rem; */
-  border-top: 2px solid var(--dashbgC);
-  border-bottom: 2px solid var(--dashbgC);
-  padding: .75rem;
-  /* overflow-y: auto; */
   
+  
+  
+}
+
+.expanded {
+  overflow: none;
+  max-height: none;
+  padding: .75rem;
+}
+
+.expanded-false > div {
+  overflow-y:hidden;
+  min-height: 5rem;
+  max-height: 7rem;
+  padding: .75rem;
 }
 
 ::-webkit-scrollbar {
@@ -353,6 +367,16 @@ input[type='text'], input[type='password'], input[type='email'] {
   padding: 8px;
   gap: 5px;
 
+}
+
+.tt-editor {
+  min-height: 5rem;
+  max-height: 7rem;
+  padding: .75rem;
+}
+
+.tiptap {
+  font-size: .9rem;
 }
 
 .tiptap a {
@@ -400,6 +424,19 @@ input[type='text'], input[type='password'], input[type='email'] {
   outline: none;
 }
 
+
+.post-cont {
+  background-color: var(--dashbContentBg);
+}
+
+.date-txt {
+  color: gray;
+  font-size: .75rem;
+}
+
+.dash-head {
+  background-color: var(--DashboardBGC);
+}
 
 
 /* @media screen and (max-width: 1024px) {
