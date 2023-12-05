@@ -16,6 +16,7 @@ export default function Dashboard () {
     const { user, isAuthenticated, signOut } = useAuth()
     const router = useRouter()
     const [displaying, setDisplaying] = useState<number>(0)
+    
 
     useEffect(() => {
         isAuthenticated()
@@ -29,9 +30,9 @@ export default function Dashboard () {
     }
 
    const contentMapping: ContentMapping = {
-        0:<div>No content</div>,
+        0:<UserPosts></UserPosts>,
         1: null,
-        2: <UserPosts></UserPosts>
+        2: null,
    }
 
 
@@ -40,16 +41,11 @@ export default function Dashboard () {
 
     
     return (
-        <div className="h-screen w-screen flex flex-col">
-            <DashboardHeader></DashboardHeader>
-            <div className="bc relative">
-                <div className="db-g-cont">
-                    <DashboardLeftSideBar selectTab={setDisplaying}></DashboardLeftSideBar>
-                    {contentMapping[displaying]}
-                </div>
-            </div>
-            
-        </div>
+        <>
+            <DashboardLeftSideBar selectTab={setDisplaying}></DashboardLeftSideBar>
+            {contentMapping[displaying]}
+        </>
+               
         
     )
 }

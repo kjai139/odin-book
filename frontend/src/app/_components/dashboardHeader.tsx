@@ -1,4 +1,4 @@
-
+'use client'
 
 
 
@@ -8,6 +8,7 @@ import { Tooltip } from 'react-tooltip'
 import { useRef, useState } from 'react'
 
 import AccountDModal from '../_modals/accountDetailModal'
+import { usePathname, useRouter } from 'next/navigation'
 
 interface DashboardProps {
   
@@ -15,7 +16,8 @@ interface DashboardProps {
 
 export default function DashboardHeader() {
 
-    const modalRef = useRef(null)
+    const pathname = usePathname()
+    const router = useRouter()
 
     const [showingModal, setShowingModal] = useState('')
     
@@ -23,17 +25,23 @@ export default function DashboardHeader() {
         {
             icon: <HomeIcon></HomeIcon>,
             tooltip: 'Home',
-            id: 'head-1'
+            id: 'head-0',
+            url: '/dashboard',
+            route: 0
         }, 
         {
             icon: <FriendsIcon></FriendsIcon>,
             tooltip: 'Friends',
-            id: 'head-2'
+            id: 'head-1',
+            url: '/dashboard/friends',
+            route: 1
         },
         {
             icon: <GroupIcon></GroupIcon>,
             tooltip: 'Groups',
-            id: 'head-3'
+            id: 'head-2',
+            url: '/dashboard/groups',
+            route: 2
         }
     ]
 
@@ -52,8 +60,8 @@ export default function DashboardHeader() {
                 {
                     topNav.map((node) => {
                         return (
-                            <li key={node.id}>
-                                <button className={`head-btn btn-${node.id}`}>
+                            <li key={node.id} className={`header-li ${pathname === node.url ? 'selected' : ''}`}>
+                                <button className={`head-btn btn-${node.id}`} onClick={() => router.push(node.url)}>
                                 {node.icon}
                                 </button>
                                 

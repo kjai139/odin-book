@@ -324,6 +324,26 @@ input[type='text'], input[type='password'], input[type='email'] {
   
 }
 
+svg {
+  fill:currentColor;
+}
+
+li > button {
+  width: 100%;
+}
+
+.header-li {
+  height: 100%;
+  display: flex;
+  border-bottom: 2px solid transparent;
+}
+
+.header-li.selected {
+  border-color: blue;
+  color: blue;
+  pointer-events: none;
+}
+
 .expanded {
   overflow: none;
   max-height: none;
