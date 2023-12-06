@@ -9,7 +9,12 @@ const allowedOrigins = ['http://localhost:3000']
 const passport = require('../passport')
 const cookieParser = require('cookie-parser')
 
+const { createServer } = require('http')
 const apiRouter = require('./routes/api')
+const  socketLogic  = require('./socket')
+
+const httpServer = createServer(app)
+
 
 const main = async () => {
     try {
@@ -21,6 +26,7 @@ const main = async () => {
 }
 
 main()
+socketLogic.initSocket(httpServer)
 
 app.use(cors({
     origin: allowedOrigins,
@@ -34,6 +40,6 @@ app.use(passport.initialize())
 app.use('/api', apiRouter)
 
 
-app.listen(port, () => {
+httpServer.listen(port, () => {
     console.log(`server running on ${port}`)
 })

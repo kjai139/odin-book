@@ -324,6 +324,16 @@ input[type='text'], input[type='password'], input[type='email'] {
   
 }
 
+.icon-cont {
+  border-radius: 50%;
+  background-color: white;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 svg {
   fill:currentColor;
 }

@@ -6,6 +6,8 @@ import { formatUsername } from '../_utils/formatStrings'
 import { FaUserFriends } from 'react-icons/fa'
 import { TiUserAdd } from 'react-icons/ti'
 import { usePathname } from 'next/navigation'
+import { FaStreetView } from 'react-icons/fa'
+import { useState } from 'react'
 
 interface LeftSideBarProps {
     selectTab: React.Dispatch<React.SetStateAction<number>>
@@ -17,6 +19,7 @@ export default function DashboardLeftSideBar ({selectTab}:LeftSideBarProps) {
     const pathname = usePathname()
 
     const iconSize = 28
+    const [selected, setSelected] = useState('')
 
     const HomeContent = [
         {
@@ -53,6 +56,12 @@ export default function DashboardLeftSideBar ({selectTab}:LeftSideBarProps) {
             title: 'Friend requests',
             id: 'friendsleft-5',
             display: 5
+        },
+        {
+            image: <FaStreetView size={iconSize}></FaStreetView>,
+            title: 'Suggestions',
+            id: 'friendsleft-6',
+            display: 6
         }
     ]
 
@@ -68,6 +77,13 @@ export default function DashboardLeftSideBar ({selectTab}:LeftSideBarProps) {
 
         }
     }
+
+    
+
+    const handleSelect = (display:number, id:string) => {
+        selectTab(display)
+        setSelected(id)
+    }
     
     
 
@@ -78,9 +94,11 @@ export default function DashboardLeftSideBar ({selectTab}:LeftSideBarProps) {
             {user && getRenderedContent().map((node) => {
                 return (
                     <li key={`sb-${node.id}`}>
-                        <button onClick={() => selectTab(node.display)}>
+                        <button className={`${selected === node.id ? 'l-side selected' : ''}`} onClick={() => handleSelect(node.display, node.id)}>
                             <div className='flex gap-2 items-center align-center'>
+                                <div className='icon-cont'>
                                 {node.image}
+                                </div>
                                 <span>{node.title}</span>
                             </div>
                         </button>

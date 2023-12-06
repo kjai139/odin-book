@@ -3,6 +3,7 @@
 import React, {createContext, useState, useContext, ReactNode, useEffect} from "react";
 import axiosInstance from '../axios'
 import {useRouter, usePathname} from "next/navigation";
+import initializeSocket from '../socket'
 
 interface AuthContexType {
     user: User | null,
@@ -69,6 +70,7 @@ const AuthProvider:React.FC<AuthProviderProps> = ({children}) => {
                 
                 
             } else {
+                setUser(null)
                 console.log('user is not authenticated')
                 if (pathname !== '/'){
                     router.push('/')
@@ -100,6 +102,17 @@ const AuthProvider:React.FC<AuthProviderProps> = ({children}) => {
 
     useEffect(() => {
         console.log('User object updated:', user)
+        
+        if (user) {
+            const socket = initializeSocket()
+
+            return () => {
+                socket.disconnect()
+            }
+
+        }
+        
+
     }, [user])
 
 
