@@ -41,7 +41,7 @@ export default function PostRenderer ({post}:PostRendererProps) {
         if (!editor) {
             return undefined
         }
-        console.log(editor)
+        /* console.log(editor) */
         
     }, [editor])
 

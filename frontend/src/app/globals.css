@@ -289,6 +289,10 @@ input[type='text'], input[type='password'], input[type='email'] {
   background-color: var(--dashBtnhover);
 }
 
+.l-side.selected {
+  background-color:var(--dashBtnhover)
+}
+
 .dashb-l-side > li > button {
   padding: .5rem 1rem;
   border-radius: var(--roundedR);

@@ -20,19 +20,37 @@ const initSocket = (server) => {
         }
     })
     
-    io.on('connection', (socket) => {
+    io.on('connection', async (socket) => {
+        const sockets = await io.fetchSockets()
+        console.log(sockets.length)
         if (socket.recovered) {
             debug('user recovered', socket.id)
             debug('rooms:', socket.rooms)
             debug('socket data', socket.data)
         } else {
             debug('new connection:', socket.id)
+            debug('rooms:', socket.rooms)
         }
+
+        socket.on('joinRoom', (id, ackCB) => {
+            socket.join(id)
+            debug(`user ${id} has joinned their room.`)
+            ackCB({
+                success: true
+            })
+        })
+
+
+
+        socket.on('disconnect', () => {
+            debug(`user ${socket.id} has disconnected`)
+            debug('roomsize:', socket.rooms.size)
+        })
     })
 
-    io.on('disconnect', (socket) => {
-        debug(`user ${socket.id} has disconnected`)
-    })
+    
+
+    
 
     
 

@@ -3,6 +3,7 @@ const { body, validationResult} = require('express-validator')
 const debug = require('debug')('odin-book:userController')
 const bcrypt = require('bcrypt')
 const passport = require('../../passport')
+const mongoose = require('mongoose')
 
 
 exports.create_user_post = [
@@ -147,6 +148,42 @@ exports.user_signOut_delete = async (req, res) => {
             message: 'You have signed out successfully.'
         })
     } catch (err) {
-        console.log(err)
+        res.status(500).json({
+            message: err
+        })
     }
+}
+
+exports.user_suggested_find = async (req, res) => {
+    const numberofRandomUsers = 15
+
+    try {
+        const randomUsers = await User.aggregate([
+            {
+                $match: {
+                    _id: {
+                        $ne: new mongoose.Types.ObjectId(req.query.id)
+                    }
+                }
+            },
+            {
+                $sample: {
+                    size: numberofRandomUsers
+                }
+            }
+        ])
+
+        res.json({
+            suggestedFrds: randomUsers
+        })
+    } catch (err) {
+        debug(err)
+        res.status(500).json({
+            message: err.nessage
+        })
+    }
+
+    
+
+
 }

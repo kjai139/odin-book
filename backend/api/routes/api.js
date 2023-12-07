@@ -1,5 +1,5 @@
 const express = require('express')
-const { create_user_post, user_login_post, user_signOut_delete } = require('../controllers/userController')
+const { create_user_post, user_login_post, user_signOut_delete, user_suggested_find } = require('../controllers/userController')
 const router = express.Router()
 const passport = require('../../passport')
 const { authenticateJwt } = require('../middleware/authenticateJwt')
@@ -23,5 +23,7 @@ router.get('/auth/facebook', passport.authenticate('facebook', {session: false})
 router.post('/image/temp/post', passport.authenticate('jwt', {session: false}), upload.single('image'), image_temp_upload_post)
 
 router.post('/post/create', passport.authenticate('jwt', {session: false}), post_create_post)
+
+router.get('/user/gsf', user_suggested_find)
 
 module.exports = router

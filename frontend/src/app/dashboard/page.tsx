@@ -11,6 +11,7 @@ import DashboardLeftSideBar from "../_components/dbLeftSideBar"
 import UserPosts from "../_components/userPosts"
 
 
+
 export default function Dashboard () {
 
     const { user, isAuthenticated, signOut } = useAuth()
@@ -18,11 +19,6 @@ export default function Dashboard () {
     const [displaying, setDisplaying] = useState<number>(0)
     
 
-    useEffect(() => {
-        isAuthenticated()
-
-        
-    }, [])
 
 
     interface ContentMapping {

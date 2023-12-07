@@ -46,22 +46,22 @@ export default function DashboardLeftSideBar ({selectTab}:LeftSideBarProps) {
 
     const FriendsContent = [
         {
-            image: <FaUserFriends size={iconSize}></FaUserFriends>,
+            image: <div className='icon-cont'><FaUserFriends size={iconSize}></FaUserFriends></div>,
             title: 'Your friends',
-            id:'friendsleft-4',
-            display: 4
+            id:'friendsleft-1',
+            display: 1
         },
         {
-            image: <TiUserAdd size={iconSize}></TiUserAdd>,
+            image: <div className='icon-cont'><TiUserAdd size={iconSize}></TiUserAdd></div>,
             title: 'Friend requests',
-            id: 'friendsleft-5',
-            display: 5
+            id: 'friendsleft-2',
+            display: 2
         },
         {
-            image: <FaStreetView size={iconSize}></FaStreetView>,
+            image: <div className='icon-cont'><FaStreetView size={iconSize}></FaStreetView></div>,
             title: 'Suggestions',
-            id: 'friendsleft-6',
-            display: 6
+            id: 'friendsleft-3',
+            display: 3
         }
     ]
 
@@ -96,9 +96,9 @@ export default function DashboardLeftSideBar ({selectTab}:LeftSideBarProps) {
                     <li key={`sb-${node.id}`}>
                         <button className={`${selected === node.id ? 'l-side selected' : ''}`} onClick={() => handleSelect(node.display, node.id)}>
                             <div className='flex gap-2 items-center align-center'>
-                                <div className='icon-cont'>
+                                
                                 {node.image}
-                                </div>
+                                
                                 <span>{node.title}</span>
                             </div>
                         </button>

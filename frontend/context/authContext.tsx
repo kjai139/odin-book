@@ -103,16 +103,6 @@ const AuthProvider:React.FC<AuthProviderProps> = ({children}) => {
     useEffect(() => {
         console.log('User object updated:', user)
         
-        if (user) {
-            const socket = initializeSocket()
-
-            return () => {
-                socket.disconnect()
-            }
-
-        }
-        
-
     }, [user])
 
 
