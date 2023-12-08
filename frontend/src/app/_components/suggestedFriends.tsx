@@ -1,13 +1,18 @@
-import { useAuth } from "../../../context/authContext"
+import { User, useAuth } from "../../../context/authContext"
 import axiosInstance from '../../../axios'
 import { useEffect, useState } from "react"
+import Image from "next/image"
+import { UserPortrait } from "./SVGRComponent"
+import { formatUsername } from "../_utils/formatStrings"
+import { addFriend } from "../_utils/friends"
 
 
 export default function SuggestedFriends() {
 
     const { user } = useAuth()
 
-    const [suggestedFrds, setSuggestedFrds] = useState(null)
+    const [suggestedFrds, setSuggestedFrds] = useState<User[]>()
+    const [resultMsg, setResultMsg] = useState('')
 
     const getSuggestedFrds = async () => {
         try {
@@ -16,6 +21,7 @@ export default function SuggestedFriends() {
             })
 
             console.log(response.data.suggestedFrds)
+            setSuggestedFrds(response.data.suggestedFrds)
         } catch (err) {
             console.log('error in suggested', err)
         }
@@ -25,11 +31,39 @@ export default function SuggestedFriends() {
         getSuggestedFrds()
     }, [])
 
+    const handleAddFriend = async (id:string) => {
+        const response = await addFriend(id)
+
+        if (response?.data.success) {
+            console.log(response.data.message)
+        }
+
+    }
+
 
 
     return (
-        <div>
+        <div className="flex flex-col gap-4 mt-8">
+        <h2>Make some friends</h2>
+        <div className="suggest-grid">
             
+            {suggestedFrds && suggestedFrds.map((node) => {
+                return (
+                    <div key={node._id} className="p-4 rounded shadow flex flex-col gap-2 bg-white">
+                        <div className="suggest-img-cont">
+                        {node.image ? <Image src={node.image} alt='user picture'></Image> : 
+                        <UserPortrait></UserPortrait>
+                        }
+                        </div>
+                        <span className="font-bold">{formatUsername(node.name)}</span>
+                        <div className="flex flex-col gap-1">
+                            <button onClick={() => handleAddFriend(node._id)} className="suggest-af-btn rounded">Add Friend</button>
+                            <button className="suggest-v-btn">View</button>
+                        </div>
+                    </div>
+                )
+            })}
+        </div>
         </div>
     )
 }

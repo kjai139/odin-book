@@ -305,6 +305,21 @@ input[type='text'], input[type='password'], input[type='email'] {
   
 }
 
+.suggest-af-btn {
+  background-color: #e0f2fe;
+
+}
+
+.suggest-v-btn {
+  background-color: #d1fae5;
+}
+
+.suggest-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap:0.5rem;
+}
+
 .tt-cont {
   background-color: var(--dashbContentBg);
   border: 2px solid #64748b;

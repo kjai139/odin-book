@@ -26,7 +26,7 @@ interface Post {
 
 }
 
-type User = {
+export type User = {
     _id: string,
     name: string,
     email: string,

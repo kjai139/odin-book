@@ -187,3 +187,17 @@ exports.user_suggested_find = async (req, res) => {
 
 
 }
+
+
+exports.user_add_friend_post = async (req, res) => {
+    try {
+        res.json({
+            success: true,
+            message: `Friend request sent to user ${req.body.id}`
+        })
+    } catch (err) {
+        res.status(500).json({
+            message: err
+        })
+    }
+}

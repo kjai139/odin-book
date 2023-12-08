@@ -9,11 +9,11 @@ import socket from "../../../socket"
 
 
 export default function DashboardLayout({children}: {children: React.ReactNode}) {
-    const { user, isAuthenticated, signOut } = useAuth()
+    const { user, isAuthenticated, signOut, pathname } = useAuth()
 
     useEffect(() => {
         isAuthenticated()
-    },[])
+    },[pathname])
 
     useEffect(() => {
         if (user) {
