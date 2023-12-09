@@ -31,11 +31,13 @@ export default function SuggestedFriends() {
         getSuggestedFrds()
     }, [])
 
-    const handleAddFriend = async (id:string) => {
-        const response = await addFriend(id)
+    const handleAddFriend = async (id:string, userId:string) => {
+        const response = await addFriend(id, userId)
 
         if (response?.data.success) {
             console.log(response.data.message)
+        } else {
+            console.log(response?.data.message)
         }
 
     }
@@ -47,7 +49,7 @@ export default function SuggestedFriends() {
         <h2>Make some friends</h2>
         <div className="suggest-grid">
             
-            {suggestedFrds && suggestedFrds.map((node) => {
+            {user && suggestedFrds && suggestedFrds.map((node) => {
                 return (
                     <div key={node._id} className="p-4 rounded shadow flex flex-col gap-2 bg-white">
                         <div className="suggest-img-cont">
@@ -57,7 +59,7 @@ export default function SuggestedFriends() {
                         </div>
                         <span className="font-bold">{formatUsername(node.name)}</span>
                         <div className="flex flex-col gap-1">
-                            <button onClick={() => handleAddFriend(node._id)} className="suggest-af-btn rounded">Add Friend</button>
+                            <button onClick={() => handleAddFriend(node._id, user._id)} className="suggest-af-btn rounded">Add Friend</button>
                             <button className="suggest-v-btn">View</button>
                         </div>
                     </div>

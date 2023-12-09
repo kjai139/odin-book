@@ -35,6 +35,7 @@ const initSocket = (server) => {
         socket.on('joinRoom', (id, ackCB) => {
             socket.join(id)
             debug(`user ${id} has joinned their room.`)
+            debug('rooms:', socket.rooms)
             ackCB({
                 success: true
             })

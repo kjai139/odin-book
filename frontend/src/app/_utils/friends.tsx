@@ -1,10 +1,11 @@
 
 import axiosInstance from '../../../axios'
 
-const addFriend = async (id:string) => {
+const addFriend = async (id:string, userId:string) => {
     try {
         const response = await axiosInstance.post('api/user/addfrd', {
-            id: id
+            id: id,
+            userId: userId
         }, {
             withCredentials: true
         })
@@ -12,7 +13,7 @@ const addFriend = async (id:string) => {
         if (response.data.success) {
             return response
         } else {
-            return null
+            return response
         }
     } catch (err) {
         console.log('Error adding friends: ', err)

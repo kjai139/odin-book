@@ -163,7 +163,12 @@ exports.user_suggested_find = async (req, res) => {
                 $match: {
                     _id: {
                         $ne: new mongoose.Types.ObjectId(req.query.id)
-                    }
+                    },
+                    friendlist: {
+                        $nin: [
+                            req.query.id
+                        ]
+                    } 
                 }
             },
             {
@@ -188,13 +193,63 @@ exports.user_suggested_find = async (req, res) => {
 
 }
 
+//sending friend request - check if the user already friends with requester, if not, send friend request
+exports.user_add_friend_req_post = async (req, res) => {
 
-exports.user_add_friend_post = async (req, res) => {
+    const requesterId = req.body.userId
+
+
     try {
-        res.json({
-            success: true,
-            message: `Friend request sent to user ${req.body.id}`
+        const areUserNotFriends = await User.findOne({
+            _id: req.body.id,
+            friendlist: {
+                $nin: [
+                    requesterId
+                ]
+            }
         })
+
+        if (areUserNotFriends) {
+            const updatedUser = await User.findOneAndUpdate(
+                {
+                    _id: req.body.id,
+                    friendReq: {
+                        $nin: [
+                            req.body.id
+                        ]
+                    }
+                }, {
+                    
+                    $addToSet: {
+                        friendReq: req.body.id
+                    }
+                    
+                }, {
+                    new: true
+                })
+        
+                if (updatedUser) {
+                    res.json({
+                        success: true,
+                        message: `Friend request sent to user ${req.body.id}`
+                    })
+                } else {
+                    res.json({
+                        success: false,
+                        message: `Friend request is already pending.`
+                    })
+                }
+        } else {
+            res.json({
+                success: false,
+                message: `You are already friends`
+            })
+        }
+        
+       
+
+
+        
     } catch (err) {
         res.status(500).json({
             message: err

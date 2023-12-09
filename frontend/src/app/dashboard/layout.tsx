@@ -41,6 +41,7 @@ export default function DashboardLayout({children}: {children: React.ReactNode})
 
         return () => {
             socket.disconnect()
+            console.log('socket disconnected from cleanup.')
         }
 
     }, [user])
