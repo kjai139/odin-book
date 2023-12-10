@@ -17,7 +17,11 @@ const addFriend = async (id:string, userId:string) => {
         }
     } catch (err) {
         console.log('Error adding friends: ', err)
-        return null
+        return {
+            data: {
+                message: err
+            }
+        }
     }
 }
 

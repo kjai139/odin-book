@@ -5,6 +5,7 @@ import Image from "next/image"
 import { UserPortrait } from "./SVGRComponent"
 import { formatUsername } from "../_utils/formatStrings"
 import { addFriend } from "../_utils/friends"
+import ResultModal from "../_modals/resultModal"
 
 
 export default function SuggestedFriends() {
@@ -36,8 +37,10 @@ export default function SuggestedFriends() {
 
         if (response?.data.success) {
             console.log(response.data.message)
+            setResultMsg(response.data.message)
         } else {
             console.log(response?.data.message)
+            setResultMsg(response?.data.message)
         }
 
     }
@@ -46,6 +49,7 @@ export default function SuggestedFriends() {
 
     return (
         <div className="flex flex-col gap-4 mt-8">
+            {resultMsg && <ResultModal resultMsg={resultMsg} closeModal={() => setResultMsg('')}></ResultModal>}
         <h2>Make some friends</h2>
         <div className="suggest-grid">
             
