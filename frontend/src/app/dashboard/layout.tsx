@@ -13,7 +13,7 @@ export default function DashboardLayout({children}: {children: React.ReactNode})
 
     useEffect(() => {
         isAuthenticated()
-    },[pathname])
+    },[])
 
     useEffect(() => {
         if (user) {
