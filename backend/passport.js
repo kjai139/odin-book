@@ -67,7 +67,8 @@ passport.use(new LocalStrategy(
                             friendlist: user.friendlist,
                             friendReq: user.friendReq,
                             facebookId: user.facebookId,
-                            posts: user.posts
+                            posts: user.posts,
+                            status: user.status
     
     
                         }, process.env.JWT_SECRET_KEY, {
@@ -191,7 +192,8 @@ passport.use(new FacebookStrategy({
                 gender: newUser.gender,
                 friendlist: newUser.friendlist,
                 friendReq: newUser.friendReq,
-                facebookId: newUser.facebookId
+                facebookId: newUser.facebookId,
+                status: newUser.status
             }, process.env.JWT_SECRET_KEY, {
                 expiresIn: '1hr'
             })

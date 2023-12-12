@@ -256,3 +256,22 @@ exports.user_add_friend_req_post = async (req, res) => {
         })
     }
 }
+
+
+exports.user_friendreq_get = async (req, res) => {
+    try {
+        const userId = req.query.get
+
+        const user = await User.findById(userId).populate('friendReq')
+
+        res.json({
+            success: true,
+            newUser: user
+        })
+
+    } catch (err) {
+        res.status(500).json({
+            message: err
+        })
+    }
+}

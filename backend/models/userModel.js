@@ -51,7 +51,12 @@ const UserSchema = new Schema({
             ref: 'Post',
             default: null
         }
-    ]
+    ],
+    status: {
+        type:String,
+        enum: ['online', 'offline', 'away'],
+        default: 'offline'
+    }
 })
 
 

@@ -34,8 +34,9 @@ export type User = {
     image: string | undefined | null,
     gender: string,
     friendlist: string[],
-    friendReq: string[],
-    posts: Post[]
+    friendReq: Array<string | User>,
+    posts: Post[],
+    status: string
 }
 
 interface AuthProviderProps {
