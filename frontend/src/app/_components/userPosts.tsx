@@ -16,8 +16,10 @@ export default function UserPosts() {
 
     return (
         <div className='dashb-mid-block flex flex-col gap-4'>
-            <div className='flex flex-col'>
-                <h1>Recent Posts</h1>
+            <div className='flex flex-col gap-4'>
+                <h3>Write a post</h3>
+                <TipTap type={'post'}></TipTap>
+                <h3>Your recent Posts</h3>
                 <div className='flex flex-col gap-2'>
                 {user?.posts.map((node) => {
 
@@ -52,7 +54,7 @@ export default function UserPosts() {
                 })}
                 </div>
             </div>
-            <TipTap type={'post'}></TipTap>
+            
         </div>
     )
 }

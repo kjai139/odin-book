@@ -18,6 +18,9 @@ const config: Config = {
       },
       maxWidth: {
         'modal-i': '432px',
+      },
+      flex: {
+        '4': '4',
       }
       
     },

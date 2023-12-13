@@ -215,13 +215,13 @@ exports.user_add_friend_req_post = async (req, res) => {
                     _id: req.body.id,
                     friendReq: {
                         $nin: [
-                            req.body.id
+                            requesterId
                         ]
                     }
                 }, {
                     
                     $addToSet: {
-                        friendReq: req.body.id
+                        friendReq: requesterId
                     }
                     
                 }, {
@@ -263,6 +263,25 @@ exports.user_friendreq_get = async (req, res) => {
         const userId = req.query.get
 
         const user = await User.findById(userId).populate('friendReq')
+
+        res.json({
+            success: true,
+            newUser: user
+        })
+
+    } catch (err) {
+        res.status(500).json({
+            message: err
+        })
+    }
+}
+
+
+exports.user_fl_get = async (req, res) => {
+    try {
+        const userId = req.query.get
+
+        const user = await User.findById(userId).populate('friendlist')
 
         res.json({
             success: true,

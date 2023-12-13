@@ -22,7 +22,7 @@ export default function ExpandBtnTT ({refEle, isExpanded, setIsExpanded}:ExpandB
 
     return (
         <>
-            <button onClick={toggleView}>{isExpanded ? '...View less' : '...View more'}</button>
+            <button className="font-bold text-blue-500" onClick={toggleView}>{isExpanded ? '...View less' : '...View more'}</button>
         </>
     )
 }

@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation"
 import DashboardHeader from "../_components/dashboardHeader"
 import DashboardLeftSideBar from "../_components/dbLeftSideBar"
 import UserPosts from "../_components/userPosts"
+import UserTab from "../_components/home/userTab"
 
 
 
@@ -26,9 +27,10 @@ export default function Dashboard () {
     }
 
    const contentMapping: ContentMapping = {
-        0:<UserPosts></UserPosts>,
-        1: null,
-        2: null,
+        0:null,
+        1: <UserTab></UserTab>,
+        2: <UserPosts></UserPosts>,
+        3: null,
    }
 
 
