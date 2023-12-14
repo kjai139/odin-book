@@ -343,6 +343,10 @@ input[type='text'], input[type='password'], input[type='email'] {
   
 }
 
+.up-cont {
+  max-width: 128px;
+}
+
 .icon-cont {
   border-radius: 50%;
   background-color: white;

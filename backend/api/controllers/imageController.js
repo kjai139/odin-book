@@ -6,7 +6,7 @@ const debug = require('debug')('odin-book:imageController')
 
 const s3Client = require('../../s3Client')
 
-const generateRandomString = (len) => {
+exports.generateRandomString = (len) => {
     const timestamp = Date.now()
     return `${crypto.randomBytes(Math.ceil(len / 2)).toString('hex').slice(0, len)}${timestamp}`
 }

@@ -4,6 +4,9 @@ const debug = require('debug')('odin-book:userController')
 const bcrypt = require('bcrypt')
 const passport = require('../../passport')
 const mongoose = require('mongoose')
+const { generateRandomString } = require('./imageController')
+const { PutObjectCommand } = require('@aws-sdk/client-s3')
+const s3Client = require('../../s3Client')
 
 
 exports.create_user_post = [
@@ -286,6 +289,37 @@ exports.user_fl_get = async (req, res) => {
         res.json({
             success: true,
             newUser: user
+        })
+
+    } catch (err) {
+        res.status(500).json({
+            message: err
+        })
+    }
+}
+
+
+exports.user_pfp_change = async (req, res) => {
+    try {
+        const imageFileName = req.file.originalname.replace(/ /g, '_')
+        const s3randomString = generateRandomString(5)
+        const bucketName = 'odinbookkjai'
+        
+        const params = {
+            Bucket: bucketName,
+            Key: `images/temp/${s3randomString}_${imageFileName}`,
+            Body: req.file.buffer,
+            ACL: 'public-read',
+            ContentType: req.file.mimetype,
+        }
+
+        const command = new PutObjectCommand(params)
+        const response = await s3Client.send(command)
+
+        res.json({
+            success: true,
+            message: `image uploaded successfully. URL:https://${bucketName}.s3.us-east-2.amazonaws.com/${params.Key}`,
+            url:`https://${bucketName}.s3.us-east-2.amazonaws.com/${params.Key}`
         })
 
     } catch (err) {
