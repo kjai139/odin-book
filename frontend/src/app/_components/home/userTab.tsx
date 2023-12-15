@@ -3,6 +3,7 @@ import { useAuth } from "../../../../context/authContext"
 import Image from "next/image"
 import { UserPortrait } from "../SVGRComponent"
 import axiosInstance from '../../../../axios'
+import { formatUsername } from "@/app/_utils/formatStrings"
 
 
 export default function UserTab () {
@@ -40,7 +41,7 @@ export default function UserTab () {
         <div>
             { user &&
             <div className="flex flex-col gap-4 mt-8"> 
-            <h3>Welcome, {user.name}!</h3>
+            <h3>Welcome, {formatUsername(user.name)}#{user.uniqueId}!</h3>
 
                 <div className="flex border shadow py-4 px-4 bg-white rounded gap-4">
                     <div className="flex-1 up-cont flex flex-col gap-4">

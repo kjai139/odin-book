@@ -10,7 +10,7 @@ import DashboardHeader from "../_components/dashboardHeader"
 import DashboardLeftSideBar from "../_components/dbLeftSideBar"
 import UserPosts from "../_components/userPosts"
 import UserTab from "../_components/home/userTab"
-
+import { io } from 'socket.io-client'
 
 
 export default function Dashboard () {
@@ -19,7 +19,6 @@ export default function Dashboard () {
     const router = useRouter()
     const [displaying, setDisplaying] = useState<number>(0)
     
-
 
 
     interface ContentMapping {
@@ -32,6 +31,8 @@ export default function Dashboard () {
         2: <UserPosts></UserPosts>,
         3: null,
    }
+
+
 
 
 

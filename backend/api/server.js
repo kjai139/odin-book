@@ -8,13 +8,14 @@ const cors = require('cors')
 const allowedOrigins = ['http://localhost:3000']
 const passport = require('../passport')
 const cookieParser = require('cookie-parser')
-
+const { Server } = require('socket.io')
 const { createServer } = require('http')
 const apiRouter = require('./routes/api')
-const  socketLogic  = require('./socket')
+const { initSocket } = require('./socket')
+const debug = require('debug')('odin-book:server')
 
 const httpServer = createServer(app)
-
+initSocket(httpServer)
 
 const main = async () => {
     try {
@@ -26,7 +27,8 @@ const main = async () => {
 }
 
 main()
-socketLogic.initSocket(httpServer)
+
+
 
 app.use(cors({
     origin: allowedOrigins,

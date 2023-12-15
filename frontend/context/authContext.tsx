@@ -36,7 +36,8 @@ export type User = {
     friendlist: string[],
     friendReq: Array<string | User>,
     posts: Post[],
-    status: string
+    status: string,
+    uniqueId: string,
 }
 
 interface AuthProviderProps {
@@ -94,6 +95,7 @@ const AuthProvider:React.FC<AuthProviderProps> = ({children}) => {
             })
 
             if (response.data.success) {
+                setUser(null)
                 router.push('/')
             }
         } catch (err) {

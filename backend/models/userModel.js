@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 
+
 const UserSchema = new Schema({
     name: {
         type:String,
@@ -56,8 +57,57 @@ const UserSchema = new Schema({
         type:String,
         enum: ['online', 'offline', 'away'],
         default: 'offline'
+    },
+    uniqueId: {
+        unique: true,
+        type: String,
+        
+        
+
     }
 })
 
+function generateUniqueId () {
+    const randomNumber = Math.floor(1000 + Math.random() * 9000 )
+
+
+    return String(randomNumber)
+   
+
+    
+}
+
+//arrow functions don't bind this
+UserSchema.pre('save', async function(next) {
+    try {
+        if (!this.uniqueId) {
+            console.log('Generated randomId:', randomId)
+            let randomId = generateUniqueId()
+            let existingUser = await this.constructor.findOne({
+                uniqueId: randomId,
+                name: this.name
+            })
+    
+            while (existingUser) {
+                randomId = generateUniqueId()
+                existingUser = await this.constructor.findOne({
+                    uniqueId: randomId,
+                    name: this.name
+                })
+            }
+
+            this.uniqueId = randomId
+            console.log('After save:', this)
+        }
+
+        next()
+
+
+        
+
+    } catch (err) {
+        next(err)
+    }
+})
 
 module.exports = mongoose.model('User', UserSchema)

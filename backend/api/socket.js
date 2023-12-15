@@ -17,12 +17,14 @@ const initSocket = (server) => {
             origin: origin,
             credentials: true,
 
+        },
+        connectionStateRecovery: {
+            maxDisconnectionDuration: 2 * 60 * 1000,
         }
     })
     
-    io.on('connection', async (socket) => {
-        const sockets = await io.fetchSockets()
-        console.log(sockets.length)
+    io.on('connection', (socket) => {
+      
         if (socket.recovered) {
             debug('user recovered', socket.id)
             debug('rooms:', socket.rooms)
@@ -32,13 +34,12 @@ const initSocket = (server) => {
             debug('rooms:', socket.rooms)
         }
 
-        socket.on('joinRoom', (id, ackCB) => {
+        socket.on('joinRoom', (id) => {
             socket.join(id)
             debug(`user ${id} has joinned their room.`)
             debug('rooms:', socket.rooms)
-            ackCB({
-                success: true
-            })
+            io.to(id).emit('message', `User ${id} has entered the room`)
+            
         })
 
 
@@ -54,7 +55,7 @@ const initSocket = (server) => {
     
 
     
-
+    module.exports.io = io
     
 }
 

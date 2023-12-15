@@ -4,19 +4,40 @@
 import { useEffect } from "react"
 import DashboardHeader from "../_components/dashboardHeader"
 import { useAuth } from "../../../context/authContext"
-import socket from "../../../socket"
+import { io } from 'socket.io-client'
 
 
 
 export default function DashboardLayout({children}: {children: React.ReactNode}) {
-    const { user, isAuthenticated, signOut, pathname } = useAuth()
+    const { isAuthenticated, user } = useAuth()
+
+    let url
+
+    if (process.env.NODE_ENV === 'production') {
+        url = ''
+    } else {
+        url = 'http://localhost:4000'
+    }
+
+    
+
+    
+    const socket = io(url)
 
     useEffect(() => {
         isAuthenticated()
     },[])
 
-    useEffect(() => {
+    /* useEffect(() => {
+        return () => {
+            socket.disconnect()
+            console.log('SOCKET DISCONNECTED FROM UF11')
+        }
+   }, []) */
+
+   useEffect(() => {
         if (user) {
+            console.log('current Id = ', user._id)
             if (!socket.connected){
                 console.log('socket not connected, connecting manually...')
                 socket.connect()
@@ -24,27 +45,26 @@ export default function DashboardLayout({children}: {children: React.ReactNode})
 
             socket.on('connect', async () => {
                 console.log(`user ${socket.id} has connected`)
-                //using acknowledge promise
-                try {
-                    const response = await socket.emitWithAck('joinRoom', user._id)
-
-                    if (response.success) {
-                        console.log(`User has joinned room ${user._id} in socket`)
-                    }
-                } catch(err) {
-                    console.log('Socket error:', err)
-                }
+                
+                socket.emit('joinRoom', user._id)
                 
                 
             })
+
+            socket.on('message', (msg) => {
+                console.log('Msg from server:', msg)
+            })
+            return () => {
+                socket.disconnect()
+                console.log('socket disconnected from cleanup.')
+            }
         }
 
-        return () => {
-            socket.disconnect()
-            console.log('socket disconnected from cleanup.')
-        }
+    
 
-    }, [user])
+    }, [user, socket])
+
+    
 
     return (
         <div className="h-screen w-screen flex flex-col">
