@@ -11,7 +11,7 @@ import { io } from 'socket.io-client'
 export default function DashboardLayout({children}: {children: React.ReactNode}) {
     const { isAuthenticated, user } = useAuth()
 
-    let url
+    let url:string
 
     if (process.env.NODE_ENV === 'production') {
         url = ''
@@ -22,7 +22,7 @@ export default function DashboardLayout({children}: {children: React.ReactNode})
     
 
     
-    const socket = io(url)
+    
 
     useEffect(() => {
         isAuthenticated()
@@ -37,11 +37,12 @@ export default function DashboardLayout({children}: {children: React.ReactNode})
 
    useEffect(() => {
         if (user) {
+            const socket = io(url)
             console.log('current Id = ', user._id)
-            if (!socket.connected){
+            /* if (!socket.connected){
                 console.log('socket not connected, connecting manually...')
                 socket.connect()
-            }
+            } */
 
             socket.on('connect', async () => {
                 console.log(`user ${socket.id} has connected`)
@@ -62,7 +63,7 @@ export default function DashboardLayout({children}: {children: React.ReactNode})
 
     
 
-    }, [user, socket])
+    }, [user])
 
     
 

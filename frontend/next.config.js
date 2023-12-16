@@ -27,6 +27,16 @@ const nextConfig = {
     
         return config
       },
+      images: {
+        remotePatterns: [
+          {
+            protocol: 'https',
+            hostname: 'odinbookkjai.s3.us-east-2.amazonaws.com',
+  
+
+          }
+        ]
+      }
 }
 
 module.exports = nextConfig

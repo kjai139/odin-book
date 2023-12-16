@@ -343,6 +343,12 @@ input[type='text'], input[type='password'], input[type='email'] {
   
 }
 
+.pfp-cont {
+  position: relative;
+  min-width:125px;
+  min-height:125px;
+}
+
 .up-cont {
   max-width: 128px;
 }

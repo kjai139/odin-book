@@ -81,16 +81,17 @@ function generateUniqueId () {
 UserSchema.pre('save', async function(next) {
     try {
         if (!this.uniqueId) {
-            console.log('Generated randomId:', randomId)
+            
             let randomId = generateUniqueId()
-            let existingUser = await this.constructor.findOne({
+            console.log('Generated randomId:', randomId)
+            let existingUser = await mongoose.model('User').findOne({
                 uniqueId: randomId,
                 name: this.name
             })
     
             while (existingUser) {
                 randomId = generateUniqueId()
-                existingUser = await this.constructor.findOne({
+                existingUser = await mongoose.model('User').findOne({
                     uniqueId: randomId,
                     name: this.name
                 })

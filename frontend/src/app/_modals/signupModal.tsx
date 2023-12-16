@@ -34,7 +34,7 @@ export default function SignUpModal({closeModal}:SignupModalProps) {
         password: yup.string().required('This field is required').min(6, 'Password must have min length of 6 characters').matches(/^(?=.*[a-z])/, 'Password must contain at least one lowercase letter').matches(/^(?=.*[A-Z])/, 'must contain at least one uppercase letter').matches(/^(?=.*[!@#$%^&()_+-])/, 'must have at least one special character').max(20, 'Password cannot have more than 20 characters'),
         firstName: yup.string().trim().required('first name is required'),
         lastName: yup.string().trim().required('last name is required'),
-        Phone: yup.string().optional().test('isValid', 'Invalid number', (value) => {
+        phone: yup.string().optional().test('isValid', 'Invalid number', (value) => {
             if (value !== undefined && value.length > 1 ) {
                 return isPossiblePhoneNumber(value)
             }
@@ -48,7 +48,7 @@ export default function SignUpModal({closeModal}:SignupModalProps) {
         password: string,
         firstName: string,
         lastName: string,
-        Phone:string,
+        phone:string,
         // birthDate: Date,
         gender: Gender,
         
@@ -80,7 +80,7 @@ export default function SignUpModal({closeModal}:SignupModalProps) {
                 firstName: '',
                 lastName: '',
                 gender: 'Male',
-                Phone: ''
+                phone: ''
     
             })
         }
@@ -97,8 +97,8 @@ export default function SignUpModal({closeModal}:SignupModalProps) {
                 password: data.password,
                 gender: data.gender,
                 email: data.email,
-                ...(data.Phone && {
-                    phone: data.Phone
+                ...(data.phone && {
+                    phone: data.phone
                 })
 
             }, {
@@ -120,7 +120,7 @@ export default function SignUpModal({closeModal}:SignupModalProps) {
                     message: err.response.data.message
                 })
             } else if (err.response.data.error === 'phone') {
-                setError('Phone', {
+                setError('phone', {
                     type: 'server',
                     message: err.response.data.message
 
@@ -192,10 +192,10 @@ export default function SignUpModal({closeModal}:SignupModalProps) {
             </div>
             </div>
             <div className='flex flex-col relative'>
-                <label className='text-xs form-label' htmlFor='Phone'>Phone number</label>
+                <label className='text-xs form-label' htmlFor='phone'>Phone number</label>
                 <Controller
                 control={control}
-                name='Phone'
+                name='phone'
                 render={({field: {onChange, value }}) => (
                     <PhoneInput 
                     onChange={onChange}
@@ -205,7 +205,7 @@ export default function SignUpModal({closeModal}:SignupModalProps) {
                     // error={value != undefined && (isPossiblePhoneNumber(value) ? undefined : 'invalid number')}
                     placeholder="Optional phone number"
                     defaultCountry='US'
-                    id='Phone'
+                    id='phone'
                     
                     >
 
@@ -214,9 +214,9 @@ export default function SignUpModal({closeModal}:SignupModalProps) {
 
                 }
                 ></Controller>
-                {errors.Phone?.message &&
+                {errors.phone?.message &&
                 <p className='signup-error arr-right'>
-                    {errors.Phone?.message}
+                    {errors.phone?.message}
                 </p> }
                 
                 

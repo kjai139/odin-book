@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt')
 const passport = require('../../passport')
 const mongoose = require('mongoose')
 const { generateRandomString } = require('./imageController')
-const { PutObjectCommand } = require('@aws-sdk/client-s3')
+const { PutObjectCommand, CopyObjectCommand } = require('@aws-sdk/client-s3')
 const s3Client = require('../../s3Client')
 
 
@@ -32,6 +32,7 @@ exports.create_user_post = [
             })
         } else {
             try {
+                debug('req body:', req.body)
                 const { name, password, phone, gender } = req.body
 
                 const formattedEmail = req.body.email.toLowerCase()
@@ -58,6 +59,7 @@ exports.create_user_post = [
                         message: 'Email already registered.'
                     })
                 } else {
+                    debug('No collision, creating user...')
                     const salt = await bcrypt.genSalt(10)
                     const hashedPw = await bcrypt.hash(password, salt)
                     
@@ -67,9 +69,7 @@ exports.create_user_post = [
                         password: hashedPw,
                         gender: gender,
                         email: formattedEmail,
-                        ...(phone && {
-                            phoneNumber: phone,
-                        })
+                        phoneNumber: phone
 
                     })
 
@@ -91,7 +91,7 @@ exports.create_user_post = [
             } catch (err) {
                 
                 res.status(500).json({
-                    message: err
+                    message: err.message
                 })
             }
 
@@ -321,6 +321,48 @@ exports.user_pfp_change = async (req, res) => {
             message: `image uploaded successfully. URL:https://${bucketName}.s3.us-east-2.amazonaws.com/${params.Key}`,
             url:`https://${bucketName}.s3.us-east-2.amazonaws.com/${params.Key}`
         })
+
+    } catch (err) {
+        res.status(500).json({
+            message: err
+        })
+    }
+}
+
+exports.user_pfp_save = async (req, res) => {
+    try {
+        const imageUrl = req.bod.imageUrl
+        const userId = req.user._id
+        const urlParts = imageUrl.split('/')
+        const fileName = urlParts[urlParts.length - 1]
+        const bucketName = 'odinbookkjai'
+
+        const copyParams = {
+            Bucket: bucketName,
+            Key: `images/perm/${fileName}`,
+            CopySource:`${bucketName}/images/temp/${fileName}`,
+            ACL: 'public-read',
+        }
+
+        const copyCommand = new CopyObjectCommand(copyParams)
+        const response = await s3Client.send(copyCommand)
+
+        debug('user pfp saved to s3')
+
+        const existingUser = await User.findByIdAndUpdate(userId, {
+            image: `https://${bucketName}.s3.us-east-2.amazonaws.com/${copyParams.Key}`
+        }, { new: true })
+
+        res.json({
+            success: true,
+            message: `User pfp updated. new url:https://${bucketName}.s3.us-east-2.amazonaws.com/${copyParams.Key}`,
+            updatedImageUrl: existingUser.image
+        })
+
+
+
+
+       
 
     } catch (err) {
         res.status(500).json({
