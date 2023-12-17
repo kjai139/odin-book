@@ -331,7 +331,7 @@ exports.user_pfp_change = async (req, res) => {
 
 exports.user_pfp_save = async (req, res) => {
     try {
-        const imageUrl = req.bod.imageUrl
+        const imageUrl = req.body.imageUrl
         const userId = req.user._id
         const urlParts = imageUrl.split('/')
         const fileName = urlParts[urlParts.length - 1]
@@ -356,7 +356,7 @@ exports.user_pfp_save = async (req, res) => {
         res.json({
             success: true,
             message: `User pfp updated. new url:https://${bucketName}.s3.us-east-2.amazonaws.com/${copyParams.Key}`,
-            updatedImageUrl: existingUser.image
+            updatedImage: existingUser.image
         })
 
 

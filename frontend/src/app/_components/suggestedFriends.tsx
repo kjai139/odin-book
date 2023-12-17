@@ -62,8 +62,8 @@ export default function SuggestedFriends() {
                         }
                         </div>
                         <span className="font-bold">{formatUsername(node.name)}</span>
-                        <div className="flex flex-col gap-1">
-                            <button onClick={() => handleAddFriend(node._id, user._id)} className="suggest-af-btn rounded">Add Friend</button>
+                        <div className="flex flex-col gap-1 mt-auto">
+                            <button onClick={() => handleAddFriend(node._id, user._id)} className="suggest-af-btn rounded p-1">Add Friend</button>
                             <button className="suggest-v-btn">View</button>
                         </div>
                     </div>

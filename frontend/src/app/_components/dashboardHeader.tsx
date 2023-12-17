@@ -9,6 +9,7 @@ import { useRef, useState } from 'react'
 
 import AccountDModal from '../_modals/accountDetailModal'
 import { usePathname, useRouter } from 'next/navigation'
+import Image from 'next/image'
 
 interface DashboardProps {
   
@@ -19,7 +20,10 @@ export default function DashboardHeader() {
     const pathname = usePathname()
     const router = useRouter()
 
+    const { user } = useAuth()
+
     const [showingModal, setShowingModal] = useState('')
+    const iconSize = 34
     
     const topNav = [
         {
@@ -77,7 +81,14 @@ export default function DashboardHeader() {
                 <ul className="flex gap-4 items-center">
                     <li className='relative'>
                         <button onClick={() => setShowingModal('Account')} type="button" className="head-btn" id='head-acc-btn'>
-                            <UserPortrait height="34" width="34"></UserPortrait>
+                            {
+                                user && user.image ? 
+                                <div className='relative header-pfp'>
+                                <Image src={user.image} fill={true} alt='user profile picture' sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"></Image>
+                                </div> :
+                                <UserPortrait height={iconSize} width={iconSize}></UserPortrait>
+                            }
+    
                         </button>
                         {showingModal === 'Account' ? null :
                         <Tooltip content='Account' anchorSelect='#head-acc-btn'></Tooltip> 

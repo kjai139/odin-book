@@ -1,5 +1,5 @@
 const express = require('express')
-const { create_user_post, user_login_post, user_signOut_delete, user_suggested_find, user_add_friend_req_post, user_friendreq_get, user_fl_get, user_pfp_change } = require('../controllers/userController')
+const { create_user_post, user_login_post, user_signOut_delete, user_suggested_find, user_add_friend_req_post, user_friendreq_get, user_fl_get, user_pfp_change, user_pfp_save } = require('../controllers/userController')
 const router = express.Router()
 const passport = require('../../passport')
 const { authenticateJwt } = require('../middleware/authenticateJwt')
@@ -34,4 +34,5 @@ router.get('/user/updateFL', passport.authenticate('jwt', {session: false}), use
 
 router.post('/user/updatepfp', passport.authenticate('jwt', {session: false}), upload.single('file'), user_pfp_change)
 
+router.post('/user/savepfp', passport.authenticate('jwt', { session: false}), user_pfp_save)
 module.exports = router

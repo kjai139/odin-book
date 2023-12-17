@@ -23,21 +23,21 @@ export default function DashboardLeftSideBar ({selectTab}:LeftSideBarProps) {
 
     const HomeContent = [
         {
-            image: user && user.image? <Image src={user.image} width={30} height={30} alt='user profile picture'></Image> :
-            <UserPortrait width="30" height="30"></UserPortrait>,
+            image: user && user.image? <Image src={user.image} width={iconSize} height={iconSize} alt='user profile picture'></Image> :
+            <UserPortrait width={iconSize} height={iconSize}></UserPortrait>,
             title: user && user.name && formatUsername(user.name),
             id: 'dashleft-0',
             display: 1,
             
         },
         {
-            image: <PenIcon width="30" height="30"></PenIcon>,
+            image: <PenIcon width={iconSize} height={iconSize}></PenIcon>,
             title: 'Posts',
             id: 'dashleft-1',
             display: 2,
         },
         {
-            image:  <VideoIcon width="30" height="30"></VideoIcon>,
+            image:  <VideoIcon width={iconSize} height={iconSize}></VideoIcon>,
             title: 'Videos',
             id: 'dashelft-2',
             display: 3,

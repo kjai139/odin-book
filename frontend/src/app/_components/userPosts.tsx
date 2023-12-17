@@ -31,7 +31,9 @@ export default function UserPosts() {
                             
                             <div className='flex gap-2 p-2 items-center'>
                                 {user.image ?
-                                <Image src={user.image} alt='user pic'></Image>
+                                <div className='relative post-pfp-cont'>
+                                <Image src={user.image} fill={true} sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" alt='user pic'></Image>
+                                </div>
                                 :
                                 <BsPersonCircle className="backup-user-img" size={40}></BsPersonCircle> 
                                 }

@@ -8,11 +8,11 @@ import { formatUsername } from "@/app/_utils/formatStrings"
 
 export default function UserTab () {
 
-    const { user, isAuthenticated } = useAuth() 
+    const { user, isAuthenticated, setUser } = useAuth() 
 
     const fileInputRef = useRef<HTMLInputElement>(null)
 
-    const [tempPfp, setTempPfp] = useState('')
+    const [tempPfp, setTempPfp] = useState<string | undefined>('')
 
     /* const [selectedImg, setSelectedImg] = useState<any>()
 
@@ -59,10 +59,18 @@ export default function UserTab () {
                 withCredentials: true
             })
 
-        } catch (err) {
+            if (response.data.success) {
+                setUser((prev) => ({
+                    ...prev!,
+                    image: response.data.updatedImage
+                }))
+            }
 
+        } catch (err) {
+            console.error(err)
         }
     }
+
 
 
     return (
@@ -73,17 +81,17 @@ export default function UserTab () {
 
                 <div className="flex border shadow py-4 px-4 bg-white rounded gap-4">
                     <div className="flex-1 up-cont flex flex-col gap-4">
-                        { user.image || tempPfp ?
+                        { tempPfp || user.image ?
                         <>
                          <label htmlFor="imageInput">
                          <input type="file" onChange={handleImgUpload} ref={fileInputRef} id="imageInput" accept="image/*" style={{
                              display: 'none'
                          }}></input>
                         <div className="pfp-cont">
-                        <Image src={user.image ? user.image : tempPfp} alt="user profile picture" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" fill={true}></Image>
+                        <Image src={tempPfp as string || user.image as string} alt="user profile picture" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" fill={true}></Image>
                         </div>
                         </label>
-                        <button className="shadow bg-blue-500 rounded-xl p-1 text-white">Save image</button>
+                        <button className="shadow bg-blue-500 rounded-xl p-1 text-white" onClick={handleSaveImage}>Save image</button>
                         </>
                          :
                         <>
@@ -95,7 +103,7 @@ export default function UserTab () {
                         <UserPortrait></UserPortrait>
                         </div>
                         </label>
-                        <button className="shadow bg-blue-500 rounded-xl p-1 text-white">Save image</button>
+                        <button className="shadow bg-blue-500 rounded-xl p-1 text-white" onClick={handleSaveImage}>Save image</button>
                         </>
                         
                         }
