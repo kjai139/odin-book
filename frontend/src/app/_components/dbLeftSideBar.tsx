@@ -7,7 +7,7 @@ import { FaUserFriends } from 'react-icons/fa'
 import { TiUserAdd } from 'react-icons/ti'
 import { usePathname } from 'next/navigation'
 import { FaStreetView } from 'react-icons/fa'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 interface LeftSideBarProps {
     selectTab: React.Dispatch<React.SetStateAction<number>>
@@ -84,18 +84,21 @@ export default function DashboardLeftSideBar ({selectTab}:LeftSideBarProps) {
         selectTab(display)
         setSelected(id)
     }
+
+    
     
     
 
 
     return (
-        <div className='relative'>
-        <ul className='dashb-l-side fixed'>
+        <div className='flex-1'>
+            <div>
+        <ul className='dashb-l-side'>
             {user && getRenderedContent().map((node) => {
                 return (
                     <li key={`sb-${node.id}`}>
                         <button className={`${selected === node.id ? 'l-side selected' : ''}`} onClick={() => handleSelect(node.display, node.id)}>
-                            <div className='flex gap-2 items-center align-center'>
+                            <div className='flex gap-2 items-center align-center whitespace-nowrap'>
                                 
                                 {node.image}
                                 
@@ -107,6 +110,7 @@ export default function DashboardLeftSideBar ({selectTab}:LeftSideBarProps) {
             })}
            
         </ul>
+        </div>
         </div>
     )
 }

@@ -20,8 +20,6 @@ export default function DashboardLayout({children}: {children: React.ReactNode})
     }
 
     
-
-    
     
 
     useEffect(() => {
@@ -71,10 +69,11 @@ export default function DashboardLayout({children}: {children: React.ReactNode})
         <div className="h-screen w-screen flex flex-col">
             <DashboardHeader></DashboardHeader>
             <div className="bc relative">
-                <div className="db-g-cont">
+                <div className="db-g-cont gap-10">
                     {children}
                 </div>
             </div>
+            
             
         </div>
     )

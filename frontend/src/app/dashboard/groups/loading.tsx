@@ -21,8 +21,7 @@ export default function Loading() {
         </div>
         </div>
         <div className="flex-1 center-tab">
-        <div className="flex flex-col gap-4 mt-8">
-            <div className="skeleton-loader headskele"></div> 
+        <div className="flex flex-col gap-4 mt-8"> 
             {mainSkeleLength.map((_, index) => {
                 return (
                     <div key={`mskele-${index}`} className="skeleton-loader para"></div>

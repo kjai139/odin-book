@@ -36,7 +36,7 @@ export default function YourFriends () {
 
 
     return (
-        <div>
+        <>
             { displayingFriendlist && displayingFriendlist.length > 0 ? displayingFriendlist.map((node) => {
                 return (
                     <div key={node._id}>
@@ -53,6 +53,6 @@ export default function YourFriends () {
             </div> 
             }
 
-        </div>
+        </>
     )
 }

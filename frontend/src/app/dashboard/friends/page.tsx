@@ -24,9 +24,10 @@ export default function DashboardFriends() {
     return (
         <>
             <DashboardLeftSideBar selectTab={setDisplaying}></DashboardLeftSideBar>
-            
+            <div className="flex-1 center-tab">
             {displayingMap[displaying]}
-            
+            </div>
+            <div className="flex-1"></div>
         </>
     )
 }

@@ -60,7 +60,7 @@ export default function DashboardHeader() {
 
                 </div>
                 
-                <ul className="flex gap-4 items-center">
+                <ul className="flex gap-8 items-center">
                 {
                     topNav.map((node) => {
                         return (

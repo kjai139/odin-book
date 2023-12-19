@@ -4,6 +4,7 @@ import Image from "next/image"
 import { UserPortrait } from "../SVGRComponent"
 import axiosInstance from '../../../../axios'
 import { formatUsername } from "@/app/_utils/formatStrings"
+import { ProgressBar } from "react-loader-spinner"
 
 
 export default function UserTab () {
@@ -19,6 +20,12 @@ export default function UserTab () {
     useEffect(() => {
         console.log('selectedImg change:', selectedImg)
     }, [selectedImg]) */
+
+    const [isImgSaving, setIsImgSaving] = useState(false)
+
+    
+
+    
 
     const handleImgUpload = async () => {
         console.log(fileInputRef.current?.files)
@@ -53,6 +60,7 @@ export default function UserTab () {
 
     const handleSaveImage = async () => {
         try {
+            setIsImgSaving(true)
             const response = await axiosInstance.post('/api/user/savepfp', {
                 imageUrl: tempPfp
             }, {
@@ -60,21 +68,24 @@ export default function UserTab () {
             })
 
             if (response.data.success) {
+
                 setUser((prev) => ({
                     ...prev!,
                     image: response.data.updatedImage
                 }))
+                setIsImgSaving(false)
             }
 
         } catch (err) {
             console.error(err)
+            setIsImgSaving(false)
         }
     }
 
 
 
     return (
-        <div>
+        <>
             { user &&
             <div className="flex flex-col gap-4 mt-8"> 
             <h3>Welcome, {formatUsername(user.name)}#{user.uniqueId}!</h3>
@@ -91,7 +102,7 @@ export default function UserTab () {
                         <Image src={tempPfp as string || user.image as string} alt="user profile picture" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" fill={true}></Image>
                         </div>
                         </label>
-                        <button className="shadow bg-blue-500 rounded-xl p-1 text-white" onClick={handleSaveImage}>Save image</button>
+                        <button className={`shadow bg-blue-500 rounded-xl p-1 text-white ${isImgSaving && 'disabled'}`} onClick={handleSaveImage}>{isImgSaving ? <ProgressBar borderColor="white" barColor="white"></ProgressBar> : `Save image`}</button>
                         </>
                          :
                         <>
@@ -103,7 +114,7 @@ export default function UserTab () {
                         <UserPortrait></UserPortrait>
                         </div>
                         </label>
-                        <button className="shadow bg-blue-500 rounded-xl p-1 text-white" onClick={handleSaveImage}>Save image</button>
+                        <button className={`shadow bg-blue-500 rounded-xl p-1 text-white ${isImgSaving && 'disabled'}`} onClick={handleSaveImage}>{isImgSaving ? <ProgressBar borderColor="white" barColor="white"></ProgressBar> : `Save image`}</button>
                         </>
                         
                         }
@@ -115,12 +126,13 @@ export default function UserTab () {
 
                 <div>
                     Timeline section
+                    <button><ProgressBar borderColor="white" barColor="white"></ProgressBar></button>
                 </div>
 
             </div>
             }
 
 
-        </div>
+        </>
     )
 }
