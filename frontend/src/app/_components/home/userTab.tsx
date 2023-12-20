@@ -5,6 +5,7 @@ import { UserPortrait } from "../SVGRComponent"
 import axiosInstance from '../../../../axios'
 import { formatUsername } from "@/app/_utils/formatStrings"
 import { ProgressBar } from "react-loader-spinner"
+import { useRouter } from "next/navigation"
 
 
 export default function UserTab () {
@@ -22,8 +23,9 @@ export default function UserTab () {
     }, [selectedImg]) */
 
     const [isImgSaving, setIsImgSaving] = useState(false)
+    const [isImgLoading, setIsImgLoading] = useState(false)
 
-    
+    const router = useRouter()
 
     
 
@@ -40,6 +42,7 @@ export default function UserTab () {
             formData.append('file', selectedFile, selectedFile.name)
 
             try {
+                setIsImgLoading(true)
                 const response = await axiosInstance.post('/api/user/updatepfp', formData, {
                     withCredentials: true
                 })
@@ -47,13 +50,17 @@ export default function UserTab () {
                 if (response.data.success) {
                     console.log(response.data.message)
                     setTempPfp(response.data.url)
+                    setIsImgLoading(false)
                     
                     
                 }
 
-            } catch (err) {
+            } catch (err:any) {
                 console.error(err)
-                
+                setIsImgLoading(false)
+                if (err.response.status === 401) {
+                    router.push('/')
+                } 
             }
         }
     }
@@ -94,7 +101,7 @@ export default function UserTab () {
                     <div className="flex-1 up-cont flex flex-col gap-4">
                         { tempPfp || user.image ?
                         <>
-                         <label htmlFor="imageInput">
+                         <label htmlFor="imageInput" className={`${isImgSaving && 'disabled'}`}>
                          <input type="file" onChange={handleImgUpload} ref={fileInputRef} id="imageInput" accept="image/*" style={{
                              display: 'none'
                          }}></input>
@@ -102,19 +109,23 @@ export default function UserTab () {
                         <Image src={tempPfp as string || user.image as string} alt="user profile picture" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" fill={true}></Image>
                         </div>
                         </label>
-                        <button className={`shadow bg-blue-500 rounded-xl p-1 text-white ${isImgSaving && 'disabled'}`} onClick={handleSaveImage}>{isImgSaving ? <ProgressBar borderColor="white" barColor="white"></ProgressBar> : `Save image`}</button>
+                    
+                        <button className={`shadow bg-blue-500 rounded-xl p-1 text-white ${isImgSaving || isImgLoading && 'disabled text'}`} onClick={handleSaveImage}><p className={`${isImgLoading || isImgSaving ? 'loading-text' : ''}`}>{`${isImgLoading ? 'Loading...': ''} ${isImgSaving ? 'Saving...' : ''} ${!isImgLoading && !isImgSaving ?  'Save': ''}`}</p></button>
+
+                    
+                        
                         </>
                          :
                         <>
-                        <label htmlFor="imageInput">
-                            <input type="file" onChange={handleImgUpload} ref={fileInputRef} id="imageInput" accept="image/*" style={{
+                        <label htmlFor="imageInput" className={`${isImgSaving && 'disabled'}`}>
+                            <input className={`${isImgSaving && 'disabled'}`} type="file" onChange={handleImgUpload} ref={fileInputRef} id="imageInput" accept="image/*" style={{
                                 display: 'none'
                             }}></input>
                         <div className="pfp-cont">
                         <UserPortrait></UserPortrait>
                         </div>
                         </label>
-                        <button className={`shadow bg-blue-500 rounded-xl p-1 text-white ${isImgSaving && 'disabled'}`} onClick={handleSaveImage}>{isImgSaving ? <ProgressBar borderColor="white" barColor="white"></ProgressBar> : `Save image`}</button>
+                        <button className={`shadow bg-blue-500 rounded-xl p-1 text-white ${isImgSaving || isImgLoading && 'disabled text'}`} onClick={handleSaveImage}><p className={`${isImgLoading || isImgSaving ? 'loading-text' : ''}`}>{`${isImgLoading ? 'Loading...': ''} ${isImgSaving ? 'Saving...' : ''} ${!isImgLoading && !isImgSaving ? 'Save' : ''}`}</p></button>
                         </>
                         
                         }
@@ -126,7 +137,7 @@ export default function UserTab () {
 
                 <div>
                     Timeline section
-                    <button><ProgressBar borderColor="white" barColor="white"></ProgressBar></button>
+                    <button onClick={() => setIsImgSaving(!isImgSaving)}><ProgressBar borderColor="white" barColor="white"></ProgressBar></button>
                 </div>
 
             </div>

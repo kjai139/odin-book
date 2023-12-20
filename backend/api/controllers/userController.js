@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt')
 const passport = require('../../passport')
 const mongoose = require('mongoose')
 const { generateRandomString } = require('./imageController')
-const { PutObjectCommand, CopyObjectCommand } = require('@aws-sdk/client-s3')
+const { PutObjectCommand, CopyObjectCommand, DeleteObjectCommand } = require('@aws-sdk/client-s3')
 const s3Client = require('../../s3Client')
 
 
@@ -336,6 +336,18 @@ exports.user_pfp_save = async (req, res) => {
         const urlParts = imageUrl.split('/')
         const fileName = urlParts[urlParts.length - 1]
         const bucketName = 'odinbookkjai'
+
+        if (req.user.image) {
+            const oldUrlParts = req.user.image.split('/')
+            const oldFileName = oldUrlParts[oldUrlParts.length - 1]
+            const deleteParams = {
+                Bucket: bucketName,
+                Key: `images/perm/${oldFileName}`
+            }
+
+            const data = await s3Client.send(new DeleteObjectCommand(deleteParams))
+            debug(`image @${deleteParams.Key} deleted.`, data)
+        }
 
         const copyParams = {
             Bucket: bucketName,

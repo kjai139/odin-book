@@ -83,7 +83,7 @@ export default function DashboardHeader() {
                         <button onClick={() => setShowingModal('Account')} type="button" className="head-btn" id='head-acc-btn'>
                             {
                                 user && user.image ? 
-                                <div className='relative header-pfp'>
+                                <div className='relative header-pfp rounded-full overflow-hidden'>
                                 <Image src={user.image} fill={true} alt='user profile picture' sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"></Image>
                                 </div> :
                                 <UserPortrait height={iconSize} width={iconSize}></UserPortrait>

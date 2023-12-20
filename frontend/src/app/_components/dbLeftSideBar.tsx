@@ -18,12 +18,12 @@ export default function DashboardLeftSideBar ({selectTab}:LeftSideBarProps) {
     const { user } = useAuth()
     const pathname = usePathname()
 
-    const iconSize = 28
+    const iconSize = 24
     const [selected, setSelected] = useState('')
 
     const HomeContent = [
         {
-            image: user && user.image? <Image src={user.image} width={iconSize} height={iconSize} alt='user profile picture'></Image> :
+            image: user && user.image? <Image src={user.image} fill={true} alt='user profile picture' sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"></Image> :
             <UserPortrait width={iconSize} height={iconSize}></UserPortrait>,
             title: user && user.name && formatUsername(user.name),
             id: 'dashleft-0',
@@ -99,8 +99,9 @@ export default function DashboardLeftSideBar ({selectTab}:LeftSideBarProps) {
                     <li key={`sb-${node.id}`}>
                         <button className={`${selected === node.id ? 'l-side selected' : ''}`} onClick={() => handleSelect(node.display, node.id)}>
                             <div className='flex gap-2 items-center align-center whitespace-nowrap'>
-                                
+                                <div className='relative sb-img-cont items-center justify-center flex rounded-full overflow-hidden'>
                                 {node.image}
+                                </div>
                                 
                                 <span>{node.title}</span>
                             </div>
