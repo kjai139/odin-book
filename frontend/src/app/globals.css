@@ -308,6 +308,19 @@ input[type='text'], input[type='password'], input[type='email'] {
   height:30px;
 }
 
+.dropzone {
+  background-color: #fafafa;
+  color:#bdbdbd;
+  
+  border:2px dashed;
+  padding: 20px;
+  transition: border .24s ease-in-out;
+}
+
+.dropzone:active {
+  border-color: blue;
+}
+
 @keyframes loading {
   0% {
     opacity: 0.5;

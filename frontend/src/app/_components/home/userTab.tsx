@@ -94,7 +94,7 @@ export default function UserTab () {
     return (
         <>
             { user &&
-            <div className="flex flex-col gap-4 mt-8"> 
+            <div className="flex flex-col gap-4"> 
             <h3>Welcome, {formatUsername(user.name)}#{user.uniqueId}!</h3>
 
                 <div className="flex border shadow py-4 px-4 bg-white rounded gap-4">
@@ -136,8 +136,8 @@ export default function UserTab () {
                 </div>
 
                 <div>
-                    Timeline section
-                    <button onClick={() => setIsImgSaving(!isImgSaving)}><ProgressBar borderColor="white" barColor="white"></ProgressBar></button>
+                    <h4>What's on your mind?</h4>
+                    
                 </div>
 
             </div>

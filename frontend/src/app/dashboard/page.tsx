@@ -45,7 +45,9 @@ export default function Dashboard () {
         <>
             <DashboardLeftSideBar selectTab={setDisplaying}></DashboardLeftSideBar>
             <div className="flex-1 center-tab">
+            <div className="flex flex-col gap-4 mt-8"> 
             {contentMapping[displaying]}
+            </div>
             </div>
             
             <div className="flex-1"></div>

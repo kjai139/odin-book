@@ -1,23 +1,18 @@
 
 import Loading from "@/app/dashboard/loading"
 import { Suspense, useEffect, useState } from "react"
+import VideoUploader from "./videoUploader"
 
 export default function VideoTab () {
 
-    const [userVideos, setUserVideos] = useState('')
-
-    useEffect(()=> {
-        const imitateApi = async () => {
-            await new Promise(resolve => setTimeout(resolve, 10000))
-
-            setUserVideos('The video tab')
-        }
-        imitateApi()
-    }, [])
+    
 
     return (
-        <Suspense fallback={<Loading />}>
-        <div>{userVideos}</div>
-        </Suspense>
+        <>
+            <div>
+                <VideoUploader></VideoUploader>
+
+            </div>
+        </>
     )
 }
