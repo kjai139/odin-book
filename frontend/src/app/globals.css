@@ -321,6 +321,11 @@ input[type='text'], input[type='password'], input[type='email'] {
   border-color: blue;
 }
 
+.accepted-files {
+  list-style-type: decimal;
+  padding-left: 20px;
+}
+
 @keyframes loading {
   0% {
     opacity: 0.5;

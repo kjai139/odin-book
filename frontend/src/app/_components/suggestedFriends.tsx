@@ -56,8 +56,8 @@ export default function SuggestedFriends() {
             {user && suggestedFrds && suggestedFrds.map((node) => {
                 return (
                     <div key={node._id} className="p-4 rounded shadow flex flex-col gap-2 bg-white">
-                        <div className="suggest-img-cont">
-                        {node.image ? <Image src={node.image} alt='user picture'></Image> : 
+                        <div className="suggest-img-cont relative flex-1">
+                        {node.image ? <Image src={node.image} alt='user picture' fill={true} sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"></Image> : 
                         <UserPortrait></UserPortrait>
                         }
                         </div>
