@@ -24,6 +24,7 @@ import { useCallback, useRef, useState } from 'react'
 import axiosInstance from '../../../axios'
 import { useAuth } from '../../../context/authContext'
 import { useRouter } from 'next/navigation'
+import Placeholder from '@tiptap/extension-placeholder'
 
 
 const TipTap = ({type}) => {
@@ -37,6 +38,9 @@ const TipTap = ({type}) => {
             Image,
             Link.configure({
                 autolink: false,
+            }),
+            Placeholder.configure({
+                placeholder: 'Write something...'
             })
         
         ],

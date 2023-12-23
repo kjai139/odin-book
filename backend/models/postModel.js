@@ -33,7 +33,14 @@ const PostSchema = new Schema({
     createdAt: {
         type:Date,
         default:Date.now
-    }
+    },
+    videos: [
+        {
+            type:Schema.Types.ObjectId,
+            ref: 'Video',
+            default:null
+        }
+    ]
 })
 
 module.exports = mongoose.model('Post', PostSchema)

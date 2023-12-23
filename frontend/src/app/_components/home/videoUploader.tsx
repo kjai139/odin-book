@@ -1,18 +1,24 @@
-import { useCallback, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import ReactPlayer from 'react-player/file'
 
 
-export default function VideoUploader () {
+interface VideoUploaderProps {
+    setVideoData: Dispatch<SetStateAction<File[] | null>>
+}
+
+
+export default function VideoUploader ({setVideoData}:VideoUploaderProps) {
 
     const [previewVideo, setPreviewVideo] = useState('')
     const [previewVolume, setPreviewVolume] = useState()
     const onDrop = useCallback((acceptedFiles:File[]) => {
-        console.log(acceptedFiles)
+        /* console.log(acceptedFiles) */
         const previewURL = URL.createObjectURL(acceptedFiles[0])
         setPreviewVideo(previewURL)
+        setVideoData(acceptedFiles)
         
-    }, [])
+    }, [setVideoData])
 
     const { getRootProps, getInputProps, isDragActive, acceptedFiles } = useDropzone({onDrop, accept: {
         'video/mp4': ['.mp4'],
@@ -32,6 +38,7 @@ export default function VideoUploader () {
 
         return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i]
     }
+
 
     useEffect(() => {
         return () => {
@@ -67,10 +74,10 @@ export default function VideoUploader () {
         {previewVideo &&
         <ReactPlayer url={previewVideo} controls={true} width="100%" height="auto"></ReactPlayer>
         }
-        <div className="flex gap-4 justify-end">
+        {/* <div className="flex gap-4 justify-end">
             <button>Clear</button>
             <button>Submit</button>
-        </div>
+        </div> */}
         </section>
     )
 }

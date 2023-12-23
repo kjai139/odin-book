@@ -392,12 +392,28 @@ input[type='text'], input[type='password'], input[type='email'] {
   border: 2px solid #64748b;
 }
 
-.tt-menu > button {
+.vtt {
+  background-color: var(--dashbContentBg);
+}
+
+.tiptap p.is-editor-empty:first-child::before {
+  color: #adb5bd;
+  content:attr(data-placeholder);
+  float:left;
+  height:0;
+  pointer-events:none;
+}
+
+.tt-menu > button, .vtt-menu > button {
   border-radius: .25rem;
 }
-.tt-menu > div, .tt-menu > label {
+.tt-menu > div, .tt-menu > label, .vtt-menu > label, .vtt-menu > div {
   display: flex;
   align-items: center;
+}
+
+.vtt-menu {
+  border-bottom: 1px solid var(--dashbgC);
 }
 
 .post-pfp-cont {
