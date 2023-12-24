@@ -21,6 +21,7 @@
   --DashboardBGC: white;
   --dashbgC: #e2e8f0;
   --dashbContentBg: white;
+  --buttonbgc: blue;
   
 }
 
@@ -414,6 +415,15 @@ input[type='text'], input[type='password'], input[type='email'] {
 
 .vtt-menu {
   border-bottom: 1px solid var(--dashbgC);
+}
+
+.vtt-post-btn {
+  background-color: var(--buttonbgc);
+}
+.vtt-post-cont {
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 
 .post-pfp-cont {

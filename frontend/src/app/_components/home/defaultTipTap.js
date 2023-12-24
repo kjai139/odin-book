@@ -19,9 +19,13 @@ const DefaultTiptap = ({setPost}) => {
             }),
             Placeholder.configure({
                 placeholder: 'Write something...'
-            })
+            }),
             
-        ]
+            
+        ],
+        onUpdate: ({editor}) => {
+            setPost(editor)
+        }
     })
 
     const handleBoldClick = () => {
@@ -31,6 +35,7 @@ const DefaultTiptap = ({setPost}) => {
     const handleItalics = () => {
         editor.commands.toggleItalic()
     }
+
 
     return (
         <div className='vtt rounded-xl'>
