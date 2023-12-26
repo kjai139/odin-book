@@ -2,12 +2,6 @@ import { ProgressBar } from "react-loader-spinner";
 
 
 
-// type LoadingModalProps = {
-//     closeModal: void
-    
-// }
-
-
 export default function LoadingModal() {
 
 

@@ -1,8 +1,9 @@
 const Post = require('../../models/postModel')
 const User = require('../../models/userModel')
 const debug = require('debug')('odin-book:postController')
-const { CopyObjectCommand } = require('@aws-sdk/client-s3')
+const { CopyObjectCommand, PutObjectCommand } = require('@aws-sdk/client-s3')
 const s3Client = require('../../s3Client')
+const { generateRandomString } = require('./imageController')
 
 exports.post_create_post = async (req, res) => {
     try {
@@ -74,6 +75,26 @@ exports.post_create_post = async (req, res) => {
         })
 
     } catch (err) {
+        res.status(500).json({
+            message: err.message
+        })
+    }
+}
+
+
+exports.post_vid_create_post = async (req, res) => {
+    try {
+        const bucketName = 'odinbookkjai'
+        debug(req.file)
+        
+        
+        res.json({
+            success: true,
+            message: `video uploaded successfully. URL:https://${bucketName}.s3.us-east-2.amazonaws.com/${req.file.key}`,
+            url:`https://${bucketName}.s3.us-east-2.amazonaws.com/${req.file.Key}`
+        })
+
+    } catch(err) {
         res.status(500).json({
             message: err.message
         })

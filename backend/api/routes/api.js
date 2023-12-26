@@ -5,10 +5,29 @@ const passport = require('../../passport')
 const { authenticateJwt } = require('../middleware/authenticateJwt')
 const multer = require('multer')
 const { image_temp_upload_post } = require('../controllers/imageController')
-const { post_create_post } = require('../controllers/postController')
+const { post_create_post, post_vid_create_post } = require('../controllers/postController')
 
 const storage = multer.memoryStorage()
 const upload = multer({storage: storage, limits:{ fileSize: 2 * 1024 * 1024} })
+const s3Client = require('../../s3Client')
+const multerS3 = require('multer-s3')
+
+const s3Upload = multer({
+    storage: multerS3({
+        s3: s3Client,
+        bucket: 'odinbookkjai',
+        metadata: function (req, file, cb) {
+            
+            cb(null, {fieldName: file.fieldname})
+        },
+        key: function (req, file, cb) {
+            cb(null, `videos/temp/${Date.now().toString()}${file.originalname}`)
+        },
+        contentType: multerS3.AUTO_CONTENT_TYPE,
+        acl: 'public-read'
+
+    })
+})
 
 router.post('/user/create', create_user_post )
 
@@ -35,4 +54,9 @@ router.get('/user/updateFL', passport.authenticate('jwt', {session: false}), use
 router.post('/user/updatepfp', passport.authenticate('jwt', {session: false}), upload.single('file'), user_pfp_change)
 
 router.post('/user/savepfp', passport.authenticate('jwt', { session: false}), user_pfp_save)
+
+router.post('/post/create2', passport.authenticate('jwt', {session: false}), s3Upload.single('video'), post_vid_create_post)
+
+
+
 module.exports = router

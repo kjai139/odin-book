@@ -106,7 +106,7 @@ export default function UserTab () {
                              display: 'none'
                          }}></input>
                         <div className="pfp-cont">
-                        <Image src={tempPfp as string || user.image as string} alt="user profile picture" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" fill={true}></Image>
+                        <Image src={tempPfp as string || user.image as string} alt="user profile picture" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" fill={true} priority></Image>
                         </div>
                         </label>
                     
