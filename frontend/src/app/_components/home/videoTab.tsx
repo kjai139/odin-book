@@ -4,6 +4,7 @@ import VideoUploader from "./videoUploader"
 import DefaultTiptap from './defaultTipTap'
 import axiosInstance from '../../../../axios'
 import LoadingModal from '../../_modals/loadingModal'
+import HTMLRender from "./htmlRender"
 
 export default function VideoTab () {
 
@@ -11,6 +12,7 @@ export default function VideoTab () {
     const [videoData, setVideoData] = useState<File[] | null>(null)
 
     const [isLoading, setIsLoading] = useState(false)
+    const [txtPreview, setTxtPreview] = useState()
 
     const createVideoPost = async () => {
         try {
@@ -20,12 +22,14 @@ export default function VideoTab () {
             if (postData && !postData.isEmpty && videoData) {
                 console.log('post data valid, posting...')
                 const editorJson = postData.getJSON()
+                const editorHtml = postData.getHTML()
                 const videoFormData = new FormData()
                 videoFormData.append('video', videoData[0])
-                videoFormData.append('textbody', editorJson)
-                console.log(videoFormData)
+                videoFormData.append('textbodyjson', editorJson)
+                console.log(editorHtml, editorJson)
+                setTxtPreview(editorHtml)
                 
-                setIsLoading(true)
+                /* setIsLoading(true)
                 const response = await axiosInstance.post('/api/post/create2', videoFormData, {
                     withCredentials: true
                 })
@@ -34,7 +38,7 @@ export default function VideoTab () {
                     setIsLoading(false)
                     console.log(response.data.message)
                     
-                }
+                } */
             }
 
         } catch (err) {
@@ -54,7 +58,7 @@ export default function VideoTab () {
                 </div>
                 <DefaultTiptap setPost={setPostData}></DefaultTiptap>
                 <VideoUploader setVideoData={setVideoData}></VideoUploader>
-
+                {txtPreview && <HTMLRender editorOBJ={txtPreview}></HTMLRender>}
             </div>
         </>
     )

@@ -85,7 +85,8 @@ exports.post_create_post = async (req, res) => {
 exports.post_vid_create_post = async (req, res) => {
     try {
         const bucketName = 'odinbookkjai'
-        debug(req.file)
+        debug('file:', req.file)
+        debug('body', req.body)
         
         
         res.json({
