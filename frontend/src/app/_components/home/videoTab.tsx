@@ -5,6 +5,7 @@ import DefaultTiptap from './defaultTipTap'
 import axiosInstance from '../../../../axios'
 import LoadingModal from '../../_modals/loadingModal'
 import HTMLRender from "./htmlRender"
+import { useAuth } from "../../../../context/authContext"
 
 export default function VideoTab () {
 
@@ -14,6 +15,19 @@ export default function VideoTab () {
     const [isLoading, setIsLoading] = useState(false)
     const [txtPreview, setTxtPreview] = useState()
 
+    const { user, setUser } = useAuth()
+
+    const getVideoOnlyPosts = async () => {
+        try {
+            const response = await axiosInstance.get('/api/vids/get', {
+                withCredentials: true
+            })
+
+        } catch (err) {
+            console.error(err)
+        }
+    }
+
     const createVideoPost = async () => {
         try {
             console.log('Postdata:', postData)
@@ -21,24 +35,26 @@ export default function VideoTab () {
             console.log(postData?.isEmpty)
             if (postData && !postData.isEmpty && videoData) {
                 console.log('post data valid, posting...')
-                const editorJson = postData.getJSON()
+                const editorJson = JSON.stringify(postData.getJSON())
                 const editorHtml = postData.getHTML()
                 const videoFormData = new FormData()
                 videoFormData.append('video', videoData[0])
-                videoFormData.append('textbodyjson', editorJson)
+                videoFormData.append('content', editorJson)
                 console.log(editorHtml, editorJson)
                 setTxtPreview(editorHtml)
                 
-                /* setIsLoading(true)
+                setIsLoading(true)
                 const response = await axiosInstance.post('/api/post/create2', videoFormData, {
-                    withCredentials: true
+                    withCredentials: true,
+                    timeout: 10000,
                 })
 
                 if (response.data.success) {
                     setIsLoading(false)
+                    setUser(response.data.updatedUser)
                     console.log(response.data.message)
                     
-                } */
+                }
             }
 
         } catch (err) {
@@ -58,7 +74,9 @@ export default function VideoTab () {
                 </div>
                 <DefaultTiptap setPost={setPostData}></DefaultTiptap>
                 <VideoUploader setVideoData={setVideoData}></VideoUploader>
-                {txtPreview && <HTMLRender editorOBJ={txtPreview}></HTMLRender>}
+                {/* {txtPreview && <HTMLRender editorOBJ={txtPreview}></HTMLRender>} */}
+
+
             </div>
         </>
     )

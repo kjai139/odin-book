@@ -66,7 +66,7 @@ export default function DashboardLayout({children}: {children: React.ReactNode})
     
 
     return (
-        <div className="h-screen w-screen flex flex-col">
+        <div className="h-screen w-full flex flex-col">
             <DashboardHeader></DashboardHeader>
             <div className="bc relative">
                 <div className="db-g-cont gap-10">

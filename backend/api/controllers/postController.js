@@ -4,6 +4,8 @@ const debug = require('debug')('odin-book:postController')
 const { CopyObjectCommand, PutObjectCommand } = require('@aws-sdk/client-s3')
 const s3Client = require('../../s3Client')
 const { generateRandomString } = require('./imageController')
+const Video = require('../../models/videoModel')
+const mongoose = require('mongoose')
 
 exports.post_create_post = async (req, res) => {
     try {
@@ -87,12 +89,54 @@ exports.post_vid_create_post = async (req, res) => {
         const bucketName = 'odinbookkjai'
         debug('file:', req.file)
         debug('body', req.body)
+
+        const newVideo = new Video({
+            url: `https://${bucketName}.s3.us-east-2.amazonaws.com/${req.file.key}`
+        })
+        
+        await newVideo.save()
+
+
+        const newPost = new Post({
+            author: req.user._id,
+            videos: newVideo._id,
+            body: req.body.content
+            
+        })
+
+        await newPost.save()
+
+        const theUser = await User.findOneAndUpdate({_id: req.user._id}, {
+            $addToSet: {
+                posts: newPost._id
+            }, 
+        }, {new: true}).populate({
+            path: 'posts',
+            match: {
+                'videos': {
+                    $ne: []
+                }
+            },
+            options: {
+                limit: 10,
+                sort : {
+                    createdAt: -1
+                },
+                populate: {
+                    path: 'author',
+                    
+                }
+            }
+        })
+
+        
         
         
         res.json({
             success: true,
             message: `video uploaded successfully. URL:https://${bucketName}.s3.us-east-2.amazonaws.com/${req.file.key}`,
-            url:`https://${bucketName}.s3.us-east-2.amazonaws.com/${req.file.Key}`
+            url:`https://${bucketName}.s3.us-east-2.amazonaws.com/${req.file.Key}`,
+            updatedUser: theUser
         })
 
     } catch(err) {
