@@ -6,6 +6,8 @@ import axiosInstance from '../../../../axios'
 import LoadingModal from '../../_modals/loadingModal'
 import HTMLRender from "./htmlRender"
 import { useAuth } from "../../../../context/authContext"
+import { useRouter } from "next/navigation"
+import ReactPlayer from "react-player"
 
 export default function VideoTab () {
 
@@ -15,7 +17,21 @@ export default function VideoTab () {
     const [isLoading, setIsLoading] = useState(false)
     const [txtPreview, setTxtPreview] = useState()
 
+    const [vidOnlyPosts, setVidOnlyPosts] = useState<Posts | []>([])
+
     const { user, setUser } = useAuth()
+    const router = useRouter()
+
+    interface Posts {
+        _id: string,
+        author: string,
+        body: string,
+        comments: [number],
+        createdAt: Date,
+        dislikes: number,
+        likes: number,
+        videos: [string]
+    }
 
     const getVideoOnlyPosts = async () => {
         try {
@@ -23,8 +39,16 @@ export default function VideoTab () {
                 withCredentials: true
             })
 
-        } catch (err) {
+            if (response.data.updatedUser) {
+                setVidOnlyPosts(response.data.updatedUser.posts)
+                console.log('vid only posts:', response.data.updatedUser.posts)
+            }
+
+        } catch (err:any) {
             console.error(err)
+            if (err.response && err.response.status === 401) {
+                router.push('/')
+            }
         }
     }
 
@@ -63,6 +87,10 @@ export default function VideoTab () {
         }
     }
 
+    useEffect(() => {
+        getVideoOnlyPosts()
+    }, [])
+
     return (
         <>
             <div className="flex flex-col gap-2 bg-white p-4 relative">
@@ -75,9 +103,21 @@ export default function VideoTab () {
                 <DefaultTiptap setPost={setPostData}></DefaultTiptap>
                 <VideoUploader setVideoData={setVideoData}></VideoUploader>
                 {/* {txtPreview && <HTMLRender editorOBJ={txtPreview}></HTMLRender>} */}
-
-
             </div>
+            {vidOnlyPosts &&
+                vidOnlyPosts.map((post:Posts) => {
+                    let json = post.body
+                    if (typeof json === 'string') {
+                        json = JSON.parse(json)
+                    }
+                    return (
+                        <div key={post._id}>
+                            <HTMLRender editorOBJ={json}></HTMLRender>
+                            <ReactPlayer url={post.videos[0].url} controls={true} width="100%" height="auto"></ReactPlayer>
+                        </div>
+                    )
+                } )
+                }
         </>
     )
 }

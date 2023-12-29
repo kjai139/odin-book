@@ -3,7 +3,9 @@
 import React, {createContext, useState, useContext, ReactNode, useEffect} from "react";
 import axiosInstance from '../axios'
 import {useRouter, usePathname} from "next/navigation";
-import initializeSocket from '../socket'
+import { Post } from '../interfaces/post.interface'
+import { User } from "../interfaces/user.interface";
+
 
 interface AuthContexType {
     user: User | null,
@@ -14,31 +16,7 @@ interface AuthContexType {
     pathname: string
 }
 
-interface Post {
-    _id:string,
-    body: string | object,
-    createdAt: Date,
-    likes: Number,
-    dislikes: Number,
-    title: string | null,
-    comments: string[],
-    author: string,
 
-}
-
-export type User = {
-    _id: string,
-    name: string,
-    email: string,
-    phoneNumber: string | undefined | null,
-    image: string | undefined | null,
-    gender: string,
-    friendlist: string[],
-    friendReq: Array<string | User>,
-    posts: Post[],
-    status: string,
-    uniqueId: string,
-}
 
 interface AuthProviderProps {
     children: ReactNode

@@ -12,6 +12,8 @@ interface HTMLRenderProps {
 
 export default function HTMLRender ({editorOBJ}:HTMLRenderProps) {
 
+    
+
 
    const editor = useEditor({
         editable: false,

@@ -145,3 +145,28 @@ exports.post_vid_create_post = async (req, res) => {
         })
     }
 }
+
+
+exports.video_posts_get = async (req, res) => {
+    const theUser = await User.findById(req.user._id).populate({
+        path: 'posts',
+        match: {
+            videos: {
+                $exists:true
+            }
+        },
+        options: {
+            sort: {
+                createdAt: -1
+            }
+        },
+        populate: {
+            path: 'videos',
+            model: 'Video'
+        }
+    })
+
+    res.json({
+        updatedUser: theUser
+    })
+}
