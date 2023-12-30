@@ -1,13 +1,18 @@
 ' use client'
 
 
+import CharacterCount from '@tiptap/extension-character-count'
 import Placeholder from '@tiptap/extension-placeholder'
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
+import { useState } from 'react'
 import { RiBold, RiItalic } from 'react-icons/ri'
 
+const limit = 300
 
 const DefaultTiptap = ({setPost}) => {
+
+    const [characters, setCharacters] = useState(0)
     const editor = useEditor({
         extensions: [
             StarterKit.configure({
@@ -20,11 +25,16 @@ const DefaultTiptap = ({setPost}) => {
             Placeholder.configure({
                 placeholder: 'Write something...'
             }),
+            CharacterCount.configure({
+                limit:limit,
+                mode: 'nodeSize'
+            })
             
             
         ],
         onUpdate: ({editor}) => {
             setPost(editor)
+            setCharacters(editor.storage.characterCount.characters())
         }
     })
 
@@ -34,6 +44,10 @@ const DefaultTiptap = ({setPost}) => {
 
     const handleItalics = () => {
         editor.commands.toggleItalic()
+    }
+
+    if (!editor) {
+        return null
     }
 
 
@@ -56,6 +70,10 @@ const DefaultTiptap = ({setPost}) => {
                 
                 
             }}></EditorContent>
+            <span className='num-count flex justify-end'>
+            {characters}/{limit}
+            </span>
+           
             
         </div>
 

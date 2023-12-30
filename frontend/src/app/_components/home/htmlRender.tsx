@@ -1,8 +1,9 @@
 
+import CharacterCount from "@tiptap/extension-character-count";
 import { EditorContent, generateHTML, useEditor, EditorContentState } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import { useEffect, useMemo } from "react";
-
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import ExpandBtnTT from "../buttons/tiptapExpandBtn";
 
 interface HTMLRenderProps {
     editorOBJ: any,
@@ -10,8 +11,10 @@ interface HTMLRenderProps {
 
 
 
-export default function HTMLRender ({editorOBJ}:HTMLRenderProps) {
 
+
+export default function HTMLRender ({editorOBJ}:HTMLRenderProps) {
+    const editorRef = useRef<HTMLDivElement>(null)
     
 
 
@@ -21,19 +24,35 @@ export default function HTMLRender ({editorOBJ}:HTMLRenderProps) {
         content: editorOBJ
         
    })
+   const [isOverFlowed, setIsOverflowed] = useState(false)
+   const [isPostExpanded, setIsPostExpanded] = useState(false)
+
+   
 
    useEffect(() => {
     if (!editor) {
         return undefined
     } else {
         if (editorOBJ) {
+            if (typeof editorOBJ === 'string') {
+                
+            }
             editor.commands.setContent(editorOBJ)
+            
         }
         
     }
    }, [editor,editorOBJ])
 
    return (
-        <EditorContent editor={editor}></EditorContent>
+        <div ref={editorRef} className={`${isPostExpanded ? 'expanded' : 'expanded-false'}`}>
+        <EditorContent editor={editor} className={`py-4 px-2`}>
+
+        </EditorContent>
+        {editorRef.current && editorRef.current.clientHeight !== editorRef.current.children[0]?.scrollHeight ? 
+        <ExpandBtnTT refEle={editorRef} isExpanded={isPostExpanded} setIsExpanded={setIsPostExpanded}></ExpandBtnTT> :
+        null
+        }
+        </div>
    )
 }

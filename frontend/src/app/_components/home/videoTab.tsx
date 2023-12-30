@@ -8,6 +8,10 @@ import HTMLRender from "./htmlRender"
 import { useAuth } from "../../../../context/authContext"
 import { useRouter } from "next/navigation"
 import ReactPlayer from "react-player"
+import { Post } from "../../../../interfaces/post.interface"
+import Image from "next/image"
+import { BsPersonCircle } from "react-icons/bs"
+import { formatUsername, formatDate } from "@/app/_utils/formatStrings"
 
 export default function VideoTab () {
 
@@ -22,16 +26,7 @@ export default function VideoTab () {
     const { user, setUser } = useAuth()
     const router = useRouter()
 
-    interface Posts {
-        _id: string,
-        author: string,
-        body: string,
-        comments: [number],
-        createdAt: Date,
-        dislikes: number,
-        likes: number,
-        videos: [string]
-    }
+    
 
     const getVideoOnlyPosts = async () => {
         try {
@@ -105,15 +100,35 @@ export default function VideoTab () {
                 {/* {txtPreview && <HTMLRender editorOBJ={txtPreview}></HTMLRender>} */}
             </div>
             {vidOnlyPosts &&
-                vidOnlyPosts.map((post:Posts) => {
+                vidOnlyPosts.map((post:Post) => {
                     let json = post.body
                     if (typeof json === 'string') {
                         json = JSON.parse(json)
                     }
+                    console.log(json)
                     return (
-                        <div key={post._id}>
+                        <div key={post._id} className="vp-wrap">
+                            <div className='flex gap-2 p-2 items-center'>
+                                {post.author.image ?
+                                <div className='relative post-pfp-cont rounded-full overflow-hidden'>
+                                <Image src={post.author.image} fill={true} sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" alt='user pic'></Image>
+                                </div>
+                                :
+                                <BsPersonCircle className="backup-user-img" size={40}></BsPersonCircle> 
+                                }
+                                <div>
+                                    <p className='text-sm'>{formatUsername(post.author.name)}</p>
+                                    <p className='date-txt'>{formatDate(post.createdAt)}</p>
+                                </div>
+
+                            </div>
                             <HTMLRender editorOBJ={json}></HTMLRender>
-                            <ReactPlayer url={post.videos[0].url} controls={true} width="100%" height="auto"></ReactPlayer>
+                            {post.videos.map((video) => {
+                                return (
+                                    <ReactPlayer key={video._id} url={video.url} controls={true} width="100%" height="auto"></ReactPlayer>
+                                )
+                            })}
+                            
                         </div>
                     )
                 } )

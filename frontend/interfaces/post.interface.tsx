@@ -1,5 +1,5 @@
-
-
+import { Videos } from './video.interface'
+import { User } from './user.interface'
 
 export interface Post {
     _id:string,
@@ -9,6 +9,7 @@ export interface Post {
     dislikes: Number,
     title: string | null,
     comments: string[],
-    author: string,
+    author: User,
+    videos: Videos[],
 
 }

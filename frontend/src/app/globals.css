@@ -22,6 +22,8 @@
   --dashbgC: #e2e8f0;
   --dashbContentBg: white;
   --buttonbgc: blue;
+
+  --postBGC: white;
   
 }
 
@@ -215,6 +217,10 @@ h3 {
   visibility: hidden;
 
 
+}
+
+.vp-wrap {
+  background-color: var(--postBGC);
 }
 
 .overlay-inner {
@@ -495,13 +501,13 @@ li > button {
 .expanded {
   overflow: none;
   max-height: none;
-  padding: .75rem;
+  /* padding: .75rem; */
 }
 
 .expanded-false > div {
   overflow-y:hidden;
-  min-height: 5rem;
-  max-height: 7rem;
+  
+  max-height: 7.75rem;
   padding: .75rem;
 }
 
@@ -606,9 +612,12 @@ li > button {
   background-color: var(--DashboardBGC);
 }
 
+.num-count {
+  color:#868e96;
+}
 
-/* @media screen and (max-width: 1024px) {
-  .signup-error.arr-right, .signup-error.arr-left {
-    text-wrap: wrap;
-  }
-} */
+@media screen and (max-width: 1024px) {
+ .center-tab {
+  max-width: 520px;
+ }
+}

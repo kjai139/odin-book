@@ -160,10 +160,13 @@ exports.video_posts_get = async (req, res) => {
                 createdAt: -1
             }
         },
-        populate: {
+        populate: [{
             path: 'videos',
             model: 'Video'
-        }
+        },{
+            path: 'author',
+            model: 'User'
+        }]
     })
 
     res.json({
