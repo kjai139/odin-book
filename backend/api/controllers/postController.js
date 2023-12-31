@@ -173,3 +173,34 @@ exports.video_posts_get = async (req, res) => {
         updatedUser: theUser
     })
 }
+
+exports.postOnly_get = async (req, res) => {
+    try {
+        const theUser = await User.findById(req.user._id).populate({
+            path: 'posts',
+            match: {
+                videos: {
+                    $exists: false
+                }
+            },
+            options: {
+                sort: {
+                    createdAt: -1
+                },
+                limit: 10
+            },
+            populate: [{
+                path: 'author',
+                model: 'User'
+            }]
+        })
+
+        res.json({
+            recentPosts: theUser.posts
+        })
+    } catch(err) {
+        res.status(500).json({
+            message: err.message
+        })
+    }
+}

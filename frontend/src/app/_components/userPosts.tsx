@@ -4,12 +4,33 @@ import TipTap from './tiptap'
 import { BsPersonCircle } from 'react-icons/bs'
 import { formatUsername, formatDate } from '../_utils/formatStrings'
 import PostRenderer from './postRenderer'
+import { useEffect, useState } from 'react'
+import axiosInstance from '../../../axios'
 
 export default function UserPosts() {
 
     const { user } = useAuth()
 
-    
+    const [recentPosts, setRecentPosts] = useState()
+
+    useEffect(() => {
+        const getPostsOnly = async () => {
+            try {
+                const response = await axiosInstance.get('/api/postsOnly/get', {
+                    withCredentials: true
+                })
+
+                if (response.data.recentPosts) {
+                    console.log('recent post with no vids:', response.data.recentPosts)
+                    setRecentPosts(response.data.recentPosts)
+                }
+            } catch (err) {
+                console.error(err)
+            }
+        }
+
+        getPostsOnly()
+    }, [])
 
 
 
