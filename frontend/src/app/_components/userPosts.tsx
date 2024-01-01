@@ -6,12 +6,13 @@ import { formatUsername, formatDate } from '../_utils/formatStrings'
 import PostRenderer from './postRenderer'
 import { useEffect, useState } from 'react'
 import axiosInstance from '../../../axios'
+import { Post } from '../../../interfaces/post.interface'
 
 export default function UserPosts() {
 
     const { user } = useAuth()
 
-    const [recentPosts, setRecentPosts] = useState()
+    const [recentPosts, setRecentPosts] = useState<Post[]>()
 
     useEffect(() => {
         const getPostsOnly = async () => {
@@ -42,7 +43,7 @@ export default function UserPosts() {
                 <TipTap type={'post'}></TipTap>
                 <h3>Your recent Posts</h3>
                 <div className='flex flex-col gap-2'>
-                {user?.posts.map((node) => {
+                {recentPosts && recentPosts.map((node) => {
 
                     
 
@@ -51,15 +52,15 @@ export default function UserPosts() {
                         <div key={node._id} className='post-cont rounded p-2 shadow'>
                             
                             <div className='flex gap-2 p-2 items-center'>
-                                {user.image ?
+                                {node.author.image ?
                                 <div className='relative post-pfp-cont'>
-                                <Image src={user.image} fill={true} sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" alt='user pic'></Image>
+                                <Image src={node.author.image} fill={true} sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" alt='user pic'></Image>
                                 </div>
                                 :
                                 <BsPersonCircle className="backup-user-img" size={40}></BsPersonCircle> 
                                 }
                                 <div>
-                                    <p className='text-sm'>{formatUsername(user.name)}</p>
+                                    <p className='text-sm'>{formatUsername(node.author.name)}</p>
                                     <p className='date-txt'>{formatDate(node.createdAt)}</p>
                                 </div>
 

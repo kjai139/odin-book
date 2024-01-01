@@ -105,7 +105,7 @@ export default function VideoTab () {
                     if (typeof json === 'string') {
                         json = JSON.parse(json)
                     }
-                    console.log(json)
+                    /* console.log(json) */
                     return (
                         <div key={post._id} className="vp-wrap">
                             <div className='flex gap-2 p-2 items-center'>
