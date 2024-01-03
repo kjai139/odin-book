@@ -52,9 +52,9 @@ export default function FriendRequest () {
                 return (
                     <div key={node._id} className="flex justify-between bg-white p-4 rounded shadow items-center">
                         <div className="flex gap-2">
-                            <div className="w-8 h-8">
+                            <div className="w-8 h-8 relative rounded-full overflow-hidden">
                             {node.image ?
-                            <Image src={node.image} alt="user profile picture"></Image> : 
+                            <Image src={node.image} alt="user profile picture" fill={true} sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"></Image> : 
                             <UserPortrait></UserPortrait>
                             }
                             </div>

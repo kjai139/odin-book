@@ -499,9 +499,13 @@ li > button {
 }
 
 .expanded {
-  overflow: none;
+  border-bottom: 2px solid var(--dashbgC);
   max-height: none;
-  /* padding: .75rem; */
+  padding: .75rem;
+}
+
+.expanded-false {
+  border-bottom: 2px solid var(--dashbgC);
 }
 
 .expanded-false > div {

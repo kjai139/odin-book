@@ -7,6 +7,7 @@ import PostRenderer from './postRenderer'
 import { useEffect, useState } from 'react'
 import axiosInstance from '../../../axios'
 import { Post } from '../../../interfaces/post.interface'
+import ReactPlayer from 'react-player'
 
 export default function UserPosts() {
 
@@ -49,7 +50,7 @@ export default function UserPosts() {
 
 
                     return (
-                        <div key={node._id} className='post-cont rounded p-2 shadow'>
+                        <div key={node._id} className='post-cont rounded shadow'>
                             
                             <div className='flex gap-2 p-2 items-center'>
                                 {node.author.image ?
@@ -67,7 +68,11 @@ export default function UserPosts() {
                             </div>
                             
                             <PostRenderer post={node?.body}></PostRenderer>
-
+                            {node.videos?.map((video) => {
+                                return (
+                                    <ReactPlayer key={video._id} url={video.url} controls={true} width="100%" height="auto"></ReactPlayer>
+                                )
+                            })}
                             
                             <div>
                             </div>

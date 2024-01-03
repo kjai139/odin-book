@@ -46,7 +46,7 @@ export default function HTMLRender ({editorOBJ}:HTMLRenderProps) {
 
    return (
         <div ref={editorRef} className={`${isPostExpanded ? 'expanded' : 'expanded-false'}`}>
-        <EditorContent editor={editor} className={`py-4 px-2`}>
+        <EditorContent editor={editor} className={`editor-p`}>
 
         </EditorContent>
         {editorRef.current && editorRef.current.clientHeight !== editorRef.current.children[0]?.scrollHeight ? 

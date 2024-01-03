@@ -29,8 +29,9 @@ export default function UserTab () {
 
     const router = useRouter()
 
-    const [postData, setPostData] = useState()
+    const [postData, setPostData] = useState<any>()
     const [videoData, setVideoData] = useState<File[] | null>(null)
+    const [resultMsg, setResultMsg] = useState('')
 
     
 
@@ -96,7 +97,26 @@ export default function UserTab () {
 
     const createGeneralPost = async () => {
         try {
-            console.log('general post data:', postData, videoData)
+            console.log('general post data:', postData)
+            console.log('general video data:', videoData)
+            const formData = new FormData()
+            if (postData && !videoData) {
+                const json = postData.getJSON()
+                const response = await axiosInstance.post('/api/post/create' , {
+                    content: json
+                }, {
+                    withCredentials: true
+                })
+
+                if (response.data.success) {
+                    
+                }
+
+            } else if (videoData && !postData) {
+                
+
+                const response = await axiosInstance.post('/api/post/create2')
+            }
 
         } catch(err) {
             console.error(err)

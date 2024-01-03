@@ -178,11 +178,11 @@ exports.postOnly_get = async (req, res) => {
     try {
         const theUser = await User.findById(req.user._id).populate({
             path: 'posts',
-            match: {
+            /* match: {
                 videos: {
                     $exists: false
                 }
-            },
+            }, */
             options: {
                 sort: {
                     createdAt: -1
@@ -192,6 +192,9 @@ exports.postOnly_get = async (req, res) => {
             populate: [{
                 path: 'author',
                 model: 'User'
+            }, {
+                path: 'videos',
+                model: 'Video'
             }]
         })
 
@@ -202,5 +205,13 @@ exports.postOnly_get = async (req, res) => {
         res.status(500).json({
             message: err.message
         })
+    }
+}
+
+exports.postGeneral_post = async (req, res) => {
+    try {
+        
+    } catch (err) {
+
     }
 }

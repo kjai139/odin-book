@@ -50,7 +50,7 @@ export default function PostRenderer ({post}:PostRendererProps) {
 
     return (
         <div ref={editorRef} className={`${isPostExpanded ? 'expanded' : 'expanded-false'}`}>
-            <EditorContent editor={editor}></EditorContent>
+            <EditorContent editor={editor} className="editor-p"></EditorContent>
             {editorRef.current && editorRef.current.clientHeight !== editorRef.current.children[0]?.scrollHeight ? 
             <ExpandBtnTT refEle={editorRef} isExpanded={isPostExpanded} setIsExpanded={setIsPostExpanded}></ExpandBtnTT> :
             null
