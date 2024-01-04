@@ -35,6 +35,22 @@ export default function FriendRequest () {
         }
     }
 
+    const acceptFriendReq = async (targetId:string) => {
+        try {
+            const response = await axiosInstance.post('/api/friends/accept', {
+                targetId: targetId
+            }, {
+                withCredentials: true
+            })
+
+            if (response.data.updatedPending) {
+                console.log('new updated Pending:', response.data.updatedPending)
+            }
+        } catch (err) {
+            console.error(err)
+        }
+    }
+
     useEffect(() => {
         if (user) {
             console.log('friend requests updated, getting populated ver...')
@@ -42,6 +58,8 @@ export default function FriendRequest () {
         }
 
     }, [user])
+
+
 
     return (
         <div className="mt-8 flex flex-col gap-4">
@@ -62,7 +80,7 @@ export default function FriendRequest () {
                             <h3>{formatUsername(node.name)}</h3>
                         </div>
                         <div className="flex gap-4">
-                            <button>Accept</button>
+                            <button onClick={() => acceptFriendReq(node._id)}>Accept</button>
                             <button>Decline</button>
                         </div>
                         

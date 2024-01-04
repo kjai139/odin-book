@@ -11,6 +11,7 @@ const storage = multer.memoryStorage()
 const upload = multer({storage: storage, limits:{ fileSize: 2 * 1024 * 1024} })
 const s3Client = require('../../s3Client')
 const multerS3 = require('multer-s3')
+const { friendsRequest_accept_post } = require('../controllers/friendsController')
 
 const s3Upload = multer({
     storage: multerS3({
@@ -60,5 +61,8 @@ router.post('/post/create2', passport.authenticate('jwt', {session: false}), s3U
 router.get('/vids/get', passport.authenticate('jwt', {session: false}), video_posts_get)
 
 router.get('/postsOnly/get', passport.authenticate('jwt', {session: false}), postOnly_get)
+
+
+router.post('/friends/accept', passport.authenticate('jwt', {session: false}), friendsRequest_accept_post)
 
 module.exports = router
