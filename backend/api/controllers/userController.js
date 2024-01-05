@@ -169,7 +169,7 @@ exports.user_suggested_find = async (req, res) => {
                     },
                     friendlist: {
                         $nin: [
-                            req.query.id
+                            new mongoose.Types.ObjectId(req.query.id)
                         ]
                     } 
                 }
@@ -180,6 +180,8 @@ exports.user_suggested_find = async (req, res) => {
                 }
             }
         ])
+
+
 
         res.json({
             suggestedFrds: randomUsers

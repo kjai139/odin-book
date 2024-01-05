@@ -43,10 +43,13 @@ export default function YourFriends () {
         try {
             const response = await axiosInstance.post('/api/friends/remove', {
                 friendId: id
+            }, {
+                withCredentials: true
             })
 
             if (response.data.success) {
                 setDisplayingFriendlist(response.data.updatedFrds)
+                console.log(`friend ${id} removed`)
             }
         } catch (err) {
             console.error(err)

@@ -21,8 +21,8 @@ export default function Home() {
     <main className="flex justify-center items-center bg-login-bg w-screen flex-col">
       <div className="flex login-wrap">
         <div className="flex-1">
-        <h1 className="ht">Openchat</h1>
-        <p>It's like facebook but not really.</p>
+        <h1 className="ht">Yappers</h1>
+        <p>Yapp away with the world.</p>
         </div>
         <HomeLogin></HomeLogin>
         

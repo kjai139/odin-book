@@ -10,6 +10,7 @@ import { useRef, useState } from 'react'
 import AccountDModal from '../_modals/accountDetailModal'
 import { usePathname, useRouter } from 'next/navigation'
 import Image from 'next/image'
+import Link from 'next/link'
 
 interface DashboardProps {
   
@@ -67,6 +68,7 @@ export default function DashboardHeader() {
                             <li key={node.id} className={`header-li ${pathname === node.url ? 'selected' : ''}`}>
                                 <button className={`head-btn btn-${node.id}`} onClick={() => router.push(node.url)}>
                                 {node.icon}
+                        
                                 </button>
                                 
                                 <Tooltip content={node.tooltip} anchorSelect={`.btn-${node.id}`}></Tooltip>

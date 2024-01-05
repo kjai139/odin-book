@@ -7,7 +7,7 @@ let origin
 if (process.env.NODE_ENV === 'production') {
     origin = ''
 } else {
-    origin = 'http://localhost:3000'
+    origin = ['http://localhost:3000', 'http://localhost:3001']
 }
 
 const initSocket = (server) => {
