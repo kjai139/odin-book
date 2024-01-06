@@ -9,7 +9,7 @@ import { User } from "../interfaces/user.interface";
 
 interface AuthContexType {
     user: User | null,
-    setUser: React.Dispatch<React.SetStateAction<User | null>>
+    setUser: React.Dispatch<React.SetStateAction<User | any>>
     isAuthenticated: () => void,
     signOut: () => void,
     doneLoading: boolean,

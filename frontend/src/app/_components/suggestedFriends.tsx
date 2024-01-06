@@ -39,8 +39,14 @@ export default function SuggestedFriends() {
             console.log(response.data.message)
             setResultMsg(response.data.message)
         } else {
+            
             console.log(response?.data.message)
-            setResultMsg(response?.data.message)
+            if (typeof response.data.message !== 'string'){
+                setResultMsg(response?.data.message.response.data)
+            } else {
+                setResultMsg(response?.data.message)
+            }
+            
         }
 
     }

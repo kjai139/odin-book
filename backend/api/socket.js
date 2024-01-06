@@ -10,7 +10,7 @@ if (process.env.NODE_ENV === 'production') {
     origin = ['http://localhost:3000', 'http://localhost:3001']
 }
 
-const initSocket = (server) => {
+module.exports = (server) => {
     
     const io = new Server(server, {
         cors: {
@@ -59,4 +59,3 @@ const initSocket = (server) => {
     
 }
 
-module.exports = {initSocket}

@@ -380,6 +380,20 @@ input[type='text'], input[type='password'], input[type='email'] {
   
 }
 
+.frdReq {
+  position: absolute;
+  left: 10px;
+  bottom: 0;
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  width: 20px;
+  z-index: 2;
+  height: 20px;
+  background-color: yellow;
+}
+
 .suggest-af-btn {
   background-color: #e0f2fe;
 

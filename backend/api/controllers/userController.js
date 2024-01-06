@@ -7,6 +7,7 @@ const mongoose = require('mongoose')
 const { generateRandomString } = require('./imageController')
 const { PutObjectCommand, CopyObjectCommand, DeleteObjectCommand } = require('@aws-sdk/client-s3')
 const s3Client = require('../../s3Client')
+const socketConfig = require('../socket')
 
 
 exports.create_user_post = [
@@ -202,6 +203,7 @@ exports.user_suggested_find = async (req, res) => {
 exports.user_add_friend_req_post = async (req, res) => {
 
     const requesterId = req.body.userId
+    
 
 
     try {
@@ -234,11 +236,17 @@ exports.user_add_friend_req_post = async (req, res) => {
                 })
         
                 if (updatedUser) {
+                    
+                    socketConfig.io.to(req.body.id).emit('incFrdReq', {
+                        updatedFrdReq: updatedUser.friendReq
+                    })
+                    
                     res.json({
                         success: true,
                         message: `Friend request sent to user ${req.body.id}`
                     })
                 } else {
+                    
                     res.json({
                         success: false,
                         message: `Friend request is already pending.`
@@ -257,7 +265,7 @@ exports.user_add_friend_req_post = async (req, res) => {
         
     } catch (err) {
         res.status(500).json({
-            message: err
+            message: err.message
         })
     }
 }

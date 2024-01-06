@@ -12,7 +12,7 @@ export default function FriendRequest () {
     const [pendingFrdReq, setPendingFrdReq] = useState<User[]>([])
     const [isDataLoaded, setIsDataLoaded] = useState(false)
 
-    const { isAuthenticated, user } = useAuth()
+    const { isAuthenticated, user, setUser } = useAuth()
     const router = useRouter()
 
     const getPopulatedFrdReq = async (userId:string) => {
@@ -45,6 +45,10 @@ export default function FriendRequest () {
 
             if (response.data.updatedPending) {
                 console.log('new updated Pending:', response.data.updatedPending)
+                setUser((prev:any) => ({
+                    ...prev,
+                    friendReq: response.data.updatedPending
+                }))
             }
         } catch (err) {
             console.error(err)

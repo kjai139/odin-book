@@ -28,6 +28,7 @@ export default function DashboardLeftSideBar ({selectTab}:LeftSideBarProps) {
             title: user && user.name && formatUsername(user.name),
             id: 'dashleft-0',
             display: 1,
+            counter: null
             
         },
         {
@@ -35,12 +36,14 @@ export default function DashboardLeftSideBar ({selectTab}:LeftSideBarProps) {
             title: 'Posts',
             id: 'dashleft-1',
             display: 2,
+            counter:null
         },
         {
             image:  <VideoIcon width={iconSize} height={iconSize}></VideoIcon>,
             title: 'Videos',
             id: 'dashelft-2',
             display: 3,
+            counter:null
         }
     ]
 
@@ -49,19 +52,22 @@ export default function DashboardLeftSideBar ({selectTab}:LeftSideBarProps) {
             image: <div className='icon-cont'><FaUserFriends size={iconSize}></FaUserFriends></div>,
             title: 'Your friends',
             id:'friendsleft-1',
-            display: 1
+            display: 1,
+            counter: null
         },
         {
             image: <div className='icon-cont'><TiUserAdd size={iconSize}></TiUserAdd></div>,
             title: 'Friend requests',
             id: 'friendsleft-2',
-            display: 2
+            display: 2,
+            counter: user && user.friendReq.length
         },
         {
             image: <div className='icon-cont'><FaStreetView size={iconSize}></FaStreetView></div>,
             title: 'Suggestions',
             id: 'friendsleft-3',
-            display: 3
+            display: 3,
+            counter: null
         }
     ]
 
@@ -97,9 +103,17 @@ export default function DashboardLeftSideBar ({selectTab}:LeftSideBarProps) {
             {user && getRenderedContent().map((node) => {
                 return (
                     <li key={`sb-${node.id}`}>
-                        <button className={`${selected === node.id ? 'l-side selected' : ''}`} onClick={() => handleSelect(node.display, node.id)}>
-                            <div className='flex gap-2 items-center align-center whitespace-nowrap'>
+                        <button className={`relative ${selected === node.id ? 'l-side selected' : ''}`} onClick={() => handleSelect(node.display, node.id)}>
+                        {node.counter !== null && 
+                                <div className='frdReq'>
+                                    {node.counter}
+                                </div>
+                                    }
+                        
+                            <div className='flex gap-2 items-center align-center whitespace-nowrap relative'>
+                                
                                 <div className='relative sb-img-cont items-center justify-center flex rounded-full overflow-hidden'>
+                                
                                 {node.image}
                                 </div>
                                 

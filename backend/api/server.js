@@ -11,11 +11,11 @@ const cookieParser = require('cookie-parser')
 const { Server } = require('socket.io')
 const { createServer } = require('http')
 const apiRouter = require('./routes/api')
-const { initSocket } = require('./socket')
+const socketIoConfig = require('./socket')
 const debug = require('debug')('odin-book:server')
 
 const httpServer = createServer(app)
-initSocket(httpServer)
+socketIoConfig(httpServer)
 
 const main = async () => {
     try {
@@ -39,6 +39,7 @@ app.use(express.json())
 app.use(cookieParser())
 /* app.use(express.urlencoded({extended: false})) */
 app.use(passport.initialize())
+
 app.use('/api', apiRouter)
 
 

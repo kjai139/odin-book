@@ -96,7 +96,7 @@ export default function YourFriends () {
                         
                     </div>
                 )
-            }): isDoneLoading && !displayingFriendlist &&
+            }): isDoneLoading && displayingFriendlist.length < 1 &&
             <div className="flex flex-col mt-8 gap-4">
                 
                 <div className="flex justify-center">

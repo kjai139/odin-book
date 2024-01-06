@@ -9,7 +9,7 @@ import { io } from 'socket.io-client'
 
 
 export default function DashboardLayout({children}: {children: React.ReactNode}) {
-    const { isAuthenticated, user } = useAuth()
+    const { isAuthenticated, user, setUser } = useAuth()
 
     let url:string
 
@@ -52,6 +52,14 @@ export default function DashboardLayout({children}: {children: React.ReactNode})
 
             socket.on('message', (msg) => {
                 console.log('Msg from server:', msg)
+            })
+
+            socket.on('incFrdReq', (data) => {
+                console.log('Friend request came from:', data.updatedFrdReq)
+                setUser((prev:any) => ({
+                    ...prev,
+                    friendReq: data.updatedFrdReq
+                }))
             })
             return () => {
                 socket.disconnect()
