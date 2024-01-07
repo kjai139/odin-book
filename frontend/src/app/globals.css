@@ -380,6 +380,10 @@ input[type='text'], input[type='password'], input[type='email'] {
   
 }
 
+.suggest-img-cont {
+  min-height: 108px;
+}
+
 .frdReq {
   position: absolute;
   left: 10px;

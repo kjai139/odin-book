@@ -55,6 +55,27 @@ export default function FriendRequest () {
         }
     }
 
+    const declineFriendReq = async (targetId: string) => {
+        try {
+            const response = await axiosInstance.post('/api/friend/request/decline', {
+                targetId: targetId
+            }, {
+                withCredentials: true
+            })
+
+            if (response.data.updatedPending) {
+                console.log('new updated Pending after declining friend:', response.data.updatedPending)
+                setUser((prev:any) => ({
+                    ...prev,
+                    friendReq: response.data.updatedPending
+                }))
+            }
+
+        } catch (err) {
+            console.error(err)
+        }
+    }
+
     useEffect(() => {
         if (user) {
             console.log('friend requests updated, getting populated ver...')
@@ -85,7 +106,7 @@ export default function FriendRequest () {
                         </div>
                         <div className="flex gap-4">
                             <button onClick={() => acceptFriendReq(node._id)}>Accept</button>
-                            <button>Decline</button>
+                            <button onClick={() => declineFriendReq(node._id)}>Decline</button>
                         </div>
                         
                     </div>

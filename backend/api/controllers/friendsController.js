@@ -1,5 +1,5 @@
 const User = require('../../models/userModel')
-
+const socketIoConfig = require('../socket')
 
 exports.friendsRequest_accept_post = async (req, res) => {
     const targetId = req.body.targetId
@@ -39,6 +39,30 @@ exports.friendsRequest_accept_post = async (req, res) => {
     }
 }
 
+exports.friendReq_decline_post = async (req, res) => {
+    try {
+        const { targetId } = req.body
+        const theUser = await User.findByIdAndUpdate(req.user._id, {
+            $pull: {
+                friendReq: targetId
+            }
+        }, {
+            new: true
+        }).populate('friendReq')
+
+        res.json({
+            updatedPending: theUser.friendReq
+        })
+
+
+
+    } catch (err) {
+        res.status(500).json({
+            message: err.message
+        })
+    }
+}
+
 
 exports.friendsDelete_post = async (req, res) => {
     try {
@@ -55,7 +79,15 @@ exports.friendsDelete_post = async (req, res) => {
             $pull: {
                 friendlist: req.user._id
             }
+        }, {
+            new: true
+        }).populate('friendlist')
+
+        socketIoConfig.io.to(friendId).emit('frdRemoved', {
+            updatedFriendlist: theFriend.friendlist
         })
+
+        
 
         res.json({
             updatedFrds: theUser.friendlist

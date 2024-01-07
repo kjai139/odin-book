@@ -50,9 +50,11 @@ export default function YourFriends () {
             if (response.data.success) {
                 setDisplayingFriendlist(response.data.updatedFrds)
                 console.log(`friend ${id} removed`)
+                setIsPromptOpen(false)
             }
         } catch (err) {
             console.error(err)
+            setIsPromptOpen(false)
         }
     }
 

@@ -61,6 +61,14 @@ export default function DashboardLayout({children}: {children: React.ReactNode})
                     friendReq: data.updatedFrdReq
                 }))
             })
+
+            socket.on('frdRemoved', (data) => {
+                console.log(`A friend was removed.`)
+                setUser((prev:any) => ({
+                    ...prev,
+                    friendlist: data.updatedFriendlist
+                }))
+            })
             return () => {
                 socket.disconnect()
                 console.log('socket disconnected from cleanup.')
