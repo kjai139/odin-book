@@ -7,6 +7,7 @@ import Image from "next/image"
 import { UserPortrait } from "../SVGRComponent"
 import { formatUsername } from "@/app/_utils/formatStrings"
 import PromptModal from "@/app/_modals/promptModal"
+import AddFriends from "./addFriends"
 
 export default function YourFriends () {
 
@@ -47,7 +48,7 @@ export default function YourFriends () {
                 withCredentials: true
             })
 
-            if (response.data.success) {
+            if (response.data.updatedFrds) {
                 setDisplayingFriendlist(response.data.updatedFrds)
                 console.log(`friend ${id} removed`)
                 setIsPromptOpen(false)
@@ -107,6 +108,8 @@ export default function YourFriends () {
                 <h3 className="text-center">You have no friends yet...</h3>
             </div> 
             }
+
+            <AddFriends></AddFriends>
 
         </div>
     )
