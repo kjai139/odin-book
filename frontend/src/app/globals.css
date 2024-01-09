@@ -120,6 +120,7 @@ h3 {
 
 .head-btn:hover {
   background-color: #e2e8f0;
+  
 }
 
 .header-modal {
@@ -509,6 +510,12 @@ li > button {
   display: flex;
   border-bottom: 2px solid transparent;
 }
+
+.head-btn:active {
+  background-color: var(--modalbg);
+}
+
+
 
 .header-li.selected {
   border-color: blue;

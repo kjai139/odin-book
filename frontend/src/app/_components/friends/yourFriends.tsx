@@ -7,7 +7,7 @@ import Image from "next/image"
 import { UserPortrait } from "../SVGRComponent"
 import { formatUsername } from "@/app/_utils/formatStrings"
 import PromptModal from "@/app/_modals/promptModal"
-import AddFriends from "./addFriends"
+import AddFriends from "./addFriendsForm"
 
 export default function YourFriends () {
 
@@ -109,7 +109,9 @@ export default function YourFriends () {
             </div> 
             }
 
+            {isDoneLoading &&
             <AddFriends></AddFriends>
+            }
 
         </div>
     )
