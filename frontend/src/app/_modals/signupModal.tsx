@@ -32,6 +32,7 @@ export default function SignUpModal({closeModal}:SignupModalProps) {
     const schema = yup.object({
         email: yup.string().required('This field is required'),
         password: yup.string().required('This field is required').min(6, 'Password must have min length of 6 characters').matches(/^(?=.*[a-z])/, 'Password must contain at least one lowercase letter').matches(/^(?=.*[A-Z])/, 'must contain at least one uppercase letter').matches(/^(?=.*[!@#$%^&()_+-])/, 'must have at least one special character').max(20, 'Password cannot have more than 20 characters'),
+        confirmPassword: yup.string().required('This field is required').oneOf([yup.ref('password')], 'Passwords must match'),
         firstName: yup.string().trim().required('first name is required'),
         lastName: yup.string().trim().required('last name is required'),
         phone: yup.string().optional().test('isValid', 'Invalid number', (value) => {
@@ -46,6 +47,7 @@ export default function SignUpModal({closeModal}:SignupModalProps) {
     type Inputs = {
         email:string,
         password: string,
+        confirmPassword: string,
         firstName: string,
         lastName: string,
         phone:string,
@@ -176,6 +178,16 @@ export default function SignUpModal({closeModal}:SignupModalProps) {
                 {errors.password?.message &&
                 <p className='signup-error arr-right'>
                     {errors.password?.message}
+                </p>
+                }
+                </div>
+            </div>
+            <div>
+                <div className='relative'>
+                <input className='modal-i' {...register('confirmPassword')} type='password' placeholder='Confirm password'></input>
+                {errors.confirmPassword?.message &&
+                <p className='signup-error arr-right'>
+                    {errors.confirmPassword?.message}
                 </p>
                 }
                 </div>
