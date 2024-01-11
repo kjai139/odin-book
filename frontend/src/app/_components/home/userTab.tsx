@@ -109,13 +109,24 @@ export default function UserTab () {
                 })
 
                 if (response.data.success) {
-                    
+                    console.log(response.data.message)
                 }
 
-            } else if (videoData && !postData) {
+            } else if (videoData) {
+                formData.append('video', videoData[0])
+                if (postData) {
+                    const editorJson = postData.getJSON()
+                    formData.append('content', editorJson)
+                }
                 
 
-                const response = await axiosInstance.post('/api/post/create2')
+                const response = await axiosInstance.post('/api/post/create2', formData, {
+                    withCredentials: true
+                })
+
+                if (response.data.success) {
+                    console.log(response.data.message)
+                }
             }
 
         } catch(err) {

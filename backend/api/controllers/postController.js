@@ -71,7 +71,7 @@ exports.post_create_post = async (req, res) => {
         
 
         res.json({
-            message: 'post created',
+            message: 'Post created',
             success: true,
             updatedUser: theUser
         })
