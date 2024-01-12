@@ -8,6 +8,7 @@ import { ProgressBar } from "react-loader-spinner"
 import { useRouter } from "next/navigation"
 import VideoUploader from "./videoUploader"
 import DefaultTiptap from "./defaultTipTap"
+import ResultModal from "@/app/_modals/resultModal"
 
 
 export default function UserTab () {
@@ -82,7 +83,7 @@ export default function UserTab () {
 
             if (response.data.success) {
 
-                setUser((prev) => ({
+                setUser((prev:any) => ({
                     ...prev!,
                     image: response.data.updatedImage
                 }))
@@ -112,21 +113,28 @@ export default function UserTab () {
                     console.log(response.data.message)
                 }
 
-            } else if (videoData) {
+            } else if (videoData && postData) {
                 formData.append('video', videoData[0])
-                if (postData) {
-                    const editorJson = postData.getJSON()
-                    formData.append('content', editorJson)
-                }
+                
+                const editorJson = postData.getJSON()
+                formData.append('content', editorJson)
+            
+                formData.append('content', '')
+                
                 
 
                 const response = await axiosInstance.post('/api/post/create2', formData, {
-                    withCredentials: true
+                    withCredentials: true,
+                    timeout: 10000,
                 })
 
                 if (response.data.success) {
                     console.log(response.data.message)
+                    setResultMsg(response.data.message)
                 }
+            } else {
+                console.log('Must write something.')
+                setResultMsg('Must write something to post.')
             }
 
         } catch(err) {
@@ -138,6 +146,9 @@ export default function UserTab () {
 
     return (
         <>
+            {resultMsg &&
+            <ResultModal resultMsg={resultMsg} closeModal={() => setResultMsg('')}></ResultModal>
+            }
             { user &&
             <div className="flex flex-col gap-4"> 
             <h3>Welcome, {formatUsername(user.name)}#{user.uniqueId}!</h3>

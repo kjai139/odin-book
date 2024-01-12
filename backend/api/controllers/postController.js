@@ -95,6 +95,7 @@ exports.post_vid_create_post = async (req, res) => {
         })
         
         await newVideo.save()
+        
 
 
         const newPost = new Post({
