@@ -142,6 +142,14 @@ export default function UserTab () {
         }
     }
 
+    const displayAllRecentPosts = async () => {
+        try {
+            const response = await axiosInstance.get(`/api/posts/friends/user?=${user._id}`)
+        } catch (err) {
+            console.error(err)
+        }
+    }
+
 
 
     return (
