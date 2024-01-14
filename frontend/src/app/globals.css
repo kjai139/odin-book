@@ -491,6 +491,10 @@ input[type='text'], input[type='password'], input[type='email'] {
   min-height:125px;
 }
 
+.pfp-cont:hover {
+  cursor: pointer;
+}
+
 .up-cont {
   max-width: 128px;
 }

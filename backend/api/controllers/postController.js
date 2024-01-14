@@ -7,6 +7,7 @@ const { generateRandomString } = require('./imageController')
 const Video = require('../../models/videoModel')
 const mongoose = require('mongoose')
 
+
 exports.post_create_post = async (req, res) => {
     try {
         const content = req.body.content
@@ -153,7 +154,8 @@ exports.video_posts_get = async (req, res) => {
         path: 'posts',
         match: {
             videos: {
-                $exists:true
+                $exists:true,
+                $ne: [],
             }
         },
         options: {
@@ -209,10 +211,57 @@ exports.postOnly_get = async (req, res) => {
     }
 }
 
-exports.postGeneral_post = async (req, res) => {
+exports.postTimeline_get = async (req, res) => {
     try {
+        const userId = new mongoose.Types.ObjectId(req.user._id)
         
-    } catch (err) {
 
+        const posts = await Post.aggregate([
+            {
+                $lookup: {
+                   from: 'users',
+                   localField: 'author',
+                   foreignField: '_id',
+                   as: 'authorInfo'
+                }
+                
+            },
+            {
+                $unwind: '$authorInfo'
+            },
+            {
+                $match: {
+                    $or: [
+                        {
+                            'authorInfo.friendlist': {
+                                $in: [userId]
+                            }
+                        },
+                        {
+                            'authorInfo._id': userId
+                        }
+                    ]
+                   
+                }
+            },
+            {
+                $sort: {
+                    createdAt: -1
+                }
+            },
+            {
+                $limit: 5
+            }
+        ])
+
+        debug('posts timeline:', posts, userId)
+
+        res.json({
+            timeline: posts
+        })
+    } catch (err) {
+        res.status(500).json({
+            message: err.message
+        })
     }
 }

@@ -144,11 +144,21 @@ export default function UserTab () {
 
     const displayAllRecentPosts = async () => {
         try {
-            const response = await axiosInstance.get(`/api/posts/friends/user?=${user._id}`)
+            const response = await axiosInstance.get(`/api/posts/timeline-get`, {
+                withCredentials: true
+            })
+
+            if (response.data.timeline) {
+                console.log(response.data.timeline)
+            }
         } catch (err) {
             console.error(err)
         }
     }
+
+    useEffect(() => {
+            displayAllRecentPosts()
+    }, [])
 
 
 
@@ -201,7 +211,7 @@ export default function UserTab () {
 
                 <h3>What's on your mind?</h3>
                     
-                <div className="flex flex-col gap-2 bg-white p-4 relative">
+                <div className="flex flex-col gap-2 bg-white p-4 relative shadow rounded">
                     
                     <div className="vtt-post-cont p-2">
                     <button className="vtt-post-btn py-1 px-4 rounded-lg text-white" onClick={createGeneralPost}>Post</button>

@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const Video = require('../models/videoModel')
+const User = require('../models/userModel')
 
 const PostSchema = new Schema({
     title: {
