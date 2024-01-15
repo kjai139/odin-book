@@ -3,12 +3,14 @@ import { useAuth } from "../../../../context/authContext"
 import Image from "next/image"
 import { UserPortrait } from "../SVGRComponent"
 import axiosInstance from '../../../../axios'
-import { formatUsername } from "@/app/_utils/formatStrings"
+import { formatUsername, formatDate } from "@/app/_utils/formatStrings"
 import { ProgressBar } from "react-loader-spinner"
 import { useRouter } from "next/navigation"
 import VideoUploader from "./videoUploader"
 import DefaultTiptap from "./defaultTipTap"
 import ResultModal from "@/app/_modals/resultModal"
+import HTMLRender from "./htmlRender"
+import { BsPersonCircle } from "react-icons/bs"
 
 
 export default function UserTab () {
@@ -33,6 +35,9 @@ export default function UserTab () {
     const [postData, setPostData] = useState<any>()
     const [videoData, setVideoData] = useState<File[] | null>(null)
     const [resultMsg, setResultMsg] = useState('')
+
+    const [yourRecentPost, setYourRecentPost] = useState()
+    const [friendsRecentPost, setFriendsRecentPost] = useState([])
 
     
 
@@ -111,6 +116,7 @@ export default function UserTab () {
 
                 if (response.data.success) {
                     console.log(response.data.message)
+                    setResultMsg(response.data.message)
                 }
 
             } else if (videoData && postData) {
@@ -150,6 +156,7 @@ export default function UserTab () {
 
             if (response.data.timeline) {
                 console.log(response.data.timeline)
+                setFriendsRecentPost(response.data.timeline)
             }
         } catch (err) {
             console.error(err)
@@ -220,7 +227,30 @@ export default function UserTab () {
 
                     <VideoUploader setVideoData={setVideoData}></VideoUploader>
                     </div>
+                    <h3>Your most recent post</h3>
+                    {user && user.posts &&
+                    <>
+                        <div className='flex gap-2 p-2 items-center'>
+                        {user.posts[0].author.image ?
+                        <div className='relative post-pfp-cont rounded-full overflow-hidden'>
+                        <Image src={user.posts[0].author.image} fill={true} sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" alt='user pic'></Image>
+                        </div>
+                        :
+                        <BsPersonCircle className="backup-user-img" size={40}></BsPersonCircle> 
+                        }
+                        <div>
+                            <p className='text-sm'>{formatUsername(user.posts[0].author.name)}</p>
+                            <p className='date-txt'>{formatDate(user.posts[0].createdAt)}</p>
+                        </div>
+
+                        </div>
+                        <HTMLRender editorOBJ={user.posts[0].body}></HTMLRender>
+                    </>
+                    }
+
                 </div>
+                
+                
 
            
             }

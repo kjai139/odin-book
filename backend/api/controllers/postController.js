@@ -237,9 +237,9 @@ exports.postTimeline_get = async (req, res) => {
                                 $in: [userId]
                             }
                         },
-                        {
+                       /*  {
                             'authorInfo._id': userId
-                        }
+                        } */
                     ]
                    
                 }
@@ -255,6 +255,8 @@ exports.postTimeline_get = async (req, res) => {
         ])
 
         debug('posts timeline:', posts, userId)
+
+        
 
         res.json({
             timeline: posts

@@ -35,7 +35,7 @@ export default function HTMLRender ({editorOBJ}:HTMLRenderProps) {
     } else {
         if (editorOBJ) {
             if (typeof editorOBJ === 'string') {
-                
+                editorOBJ = JSON.parse(editorOBJ)
             }
             editor.commands.setContent(editorOBJ)
             
