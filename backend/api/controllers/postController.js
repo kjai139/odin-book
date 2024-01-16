@@ -222,18 +222,18 @@ exports.postTimeline_get = async (req, res) => {
                    from: 'users',
                    localField: 'author',
                    foreignField: '_id',
-                   as: 'authorInfo'
+                   as: 'author'
                 }
                 
             },
             {
-                $unwind: '$authorInfo'
+                $unwind: '$author'
             },
             {
                 $match: {
                     $or: [
                         {
-                            'authorInfo.friendlist': {
+                            'author.friendlist': {
                                 $in: [userId]
                             }
                         },
@@ -253,6 +253,8 @@ exports.postTimeline_get = async (req, res) => {
                 $limit: 5
             }
         ])
+
+        
 
         debug('posts timeline:', posts, userId)
 

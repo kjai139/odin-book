@@ -279,6 +279,15 @@ input[type='text'], input[type='password'], input[type='email'] {
 .db-g-cont {
   display: flex;
   justify-content: space-between;
+  margin-bottom: 8rem;
+}
+
+.post-icons {
+  display: flex;
+  align-items: center;
+  gap: .25rem;
+  padding: .5rem;
+  color: var(--labelC);
 }
 
 .center-tab {

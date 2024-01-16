@@ -11,6 +11,10 @@ import DefaultTiptap from "./defaultTipTap"
 import ResultModal from "@/app/_modals/resultModal"
 import HTMLRender from "./htmlRender"
 import { BsPersonCircle } from "react-icons/bs"
+import { Post } from "../../../../interfaces/post.interface"
+import ReactPlayer from "react-player"
+import { AiOutlineLike, AiOutlineDislike } from 'react-icons/ai'
+import { FaRegComment } from "react-icons/fa"
 
 
 export default function UserTab () {
@@ -37,7 +41,7 @@ export default function UserTab () {
     const [resultMsg, setResultMsg] = useState('')
 
     const [yourRecentPost, setYourRecentPost] = useState()
-    const [friendsRecentPost, setFriendsRecentPost] = useState([])
+    const [friendsRecentPost, setFriendsRecentPost] = useState<Post[]>([])
 
     
 
@@ -229,7 +233,8 @@ export default function UserTab () {
                     </div>
                     <h3>Your most recent post</h3>
                     {user && user.posts &&
-                    <>
+                    <>  
+                        <div className="post-cont rounded">
                         <div className='flex gap-2 p-2 items-center'>
                         {user.posts[0].author.image ?
                         <div className='relative post-pfp-cont rounded-full overflow-hidden'>
@@ -245,7 +250,63 @@ export default function UserTab () {
 
                         </div>
                         <HTMLRender editorOBJ={user.posts[0].body}></HTMLRender>
+                        </div>
                     </>
+                    }
+                    {
+                        user && user.friendlist.length > 0 &&
+                        <>
+                        <h3>What your friends are yapping about</h3>
+                        {
+                            friendsRecentPost && friendsRecentPost.map((node) => {
+                                return (
+                                    <div key={node._id} className="post-cont rounded">
+                                        <div className='flex gap-2 p-2 items-center'>
+                                        {node.author.image ?
+                                        <div className='relative post-pfp-cont rounded-full overflow-hidden'>
+                                        <Image src={node.author.image} fill={true} sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" alt='user pic'></Image>
+                                        </div>
+                                        :
+                                        <BsPersonCircle className="backup-user-img" size={40}></BsPersonCircle> 
+                                        }
+                                        <div>
+                                            <p className='text-sm'>{formatUsername(node.author.name)}</p>
+                                            <p className='date-txt'>{formatDate(node.createdAt)}</p>
+                                        </div>
+
+                                        </div>
+                                        <HTMLRender editorOBJ={node.body}></HTMLRender>
+                                        {node.videos && node.videos.length > 0 &&
+                                        node.videos.map((video) => {
+                                            return (
+                                                <ReactPlayer key={video._id} url={video.url} controls={true} width="100%" height="auto"></ReactPlayer>
+                                            )
+                                        })
+                                        }
+                                        <div>
+                                            <div className="flex justify-around">
+                                                <button className="post-icons">
+                                                    <p>Like</p>
+                                                    <AiOutlineLike></AiOutlineLike>
+
+                                                </button>
+                                                <button className="post-icons">
+                                                    <p>Dislike</p>
+                                                    <AiOutlineDislike></AiOutlineDislike>
+
+                                                </button>
+                                                <button className="post-icons">
+                                                    <p>Comment</p>
+                                                    <FaRegComment></FaRegComment>
+
+                                                </button>
+                                            </div>
+                                        </div>
+                                        </div>
+                                )
+                            })
+                        }
+                        </>
                     }
 
                 </div>

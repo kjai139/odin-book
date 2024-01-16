@@ -5,7 +5,7 @@ import { useAuth } from "../../../context/authContext"
 import { useRouter } from "next/navigation"
 
 
-
+import HomeFooter from "../_components/homeFooter"
 import DashboardHeader from "../_components/dashboardHeader"
 import DashboardLeftSideBar from "../_components/dbLeftSideBar"
 import UserPosts from "../_components/userPosts"
@@ -51,6 +51,7 @@ export default function Dashboard () {
             </div>
             
             <div className="flex-1"></div>
+            
             
         </>
                

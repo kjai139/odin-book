@@ -5,7 +5,7 @@ import { useEffect } from "react"
 import DashboardHeader from "../_components/dashboardHeader"
 import { useAuth } from "../../../context/authContext"
 import { io } from 'socket.io-client'
-
+import HomeFooter from "../_components/homeFooter"
 
 
 export default function DashboardLayout({children}: {children: React.ReactNode}) {
@@ -89,6 +89,7 @@ export default function DashboardLayout({children}: {children: React.ReactNode})
                     {children}
                 </div>
             </div>
+            <HomeFooter></HomeFooter>
             
             
         </div>
