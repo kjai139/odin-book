@@ -15,6 +15,7 @@ import { Post } from "../../../../interfaces/post.interface"
 import ReactPlayer from "react-player"
 import { AiOutlineLike, AiOutlineDislike } from 'react-icons/ai'
 import { FaRegComment } from "react-icons/fa"
+import LikeDislikeCmt from "../buttons/likeDislikeCmt"
 
 
 export default function UserTab () {
@@ -234,7 +235,7 @@ export default function UserTab () {
                     <h3>Your most recent post</h3>
                     {user && user.posts &&
                     <>  
-                        <div className="post-cont rounded">
+                        <div className="post-cont rounded shadow">
                         <div className='flex gap-2 p-2 items-center'>
                         {user.posts[0].author.image ?
                         <div className='relative post-pfp-cont rounded-full overflow-hidden'>
@@ -260,7 +261,7 @@ export default function UserTab () {
                         {
                             friendsRecentPost && friendsRecentPost.map((node) => {
                                 return (
-                                    <div key={node._id} className="post-cont rounded">
+                                    <div key={node._id} className="post-cont rounded shadow">
                                         <div className='flex gap-2 p-2 items-center'>
                                         {node.author.image ?
                                         <div className='relative post-pfp-cont rounded-full overflow-hidden'>
@@ -283,25 +284,7 @@ export default function UserTab () {
                                             )
                                         })
                                         }
-                                        <div>
-                                            <div className="flex justify-around">
-                                                <button className="post-icons">
-                                                    <p>Like</p>
-                                                    <AiOutlineLike></AiOutlineLike>
-
-                                                </button>
-                                                <button className="post-icons">
-                                                    <p>Dislike</p>
-                                                    <AiOutlineDislike></AiOutlineDislike>
-
-                                                </button>
-                                                <button className="post-icons">
-                                                    <p>Comment</p>
-                                                    <FaRegComment></FaRegComment>
-
-                                                </button>
-                                            </div>
-                                        </div>
+                                        <LikeDislikeCmt postId={node._id} setRenderState={setFriendsRecentPost}></LikeDislikeCmt>
                                         </div>
                                 )
                             })

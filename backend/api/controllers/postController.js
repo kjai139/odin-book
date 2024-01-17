@@ -269,3 +269,27 @@ exports.postTimeline_get = async (req, res) => {
         })
     }
 }
+
+
+
+exports.post_likePost_post = async (req, res) => {
+    try {
+        const postId = req.body.postId
+        const thePost = Post.findByIdAndUpdate(postId, {
+            $inc: {
+                likes: 1
+            }
+        }, {
+            new: true
+        })
+
+        res.json({
+            updatedPost: thePost
+        })
+
+    } catch (err) {
+        res.status(500).json({
+            message: err.message
+        })
+    }
+}
