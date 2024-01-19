@@ -11,5 +11,7 @@ export interface Post {
     comments: string[],
     author: User,
     videos: Videos[],
+    didUserLike: Boolean,
+    didUserDislike: Boolean,
 
 }

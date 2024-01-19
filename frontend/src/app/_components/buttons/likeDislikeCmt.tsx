@@ -5,25 +5,25 @@ import { Post } from "../../../../interfaces/post.interface"
 import { useState } from "react"
 
 interface LikeDisLikeCmtProps {
-    postId: string,
+    thePost: Post,
     setRenderState: React.Dispatch<React.SetStateAction<Post[]>>
 }
 
-export default function LikeDislikeCmt ({postId, setRenderState}:LikeDisLikeCmtProps) {
+export default function LikeDislikeCmt ({thePost, setRenderState}:LikeDisLikeCmtProps) {
 
     const [isPostLiked, setIsPostLiked ] = useState(false)
     const [isPostDisliked, setIsPostDisliked ] = useState(false)
     const likePost = async () => {
         try {
             const response = await axiosInstance.post('/api/post/likePost', {
-                postId: postId,
+                postId: thePost._id,
                 action: isPostLiked ? 'unlike' : 'like'
             }, {
                 withCredentials: true
             })
             if (response.data.updatedPost) {
-                setRenderState((prev) => prev.map((post) => (post._id === postId ? response.data.updatedPost : post)))
-                console.log(`post ${postId} updated in likes`)
+                setRenderState((prev) => prev.map((post) => (post._id === thePost._id ? response.data.updatedPost : post)))
+                console.log(`post ${thePost._id} updated in likes`)
                 setIsPostDisliked(false)
                 setIsPostLiked(true)
             }
@@ -40,7 +40,7 @@ export default function LikeDislikeCmt ({postId, setRenderState}:LikeDisLikeCmtP
     const dislikePost = async () => {
         try {
             const response = axiosInstance.post('/api/post/dislikePost', {
-                postId: postId,
+                postId: thePost._id,
                 action: isPostDisliked ? 'undislike' : 'dislike'
             }, {
                 withCredentials: true
@@ -60,12 +60,12 @@ export default function LikeDislikeCmt ({postId, setRenderState}:LikeDisLikeCmtP
     return (
         <div>
             <div className="flex justify-around mb-2 like-cont">
-                <button className={`post-icons ${isPostLiked ? 'p-liked' : 'p-blank'}`} onClick={likePost}>
+                <button className={`post-icons ${thePost.didUserLike ? 'p-liked' : 'p-blank'}`} onClick={likePost}>
                     <p>Like</p>
                     <AiOutlineLike></AiOutlineLike>
 
                 </button>
-                <button className={`post-icons ${isPostDisliked ? 'p-disliked' : 'p-blank'}`} onClick={dislikePost}>
+                <button className={`post-icons ${thePost.didUserDislike ? 'p-disliked' : 'p-blank'}`} onClick={dislikePost}>
                     <p>Dislike</p>
                     <AiOutlineDislike></AiOutlineDislike>
 

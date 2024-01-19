@@ -275,29 +275,23 @@ exports.postTimeline_get = async (req, res) => {
 exports.post_likePost_post = async (req, res) => {
     try {
         const postId = req.body.postId
-        if (req.body.action === 'like') {
-            const thePost = Post.findByIdAndUpdate(postId, {
-                $inc: {
-                    likes: 1
-                }
-            }, {
-                new: true
-            })
-            res.json({
-                updatedPost: thePost
-            })
-        } else if (req.body.action === 'unlike') {
-            const thePost = Post.findByIdAndUpdate(postId, {
-                $inc: {
-                    likes: -1
-                }
-            }, {
-                new: true
-            })
-            res.json({
-                updatedPost: thePost
-            })
+        const thePost = await Post.findById(postId).populate('author')
+
+        if (thePost.didUserLike) {
+            thePost.didUserLike = false
+            thePost.likes -= 1
+
+        } else if (!thePost.didUserLike) {
+            thePost.didUserLike = true,
+            thePost.likes += 1
         }
+
+        const updatedPost = await thePost.save()
+
+        res.json({
+            updatedPost: updatedPost
+        })
+
 
 
 

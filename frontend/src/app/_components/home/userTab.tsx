@@ -287,7 +287,7 @@ export default function UserTab () {
                                         <div className="p-2 text-sm">
                                             <p>{`${node.likes} likes and ${node.dislikes} dislikes.`}</p>
                                         </div>
-                                        <LikeDislikeCmt postId={node._id} setRenderState={setFriendsRecentPost}></LikeDislikeCmt>
+                                        <LikeDislikeCmt thePost={node} setRenderState={setFriendsRecentPost}></LikeDislikeCmt>
                                         </div>
                                 )
                             })
