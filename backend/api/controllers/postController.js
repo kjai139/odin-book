@@ -282,8 +282,10 @@ exports.post_likePost_post = async (req, res) => {
             thePost.likes -= 1
 
         } else if (!thePost.didUserLike) {
-            thePost.didUserLike = true,
+            thePost.didUserLike = true
             thePost.likes += 1
+            thePost.dislikes -= 1
+            thePost.didUserDislike = false
         }
 
         const updatedPost = await thePost.save()
@@ -294,6 +296,34 @@ exports.post_likePost_post = async (req, res) => {
 
 
 
+
+    } catch (err) {
+        res.status(500).json({
+            message: err.message
+        })
+    }
+}
+
+exports.post_dislike_post = async (req, res) => {
+    try {
+        const postId = req.body.postId
+        const thePost = await Post.findById(postId).populate('author')
+
+        if (thePost.didUserDislike) {
+            thePost.didUserDislike = false
+            thePost.dislikes -= 1
+        } else if (!thePost.didUserDislike) {
+            thePost.didUserLike = false
+            thePost.didUserDislike = true
+            thePost.dislikes += 1
+            thePost.likes -= 1
+        }
+
+        const updatedPost = await thePost.save()
+
+        res.json({
+            updatedPost: updatedPost
+        })
 
     } catch (err) {
         res.status(500).json({

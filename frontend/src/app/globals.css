@@ -24,7 +24,7 @@
   --buttonbgc: blue;
 
   --postBGC: white;
-  
+  --cmtModalBg:#e2e8f0;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -667,8 +667,16 @@ li > button {
   background-color: var(--dashbgC);
 }
 
-.p-liked {
+.p-liked, .p-disliked {
   color:blue;
+}
+
+.cmt-modal-cont {
+  background-color: var(--cmtModalBg);
+}
+
+.cmt-editor {
+  
 }
 
 .date-txt {
