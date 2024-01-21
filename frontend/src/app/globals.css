@@ -673,7 +673,35 @@ li > button {
 
 .cmt-modal-cont {
   background-color: var(--cmtModalBg);
+  /* transform: translateY(-100%); */
+  opacity: 0;
+  transition: all .3s;
+  pointer-events: none;
+  visibility: hidden;
+  max-height: 0;
 }
+
+.cmt-pfp-cont {
+  width: 25px;
+  height:25px;
+}
+
+.cmt-modal-pfp {
+  opacity: 0;
+  transition: all .3s;
+  pointer-events: none;
+  visibility: hidden;
+  max-height: 0;
+}
+
+.cmt-modal-cont.show, .cmt-modal-pfp.show {
+  max-height: 200px;
+  opacity: 1;
+  visibility: visible;
+  /* transform: translateY(0); */
+  pointer-events: inherit;
+}
+
 
 .cmt-editor {
   

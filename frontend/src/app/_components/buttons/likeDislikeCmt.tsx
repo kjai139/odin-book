@@ -64,7 +64,7 @@ export default function LikeDislikeCmt ({thePost, setRenderState}:LikeDisLikeCmt
     }
 
     return (
-        <div className="relative">
+        <div className="">
             <div className="flex justify-around mb-2 like-cont">
                 <button className={`post-icons ${thePost.didUserLike ? 'p-liked' : 'p-blank'}`} onClick={likePost}>
                     <p>Like</p>
@@ -76,14 +76,16 @@ export default function LikeDislikeCmt ({thePost, setRenderState}:LikeDisLikeCmt
                     <AiOutlineDislike></AiOutlineDislike>
 
                 </button>
-                <button className="post-icons">
+                <button className="post-icons" onClick={() => setIsCmtModalOpen(!isCmtModalOpen)}>
                     <p>Comment</p>
                     <FaRegComment></FaRegComment>
 
                 </button>
                 
             </div>
-            <CommentModal></CommentModal>
+            
+            <CommentModal thePost={thePost} setRenderState={setRenderState} isShowing={isCmtModalOpen}></CommentModal>
+            
         </div>
     )
 }

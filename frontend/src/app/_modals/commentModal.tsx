@@ -4,13 +4,17 @@ import { BiSolidRightArrow } from 'react-icons/bi'
 import Placeholder from '@tiptap/extension-placeholder'
 import axiosInstance from '../../../axios'
 import { Post } from "../../../interfaces/post.interface"
+import Image from "next/image"
+import { useAuth } from "../../../context/authContext"
+import { BsPersonCircle } from 'react-icons/bs'
 
 interface CommentModalProps {
     thePost: Post,
-    setRenderState: React.Dispatch<React.SetStateAction<Post[]>>
+    setRenderState: React.Dispatch<React.SetStateAction<Post[]>>,
+    isShowing: boolean
 }
 
-export default function CommentModal ({thePost, setRenderState}:CommentModalProps) {
+export default function CommentModal ({thePost, setRenderState, isShowing}:CommentModalProps) {
 
     const editor = useEditor({
         extensions: [
@@ -25,6 +29,8 @@ export default function CommentModal ({thePost, setRenderState}:CommentModalProp
             }
         }
     })
+
+    const { user } = useAuth()
 
     const postComment = async () => {
         try {
@@ -45,7 +51,23 @@ export default function CommentModal ({thePost, setRenderState}:CommentModalProp
 
 
     return (
-        <div className="cmt-modal-cont rounded-lg">
+        <>
+        <div className={`flex cmt-modal-pfp ${isShowing && 'show'}`}>
+            
+        {user && user.image ?
+                <div>
+                <div className='relative cmt-pfp-cont rounded-full overflow-hidden ml-1 mr-2 flex-shrink-0'>
+                <Image src={user.image} fill={true} sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" alt='user pic'></Image>
+                </div>
+                </div>
+                :
+                <BsPersonCircle className="backup-user-img" size={26}></BsPersonCircle> 
+        
+        }
+        
+        <div className={`cmt-modal-cont rounded mr-2 mb-2 w-full min-w-0 ${isShowing && 'show'}`}>
+            {/* set min-width to 0 to prevent overflow.  */}
+            
             <EditorContent editor={editor}></EditorContent>
             <div className="flex justify-end">
                 <button className="p-2">
@@ -56,5 +78,7 @@ export default function CommentModal ({thePost, setRenderState}:CommentModalProp
             </div>
 
         </div>
+        </div>
+        </>
     )
 }
