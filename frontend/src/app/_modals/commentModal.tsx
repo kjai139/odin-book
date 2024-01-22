@@ -34,14 +34,15 @@ export default function CommentModal ({thePost, setRenderState, isShowing}:Comme
 
     const postComment = async () => {
         try {
-            const response = await axiosInstance.post('/api/comments/post', {
-                content: editor?.getJSON()
+            const response = await axiosInstance.post('/api/comment/post', {
+                content: editor?.getJSON(),
+                postId: thePost._id
             }, {
                 withCredentials: true
             })
 
             if (response.data.updatedPost) {
-
+                console.log('updated post w comment:', response.data.updatedPost)
             }
 
         } catch (err) {
@@ -70,7 +71,7 @@ export default function CommentModal ({thePost, setRenderState, isShowing}:Comme
             
             <EditorContent editor={editor}></EditorContent>
             <div className="flex justify-end">
-                <button className="p-2">
+                <button className="p-2" type="button" onClick={postComment}>
                 <BiSolidRightArrow style={{
                     color: 'gray',
                 }}></BiSolidRightArrow>
