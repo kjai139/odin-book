@@ -7,6 +7,9 @@ import { Post } from "../../../interfaces/post.interface"
 import Image from "next/image"
 import { useAuth } from "../../../context/authContext"
 import { BsPersonCircle } from 'react-icons/bs'
+import { useEffect, useState } from "react"
+import { Comment } from "../../../interfaces/comment.interface"
+import CommentRenderer from "../_components/commentRenderer"
 
 interface CommentModalProps {
     thePost: Post,
@@ -15,6 +18,8 @@ interface CommentModalProps {
 }
 
 export default function CommentModal ({thePost, setRenderState, isShowing}:CommentModalProps) {
+
+    const [postCmts, setPostCmts] = useState<Comment[]>([])
 
     const editor = useEditor({
         extensions: [
@@ -50,13 +55,23 @@ export default function CommentModal ({thePost, setRenderState, isShowing}:Comme
         }
     }
 
+    const loadPostComments = async () => {
+        
+    }
+
+    useEffect(() => {
+        if (isShowing) {
+
+        }
+    }, [isShowing])
+
 
     return (
         <>
-        <div className={`flex cmt-modal-pfp ${isShowing && 'show'}`}>
-            
+        <div className={`flex cmt-modal-pfp flex-col ${isShowing && 'show'}`}>
+        <div className="flex">   
         {user && user.image ?
-                <div>
+                <div> 
                 <div className='relative cmt-pfp-cont rounded-full overflow-hidden ml-1 mr-2 flex-shrink-0'>
                 <Image src={user.image} fill={true} sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" alt='user pic'></Image>
                 </div>
@@ -79,6 +94,19 @@ export default function CommentModal ({thePost, setRenderState, isShowing}:Comme
             </div>
 
         </div>
+        </div>
+        {thePost && thePost.comments &&
+        <span>{`${thePost.comments.length} Comments`}</span>
+        }
+        {isShowing && thePost.comments.map ((node:any) => {
+            return (
+                <div key={node._id}>
+                    <CommentRenderer comment={node}></CommentRenderer>
+                </div>
+            )
+        })}
+
+        
         </div>
         </>
     )

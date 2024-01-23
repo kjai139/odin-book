@@ -1,17 +1,17 @@
 const Comment = require('../../models/commentModel')
 const Post = require('../../models/postModel')
-
+const debug = require('debug')('odin-book:commentController')
 
 exports.comment_create_post = async (req, res) => {
     try {
         const newComment = new Comment({
             author: req.user._id,
-            body: req.body.content
+            body: JSON.stringify(req.body.content)
         })
 
         await newComment.save()
 
-        const thePost = await Post.findByIdAndUpdate(req.user._id, {
+        const thePost = await Post.findByIdAndUpdate(req.body.postId, {
             $addToSet: {
                 comments: newComment._id
             }
@@ -21,6 +21,8 @@ exports.comment_create_post = async (req, res) => {
                 path: 'author'
             }
         })
+        debug('THE POST FROM CMT', thePost)
+
 
         res.json({
             updatedPost: thePost
