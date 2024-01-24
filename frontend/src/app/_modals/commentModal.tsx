@@ -56,12 +56,20 @@ export default function CommentModal ({thePost, setRenderState, isShowing}:Comme
     }
 
     const loadPostComments = async () => {
-        
+        try {
+            const response = await axiosInstance.get(`/api/comments/get/postId?=${thePost._id}`)
+
+            if (response.data.comments) {
+                setPostCmts(response.data.comments)
+            }
+        } catch (err) {
+            console.error(err)
+        }
     }
 
     useEffect(() => {
         if (isShowing) {
-
+            loadPostComments()
         }
     }, [isShowing])
 
@@ -98,7 +106,7 @@ export default function CommentModal ({thePost, setRenderState, isShowing}:Comme
         {thePost && thePost.comments &&
         <span>{`${thePost.comments.length} Comments`}</span>
         }
-        {isShowing && thePost.comments.map ((node:any) => {
+        {isShowing && postCmts && postCmts.map ((node:any) => {
             return (
                 <div key={node._id}>
                     <CommentRenderer comment={node}></CommentRenderer>

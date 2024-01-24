@@ -12,7 +12,7 @@ const upload = multer({storage: storage, limits:{ fileSize: 2 * 1024 * 1024} })
 const s3Client = require('../../s3Client')
 const multerS3 = require('multer-s3')
 const { friendsRequest_accept_post, friendsDelete_post, friendReq_decline_post, friendRequest_send_by_name_post } = require('../controllers/friendsController')
-const { comment_create_post } = require('../controllers/commentController')
+const { comment_create_post, comments_load_get } = require('../controllers/commentController')
 
 const s3Upload = multer({
     storage: multerS3({
@@ -81,5 +81,7 @@ router.post('/post/likePost', passport.authenticate('jwt', {session: false}), po
 router.post('/post/dislikePost',passport.authenticate('jwt', {session: false}), post_dislike_post )
 
 router.post('/comment/post', passport.authenticate('jwt', {session: false}), comment_create_post)
+
+router.get('/comments/get/postId', passport.authenticate('jwt', { session: false }), comments_load_get)
 
 module.exports = router

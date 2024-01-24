@@ -35,3 +35,20 @@ exports.comment_create_post = async (req, res) => {
         })
     }
 }
+
+
+exports.comments_load_get = async (req, res) => {
+    try {
+        const { postId } = req.query
+        const thePost = await Post.findById(postId).populate('comments')
+
+        res.json({
+            comments: thePost.comments
+        })
+
+    } catch (err) {
+        res.status(500).json({
+            message: err.message
+        })
+    }
+}
