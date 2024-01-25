@@ -40,7 +40,14 @@ exports.comment_create_post = async (req, res) => {
 exports.comments_load_get = async (req, res) => {
     try {
         const { postId } = req.query
-        const thePost = await Post.findById(postId).populate('comments')
+        debug(postId)
+        const thePost = await Post.findById(postId).populate({
+            path: 'comments',
+            populate: {
+                path: 'author'
+            }
+        })
+        debug('the post from load cmt', thePost)
 
         res.json({
             comments: thePost.comments

@@ -258,6 +258,7 @@ export default function UserTab () {
                         user && user.friendlist.length > 0 &&
                         <>
                         <h3>What your friends are yapping about</h3>
+                        <div className="frd-posts-cont flex flex-col gap-2">
                         {
                             friendsRecentPost && friendsRecentPost.map((node) => {
                                 return (
@@ -292,9 +293,10 @@ export default function UserTab () {
                                 )
                             })
                         }
+                        </div>
                         </>
                     }
-
+                    
                 </div>
                 
                 

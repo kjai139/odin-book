@@ -57,9 +57,12 @@ export default function CommentModal ({thePost, setRenderState, isShowing}:Comme
 
     const loadPostComments = async () => {
         try {
-            const response = await axiosInstance.get(`/api/comments/get/postId?=${thePost._id}`)
+            const response = await axiosInstance.get(`/api/comments/get/?postId=${thePost._id}`, {
+                withCredentials: true
+            })
 
             if (response.data.comments) {
+                console.log(response.data.comments)
                 setPostCmts(response.data.comments)
             }
         } catch (err) {
@@ -68,10 +71,11 @@ export default function CommentModal ({thePost, setRenderState, isShowing}:Comme
     }
 
     useEffect(() => {
-        if (isShowing) {
+        if (isShowing && thePost) {
+            console.log(thePost, 'thePost from cmt modal')
             loadPostComments()
         }
-    }, [isShowing])
+    }, [isShowing, thePost])
 
 
     return (
@@ -104,7 +108,7 @@ export default function CommentModal ({thePost, setRenderState, isShowing}:Comme
         </div>
         </div>
         {thePost && thePost.comments &&
-        <span>{`${thePost.comments.length} Comments`}</span>
+        <span className="p-2">{`${thePost.comments.length} ${thePost.comments.length > 0 && thePost.comments.length > 1 ? 'Comments' : 'Comment'}`}</span>
         }
         {isShowing && postCmts && postCmts.map ((node:any) => {
             return (

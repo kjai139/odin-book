@@ -82,6 +82,6 @@ router.post('/post/dislikePost',passport.authenticate('jwt', {session: false}), 
 
 router.post('/comment/post', passport.authenticate('jwt', {session: false}), comment_create_post)
 
-router.get('/comments/get/postId', passport.authenticate('jwt', { session: false }), comments_load_get)
+router.get('/comments/get/', passport.authenticate('jwt', { session: false }), comments_load_get)
 
 module.exports = router

@@ -678,7 +678,7 @@ li > button {
   transition: all .3s;
   pointer-events: none;
   visibility: hidden;
-  max-height: 0;
+  height: 0;
 }
 
 .cmt-pfp-cont {
@@ -691,11 +691,11 @@ li > button {
   transition: all .3s;
   pointer-events: none;
   visibility: hidden;
-  max-height: 0;
+  height: 0;
 }
 
 .cmt-modal-cont.show, .cmt-modal-pfp.show {
-  max-height: 200px;
+  height: auto;
   opacity: 1;
   visibility: visible;
   /* transform: translateY(0); */

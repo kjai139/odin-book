@@ -4,7 +4,7 @@ import { EditorContent, useEditor } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
 import Image from "next/image"
 import { BsPersonCircle } from "react-icons/bs"
-import { formatUsername } from "../_utils/formatStrings"
+import { formatDate, formatUsername } from "../_utils/formatStrings"
 
 interface CommentRendererProps {
     comment: Comment
@@ -16,7 +16,7 @@ export default function CommentRenderer ({comment}:CommentRendererProps) {
     
 
     const editor = useEditor({
-        content: comment.body,
+
         extensions: [
             StarterKit,
         ],
@@ -30,11 +30,13 @@ export default function CommentRenderer ({comment}:CommentRendererProps) {
         if (!editor) {
             return undefined
         } else {
-            if (comment && comment.body) {
+            if (editor && comment && comment.body) {
+                let parsedComment
                 if (typeof comment.body === 'string') {
-                    comment = JSON.parse(comment.body)
+                    parsedComment = JSON.parse(comment.body)
+                    
                 }
-                editor.commands.setContent(comment.body)
+                editor.commands.setContent(parsedComment)
                 
             }
             
@@ -52,12 +54,17 @@ export default function CommentRenderer ({comment}:CommentRendererProps) {
                 <BsPersonCircle className="backup-user-img" size={40}></BsPersonCircle> 
                 }
                 <div>
-                    { comment && comment.author && <p className='text-sm'>{formatUsername(comment.author.name)}</p>}
-                    
+                    <div className="flex items-center gap-1">
+                    { comment && comment.author && <p className='text-xs font-bold'>{formatUsername(comment.author.name)}</p>}
+                    { comment && comment.createdAt &&
+                    <p className="date-txt">{formatDate(comment.createdAt)}</p> 
+                    }
+                    </div>
+                    <EditorContent editor={editor} className={`editor-p`} />
                 </div>
 
                 </div>
-            <EditorContent editor={editor} className={`editor-p`} />
+            
         </>
     )
 }
