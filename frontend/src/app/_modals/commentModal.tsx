@@ -10,6 +10,8 @@ import { BsPersonCircle } from 'react-icons/bs'
 import { useEffect, useState } from "react"
 import { Comment } from "../../../interfaces/comment.interface"
 import CommentRenderer from "../_components/commentRenderer"
+import CharacterCount from "@tiptap/extension-character-count"
+import ResultModal from "./resultModal"
 
 interface CommentModalProps {
     thePost: Post,
@@ -20,12 +22,18 @@ interface CommentModalProps {
 export default function CommentModal ({thePost, setRenderState, isShowing}:CommentModalProps) {
 
     const [postCmts, setPostCmts] = useState<Comment[]>([])
+    const [isLoading, setIsLoading] = useState(false)
+    const [errorMsg, setErrorMsg] = useState('test')
 
     const editor = useEditor({
         extensions: [
             StarterKit,
             Placeholder.configure({
                 placeholder: 'Write a comment...'
+            }),
+            CharacterCount.configure({
+                limit:300,
+                mode: 'nodeSize'
             })
         ],
         editorProps: {
@@ -39,6 +47,7 @@ export default function CommentModal ({thePost, setRenderState, isShowing}:Comme
 
     const postComment = async () => {
         try {
+            setIsLoading(true)
             const response = await axiosInstance.post('/api/comment/post', {
                 content: editor?.getJSON(),
                 postId: thePost._id
@@ -47,11 +56,18 @@ export default function CommentModal ({thePost, setRenderState, isShowing}:Comme
             })
 
             if (response.data.updatedPost) {
+                setIsLoading(false)
                 console.log('updated post w comment:', response.data.updatedPost)
             }
 
         } catch (err) {
+            setIsLoading(false)
             console.error(err)
+            if (typeof err === 'string') {
+                setErrorMsg(err)
+            } else {
+                setErrorMsg('An error has occured.')
+            }
         }
     }
 
@@ -93,9 +109,11 @@ export default function CommentModal ({thePost, setRenderState, isShowing}:Comme
         
         }
         
-        <div className={`cmt-modal-cont rounded mr-2 mb-2 w-full min-w-0 ${isShowing && 'show'}`}>
+        <div className={`cmt-modal-cont relative rounded mr-2 mb-2 w-full min-w-0 ${isShowing && 'show'}`}>
             {/* set min-width to 0 to prevent overflow.  */}
-            
+            {isLoading && <div className="overlay-cmt"></div>}
+            {errorMsg && 
+            <ResultModal resultMsg={errorMsg} closeModal={() => setErrorMsg('')}></ResultModal>}
             <EditorContent editor={editor}></EditorContent>
             <div className="flex justify-end">
                 <button className="p-2" type="button" onClick={postComment}>
