@@ -24,6 +24,8 @@ export default function CommentModal ({thePost, setRenderState, isShowing}:Comme
     const [postCmts, setPostCmts] = useState<Comment[]>([])
     const [isLoading, setIsLoading] = useState(false)
     const [errorMsg, setErrorMsg] = useState('test')
+    const [totalPages, setTotalPages] = useState<number>()
+    const [curPage, setCurPage] = useState<number>(1)
 
     const editor = useEditor({
         extensions: [
@@ -55,9 +57,11 @@ export default function CommentModal ({thePost, setRenderState, isShowing}:Comme
                 withCredentials: true
             })
 
-            if (response.data.updatedPost) {
+            if (response.data.updatedComments) {
                 setIsLoading(false)
-                console.log('updated post w comment:', response.data.updatedPost)
+                console.log('updated post w comment:', response.data.updatedComments)
+                setPostCmts(response.data.updatedComments)
+                setTotalPages(response.data.totalPages)
             }
 
         } catch (err) {
@@ -73,13 +77,16 @@ export default function CommentModal ({thePost, setRenderState, isShowing}:Comme
 
     const loadPostComments = async () => {
         try {
-            const response = await axiosInstance.get(`/api/comments/get/?postId=${thePost._id}`, {
+            const response = await axiosInstance.get(`/api/comments/get/?postId=${thePost._id}&pageNum=1`, {
                 withCredentials: true
             })
 
             if (response.data.comments) {
                 console.log(response.data.comments)
+                console.log('total pages of comments:', response.data.totalPages)
                 setPostCmts(response.data.comments)
+                setTotalPages(response.data.totalPages)
+
             }
         } catch (err) {
             console.error(err)
@@ -132,6 +139,9 @@ export default function CommentModal ({thePost, setRenderState, isShowing}:Comme
             return (
                 <div key={node._id}>
                     <CommentRenderer comment={node}></CommentRenderer>
+                    {totalPages && totalPages > curPage && 
+                    <button type="button">View more</button>
+                    }
                 </div>
             )
         })}

@@ -4,6 +4,11 @@ const debug = require('debug')('odin-book:commentController')
 
 exports.comment_create_post = async (req, res) => {
     try {
+        const cmtPerPage = 10
+        const skip = (pageNum - 1) * cmtPerPage
+        
+        const totalComments = await Post.findById(req.body.postId).populate('comments').select('comments').then(post => post.comments.length)
+        const totalPages = Math.ceil(totalComments / cmtPerPage)
         const newComment = new Comment({
             author: req.user._id,
             body: JSON.stringify(req.body.content)
@@ -19,13 +24,19 @@ exports.comment_create_post = async (req, res) => {
             path: 'comments',
             populate: {
                 path: 'author'
+            },
+            options: {
+                sort: { createdAt: -1 },
+                skip: skip,
+                limit: cmtPerPage
             }
         })
-        debug('THE POST FROM CMT', thePost)
+        /* debug('THE POST FROM CMT', thePost) */
 
 
         res.json({
-            updatedPost: thePost
+            updatedComments: thePost.comments,
+            totalPages: totalPages
         })
 
 
@@ -39,18 +50,30 @@ exports.comment_create_post = async (req, res) => {
 
 exports.comments_load_get = async (req, res) => {
     try {
-        const { postId } = req.query
+        const { postId, pageNum } = req.query
+        const cmtPerPage = 10
+        const skip = (pageNum - 1) * cmtPerPage
         debug(postId)
+        const totalComments = await Post.findById(postId).populate('comments').select('comments').then(post => post.comments.length)
+        const totalPages = Math.ceil(totalComments / cmtPerPage)
+
         const thePost = await Post.findById(postId).populate({
             path: 'comments',
             populate: {
                 path: 'author'
+            },
+            options: {
+                sort: { createdAt: -1 },
+                skip: skip,
+                limit: cmtPerPage
             }
+            
         })
         debug('the post from load cmt', thePost)
 
         res.json({
-            comments: thePost.comments
+            comments: thePost.comments,
+            totalPages: totalPages
         })
 
     } catch (err) {
