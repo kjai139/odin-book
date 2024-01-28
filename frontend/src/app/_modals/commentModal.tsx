@@ -23,7 +23,7 @@ export default function CommentModal ({thePost, setRenderState, isShowing}:Comme
 
     const [postCmts, setPostCmts] = useState<Comment[]>([])
     const [isLoading, setIsLoading] = useState(false)
-    const [errorMsg, setErrorMsg] = useState('test')
+    const [errorMsg, setErrorMsg] = useState('')
     const [totalPages, setTotalPages] = useState<number>()
     const [curPage, setCurPage] = useState<number>(1)
 
@@ -52,7 +52,8 @@ export default function CommentModal ({thePost, setRenderState, isShowing}:Comme
             setIsLoading(true)
             const response = await axiosInstance.post('/api/comment/post', {
                 content: editor?.getJSON(),
-                postId: thePost._id
+                postId: thePost._id,
+                pageNum: curPage
             }, {
                 withCredentials: true
             })
@@ -62,6 +63,7 @@ export default function CommentModal ({thePost, setRenderState, isShowing}:Comme
                 console.log('updated post w comment:', response.data.updatedComments)
                 setPostCmts(response.data.updatedComments)
                 setTotalPages(response.data.totalPages)
+                editor?.commands.clearContent()
             }
 
         } catch (err) {

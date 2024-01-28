@@ -5,6 +5,7 @@ const debug = require('debug')('odin-book:commentController')
 exports.comment_create_post = async (req, res) => {
     try {
         const cmtPerPage = 10
+        const pageNum = req.body.pageNum
         const skip = (pageNum - 1) * cmtPerPage
         
         const totalComments = await Post.findById(req.body.postId).populate('comments').select('comments').then(post => post.comments.length)
@@ -20,6 +21,8 @@ exports.comment_create_post = async (req, res) => {
             $addToSet: {
                 comments: newComment._id
             }
+        }, {
+            new: true
         }).populate('author').populate({
             path: 'comments',
             populate: {
