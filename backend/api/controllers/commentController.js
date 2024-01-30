@@ -4,7 +4,7 @@ const debug = require('debug')('odin-book:commentController')
 
 exports.comment_create_post = async (req, res) => {
     try {
-        const cmtPerPage = 10
+        const cmtPerPage = 3
         const pageNum = req.body.pageNum
         const skip = (pageNum - 1) * cmtPerPage
         
@@ -54,7 +54,7 @@ exports.comment_create_post = async (req, res) => {
 exports.comments_load_get = async (req, res) => {
     try {
         const { postId, pageNum } = req.query
-        const cmtPerPage = 10
+        const cmtPerPage = 3
         const skip = (pageNum - 1) * cmtPerPage
         debug(postId)
         const totalComments = await Post.findById(postId).populate('comments').select('comments').then(post => post.comments.length)
@@ -76,7 +76,8 @@ exports.comments_load_get = async (req, res) => {
 
         res.json({
             comments: thePost.comments,
-            totalPages: totalPages
+            totalPages: totalPages,
+            totalComments: totalComments
         })
 
     } catch (err) {

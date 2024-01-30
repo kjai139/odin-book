@@ -26,6 +26,7 @@ export default function CommentModal ({thePost, setRenderState, isShowing}:Comme
     const [errorMsg, setErrorMsg] = useState('')
     const [totalPages, setTotalPages] = useState<number>()
     const [curPage, setCurPage] = useState<number>(1)
+    const [totalComments, setTotalComments] = useState(0)
 
     const editor = useEditor({
         extensions: [
@@ -87,6 +88,27 @@ export default function CommentModal ({thePost, setRenderState, isShowing}:Comme
                 console.log(response.data.comments)
                 console.log('total pages of comments:', response.data.totalPages)
                 setPostCmts(response.data.comments)
+                setTotalComments(response.data.totalComments)
+                setTotalPages(response.data.totalPages)
+
+            }
+        } catch (err) {
+            console.error(err)
+        }
+    }
+
+    const viewMoreComments = async () => {
+        try {
+            
+            const response = await axiosInstance.get(`/api/comments/get/?postId=${thePost._id}&pageNum=${curPage + 1}`, {
+                withCredentials: true
+            })
+
+            if (response.data.comments) {
+                setCurPage(prevPage => prevPage + 1)
+                console.log(response.data.comments)
+                console.log('total pages of comments:', response.data.totalPages)
+                setPostCmts(prev => [...prev, ...response.data.comments])
                 setTotalPages(response.data.totalPages)
 
             }
@@ -107,7 +129,8 @@ export default function CommentModal ({thePost, setRenderState, isShowing}:Comme
         <>
         <div className={`flex cmt-modal-pfp flex-col ${isShowing && 'show'}`}>
         <div className="flex">   
-        {user && user.image ?
+        {user && user.image ? 
+        
                 <div> 
                 <div className='relative cmt-pfp-cont rounded-full overflow-hidden ml-1 mr-2 flex-shrink-0'>
                 <Image src={user.image} fill={true} sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" alt='user pic'></Image>
@@ -122,7 +145,8 @@ export default function CommentModal ({thePost, setRenderState, isShowing}:Comme
             {/* set min-width to 0 to prevent overflow.  */}
             {isLoading && <div className="overlay-cmt"></div>}
             {errorMsg && 
-            <ResultModal resultMsg={errorMsg} closeModal={() => setErrorMsg('')}></ResultModal>}
+                <ResultModal resultMsg={errorMsg} closeModal={() => setErrorMsg('')}></ResultModal>
+            }
             <EditorContent editor={editor}></EditorContent>
             <div className="flex justify-end">
                 <button className="p-2" type="button" onClick={postComment}>
@@ -134,19 +158,27 @@ export default function CommentModal ({thePost, setRenderState, isShowing}:Comme
 
         </div>
         </div>
-        {thePost && thePost.comments &&
-        <span className="p-2">{`${thePost.comments.length} ${thePost.comments.length > 0 && thePost.comments.length > 1 ? 'Comments' : 'Comment'}`}</span>
-        }
+        {totalComments !== undefined && (
+            <span className="p-2">
+                {totalComments === 0 ? 'No Comments' : `${totalComments} ${totalComments === 1 ? 'Comment' : 'Comments'}`}
+            </span>
+            )}
+        
         {isShowing && postCmts && postCmts.map ((node:any) => {
+
             return (
-                <div key={node._id}>
+                <div key={node._id} className="post-cmts">
                     <CommentRenderer comment={node}></CommentRenderer>
-                    {totalPages && totalPages > curPage && 
-                    <button type="button">View more</button>
-                    }
+                    
                 </div>
             )
         })}
+        {isShowing && postCmts && totalPages && totalPages > curPage ?
+        <div className="flex justify-center p-2">
+            <button type="button" onClick={viewMoreComments}>View more</button>
+        </div> : null
+            
+        }
 
         
         </div>

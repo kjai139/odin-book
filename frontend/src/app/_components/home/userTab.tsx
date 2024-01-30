@@ -251,6 +251,18 @@ export default function UserTab () {
 
                         </div>
                         <HTMLRender editorOBJ={user.posts[0].body}></HTMLRender>
+                        {user.posts[0].videos && user.posts[0].videos.length > 0 &&
+                                        user.posts[0].videos.map((video) => {
+                                            return (
+                                                <ReactPlayer key={video._id} url={video.url} controls={true} width="100%" height="auto"></ReactPlayer>
+                                            )
+                                        })
+                        }
+                                        <div className="p-2 text-sm">
+                                            <p>{`${user.posts[0].likes} likes and ${user.posts[0].dislikes} dislikes.`}</p>
+                                        </div>
+                                        <LikeDislikeCmt thePost={user.posts[0]} setRenderState={setFriendsRecentPost}></LikeDislikeCmt>
+                        
                         </div>
                     </>
                     }
