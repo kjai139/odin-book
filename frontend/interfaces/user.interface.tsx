@@ -13,4 +13,5 @@ export interface User {
     posts: Post[],
     status: string,
     uniqueId: string,
+    bio: string | null
 }

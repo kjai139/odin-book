@@ -16,6 +16,7 @@ import ReactPlayer from "react-player"
 import { AiOutlineLike, AiOutlineDislike } from 'react-icons/ai'
 import { FaRegComment } from "react-icons/fa"
 import LikeDislikeCmt from "../buttons/likeDislikeCmt"
+import UserBio from "./userBio"
 
 
 export default function UserTab () {
@@ -217,7 +218,10 @@ export default function UserTab () {
                         }
                     </div>
                     <div className="flex-3">
-                        Text stuff
+                        {user && user.bio ?
+                        <p>TEMP BIO HOLDER</p> :
+                        <UserBio></UserBio>
+                        }
                     </div>
                 </div>
 
