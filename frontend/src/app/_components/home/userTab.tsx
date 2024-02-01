@@ -219,8 +219,8 @@ export default function UserTab () {
                     </div>
                     <div className="flex-3">
                         {user && user.bio ?
-                        <p>TEMP BIO HOLDER</p> :
-                        <UserBio></UserBio>
+                        <UserBio mode={'display'}></UserBio> :
+                        <UserBio mode="writer"></UserBio>
                         }
                     </div>
                 </div>

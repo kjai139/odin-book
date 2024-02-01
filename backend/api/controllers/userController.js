@@ -392,3 +392,22 @@ exports.user_pfp_save = async (req, res) => {
         })
     }
 }
+
+
+exports.user_bio_update_post = async (req, res) => {
+    try {
+        const content = JSON.stringify(req.body.content)
+        const theUser = await User.findByIdAndUpdate(req.user._id, {
+            bio: content
+        })
+
+        res.json({
+            updatedBio: theUser.bio
+        })
+
+    } catch (err) {
+        res.status(500).json({
+            message: err.message
+        })
+    }
+}
