@@ -411,3 +411,9 @@ exports.user_bio_update_post = async (req, res) => {
         })
     }
 }
+
+exports.user_get_updatedBio = async (req, res) => {
+    res.json({
+        updatedBio: req.user.bio
+    })
+}

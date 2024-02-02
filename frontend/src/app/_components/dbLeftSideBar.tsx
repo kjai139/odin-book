@@ -23,7 +23,7 @@ export default function DashboardLeftSideBar ({selectTab}:LeftSideBarProps) {
 
     const HomeContent = [
         {
-            image: user && user.image? <Image src={user.image} fill={true} alt='user profile picture' sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"></Image> :
+            image: user && user.image? <Image src={user.image} fill={true} alt='user profile picture' sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" priority={true}></Image> :
             <UserPortrait width={iconSize} height={iconSize}></UserPortrait>,
             title: user && user.name && formatUsername(user.name),
             id: 'dashleft-0',

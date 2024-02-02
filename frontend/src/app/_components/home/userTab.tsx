@@ -193,7 +193,7 @@ export default function UserTab () {
                              display: 'none'
                          }}></input>
                         <div className="pfp-cont">
-                        <Image src={tempPfp as string || user.image as string} alt="user profile picture" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" fill={true} priority></Image>
+                        <Image src={tempPfp as string || user.image as string} alt="user profile picture" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" fill={true} priority={true}></Image>
                         </div>
                         </label>
                     
@@ -219,8 +219,8 @@ export default function UserTab () {
                     </div>
                     <div className="flex-3">
                         {user && user.bio ?
-                        <UserBio mode={'display'}></UserBio> :
-                        <UserBio mode="writer"></UserBio>
+                        <UserBio bio={JSON.parse(user.bio)}></UserBio> :
+                        <UserBio bio={null}></UserBio>
                         }
                     </div>
                 </div>
@@ -243,7 +243,7 @@ export default function UserTab () {
                         <div className='flex gap-2 p-2 items-center'>
                         {user.posts[0].author.image ?
                         <div className='relative post-pfp-cont rounded-full overflow-hidden'>
-                        <Image src={user.posts[0].author.image} fill={true} sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" alt='user pic'></Image>
+                        <Image src={user.posts[0].author.image} fill={true} sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" alt='user pic' priority={true}></Image>
                         </div>
                         :
                         <BsPersonCircle className="backup-user-img" size={40}></BsPersonCircle> 
@@ -282,7 +282,7 @@ export default function UserTab () {
                                         <div className='flex gap-2 p-2 items-center'>
                                         {node.author.image ?
                                         <div className='relative post-pfp-cont rounded-full overflow-hidden'>
-                                        <Image src={node.author.image} fill={true} sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" alt='user pic'></Image>
+                                        <Image src={node.author.image} fill={true} sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" alt='user pic' priority={true}></Image>
                                         </div>
                                         :
                                         <BsPersonCircle className="backup-user-img" size={40}></BsPersonCircle> 
