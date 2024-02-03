@@ -399,6 +399,8 @@ exports.user_bio_update_post = async (req, res) => {
         const content = JSON.stringify(req.body.content)
         const theUser = await User.findByIdAndUpdate(req.user._id, {
             bio: content
+        }, {
+            new: true
         })
 
         res.json({

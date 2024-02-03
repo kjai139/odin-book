@@ -42,6 +42,8 @@ export default function UserTab () {
     const [videoData, setVideoData] = useState<File[] | null>(null)
     const [resultMsg, setResultMsg] = useState('')
 
+    const [updatedBio, setUpdatedBio] = useState()
+
     const [yourRecentPost, setYourRecentPost] = useState()
     const [friendsRecentPost, setFriendsRecentPost] = useState<Post[]>([])
 
@@ -156,6 +158,7 @@ export default function UserTab () {
 
     const displayAllRecentPosts = async () => {
         try {
+            /* this api will get updated bio as well */
             const response = await axiosInstance.get(`/api/posts/timeline-get`, {
                 withCredentials: true
             })
@@ -163,6 +166,9 @@ export default function UserTab () {
             if (response.data.timeline) {
                 console.log(response.data.timeline)
                 setFriendsRecentPost(response.data.timeline)
+                console.log(response.data.updatedBio)
+                setUpdatedBio(JSON.parse(response.data.updatedBio))
+                
             }
         } catch (err) {
             console.error(err)
@@ -218,8 +224,8 @@ export default function UserTab () {
                         }
                     </div>
                     <div className="flex-3">
-                        {user && user.bio ?
-                        <UserBio bio={JSON.parse(user.bio)}></UserBio> :
+                        {user && updatedBio ?
+                        <UserBio bio={updatedBio}></UserBio> :
                         <UserBio bio={null}></UserBio>
                         }
                     </div>

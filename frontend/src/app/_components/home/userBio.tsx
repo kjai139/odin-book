@@ -10,7 +10,7 @@ const limit = 280
 
 interface UserBioProps {
 
-    bio: string | null | undefined
+    bio: any
 }
 
 export default function UserBio ({bio}:UserBioProps) {
@@ -19,6 +19,7 @@ export default function UserBio ({bio}:UserBioProps) {
 
     const [userBio, setUserBio] = useState()
     const [isLoading, setIsLoading] = useState(false)
+    const [isEditable, setIsEditable] = useState(false)
 
     const editor = useEditor({
         extensions: [
@@ -33,6 +34,13 @@ export default function UserBio ({bio}:UserBioProps) {
         ],
         editable: userBio ? false : true
     })
+
+    useEffect(() => {
+        if (bio && editor) {
+            editor.commands.setContent(bio)
+            editor.setEditable(false)
+        }
+    }, [editor, bio])
 
     if (!editor) {
         return null
@@ -87,7 +95,7 @@ export default function UserBio ({bio}:UserBioProps) {
             }
 
         } catch (err) {
-
+            console.error(err)
         }
     }
 
@@ -108,6 +116,8 @@ export default function UserBio ({bio}:UserBioProps) {
         return block.content ? block.content.every((_block:any) => checkIfcontentEmpty(_block)) : true
     }
 
+    
+
 
 
 
@@ -125,7 +135,7 @@ export default function UserBio ({bio}:UserBioProps) {
             </button>
 
         </div>
-        <EditorContent editor={editor} content={bio || userBio} contentEditable={userBio || bio ? false : true} style={{
+        <EditorContent editor={editor} contentEditable={userBio || bio ? false : true} style={{
             
             minHeight: '5rem',
             padding: '.75rem',

@@ -33,7 +33,10 @@ passport.use(new LocalStrategy(
                         image: user.image,
                         gender: user.gender,
                         friendlist: user.friendlist,
-                        friendReq: user.friendReq
+                        friendReq: user.friendReq,
+                        status: user.status,
+                        uniqueId: user.uniqueId,
+                        bio: user.bio
 
 
                     }, process.env.JWT_SECRET_KEY, {
@@ -69,7 +72,8 @@ passport.use(new LocalStrategy(
                             facebookId: user.facebookId,
                             posts: user.posts,
                             status: user.status,
-                            uniqueId: user.uniqueId
+                            uniqueId: user.uniqueId,
+                            bio: user.bio
     
     
                         }, process.env.JWT_SECRET_KEY, {
@@ -195,7 +199,8 @@ passport.use(new FacebookStrategy({
                 friendReq: newUser.friendReq,
                 facebookId: newUser.facebookId,
                 status: newUser.status,
-                uniqueId: newUser.uniqueId
+                uniqueId: newUser.uniqueId,
+                bio: newUser.bio
             }, process.env.JWT_SECRET_KEY, {
                 expiresIn: '1hr'
             })
@@ -220,7 +225,8 @@ passport.use(new FacebookStrategy({
                 friendlist: user.friendlist,
                 friendReq: user.friendReq,
                 facebookId: user.facebookId,
-                uniqueId: user.uniqueId
+                uniqueId: user.uniqueId,
+                bio: user.bio
             }, process.env.JWT_SECRET_KEY, {
                 expiresIn: '1hr'
             })

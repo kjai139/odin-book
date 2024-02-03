@@ -261,7 +261,8 @@ exports.postTimeline_get = async (req, res) => {
         
 
         res.json({
-            timeline: posts
+            timeline: posts,
+            updatedBio: req.user.bio
         })
     } catch (err) {
         res.status(500).json({
