@@ -39,8 +39,17 @@ export default function UserBio ({bio}:UserBioProps) {
         if (bio && editor) {
             editor.commands.setContent(bio)
             editor.setEditable(false)
+            
         }
     }, [editor, bio])
+
+    useEffect(() => {
+        if (editor && isEditable) {
+            editor.setEditable(true)
+        } else if (editor && !isEditable) {
+            editor.setEditable(false)
+        }
+    }, [isEditable])
 
     if (!editor) {
         return null
@@ -68,8 +77,8 @@ export default function UserBio ({bio}:UserBioProps) {
         
                     if (response.data.updatedBio) {
                         setIsLoading(false)
-                        const bioJson = JSON.parse(response.data.updateBio)
-                        setUserBio(bioJson)
+                        console.log(JSON.parse(response.data.updatedBio))
+                        setIsEditable(false)
                     }
                 } catch (err) {
                     setIsLoading(false)
@@ -83,21 +92,7 @@ export default function UserBio ({bio}:UserBioProps) {
         
     }
 
-    const getUpdatedBio = async () => {
-        try {
-            const response = await axiosInstance.get('/api/user/getBio', {
-                withCredentials: true
-            })
-
-            if (response.data.updatedBio) {
-                const bioJson = JSON.parse(response.data.updateBio)
-                setUserBio(bioJson)
-            }
-
-        } catch (err) {
-            console.error(err)
-        }
-    }
+   
 
     const checkIfcontentEmpty = (block:any) => {
         if (!block || !block.type) {
@@ -122,11 +117,11 @@ export default function UserBio ({bio}:UserBioProps) {
 
 
     return (
-        <div className='vtt rounded-xl'>
+        <div className='vtt rounded-xl flex flex-col h-full justify-between'>
             {isLoading && 
             <div className="overlay-cmt"></div>
             }
-        <div className='vtt-menu p-2 flex gap-2 flex-wrap'>
+        {isEditable && <div className={`vtt-menu p-2 flex gap-2 flex-wrap`}>
             <button onClick={handleBoldClick} className={editor && editor.isActive('bold') ? 'tt-active' : ''}>
                 <RiBold></RiBold>
             </button>
@@ -134,8 +129,8 @@ export default function UserBio ({bio}:UserBioProps) {
                 <RiItalic></RiItalic>
             </button>
 
-        </div>
-        <EditorContent editor={editor} contentEditable={userBio || bio ? false : true} style={{
+        </div>}
+        <EditorContent editor={editor} style={{
             
             minHeight: '5rem',
             padding: '.75rem',
@@ -143,11 +138,11 @@ export default function UserBio ({bio}:UserBioProps) {
             
             
         }}></EditorContent>
-        <span className='num-count flex justify-end'>
+       { isEditable && <span className='num-count flex justify-end'>
         {editor.storage.characterCount.characters()}/{limit} characters
-        </span>
+        </span>}
         <div className="flex justify-end">
-        <button className="py-1 px-4 bg-blue-500 text-white shadow rounded-lg" onClick={handleUpdateBio}>Update bio</button>
+        <button className="py-1 px-4 bg-blue-500 text-white shadow rounded-lg" onClick={isEditable ? handleUpdateBio : () => setIsEditable(true)}>{isEditable ? `Update bio` : 'Edit bio'}</button>
         </div>
        
         

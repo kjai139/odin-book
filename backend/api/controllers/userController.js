@@ -403,6 +403,8 @@ exports.user_bio_update_post = async (req, res) => {
             new: true
         })
 
+        debug('FROM UPDATE BIO POST:', theUser.bio)
+
         res.json({
             updatedBio: theUser.bio
         })
@@ -415,6 +417,7 @@ exports.user_bio_update_post = async (req, res) => {
 }
 
 exports.user_get_updatedBio = async (req, res) => {
+    
     res.json({
         updatedBio: req.user.bio
     })
