@@ -422,3 +422,27 @@ exports.user_get_updatedBio = async (req, res) => {
         updatedBio: req.user.bio
     })
 }
+
+exports.user_getPage_get = async (req, res) => {
+    try {
+        console.log('GETTING PAGE:', req.query.id)
+        const userId = req.query.id
+
+        const userInfo = await User.findById(userId).populate({
+            path: 'posts',
+            options: {
+                sort: { createdAt: -1},
+                limit: 3
+            }
+        })
+
+        res.json({
+            userInfo: userInfo
+        })
+
+    } catch (err) {
+        res.status(500).json({
+            message: err.message
+        })
+    }
+}

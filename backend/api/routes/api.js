@@ -1,5 +1,5 @@
 const express = require('express')
-const { create_user_post, user_login_post, user_signOut_delete, user_suggested_find, user_add_friend_req_post, user_friendreq_get, user_fl_get, user_pfp_change, user_pfp_save, user_bio_update_post, user_get_updatedBio } = require('../controllers/userController')
+const { create_user_post, user_login_post, user_signOut_delete, user_suggested_find, user_add_friend_req_post, user_friendreq_get, user_fl_get, user_pfp_change, user_pfp_save, user_bio_update_post, user_get_updatedBio, user_getPage_get } = require('../controllers/userController')
 const router = express.Router()
 const passport = require('../../passport')
 const { authenticateJwt } = require('../middleware/authenticateJwt')
@@ -87,5 +87,7 @@ router.get('/comments/get/', passport.authenticate('jwt', { session: false }), c
 router.post('/user/updateBio',passport.authenticate('jwt', { session: false }), user_bio_update_post)
 
 router.get('/user/getBio',passport.authenticate('jwt', { session: false }), user_get_updatedBio)
+
+router.get('/user/getPage/', user_getPage_get)
 
 module.exports = router
