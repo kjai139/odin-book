@@ -11,6 +11,8 @@
   --arrowSize: 7px;
   --errorBg: #ef4444;
   --headerHeight: 60px;
+  --gradientImg: linear-gradient(to top, #FFFFFF, rgba(255,255,255.9), rgba(255,255,255,.7), rgba(255,255,255,.4), rgba(255,255,255,0));
+  --defaultGradientColor: #bae6fd;
   
   --roundedR: 4px;
   --dashBtnhover: #f8fafc;
@@ -58,6 +60,13 @@ h3 {
   font-weight: bold;
 }
 
+.d-img {
+  background-color:var(--defaultGradientColor);
+  background-image: var(--gradientImg);
+  width: 100%;
+  height: 100%;
+}
+
 
 
 @keyframes pulse {
@@ -83,11 +92,29 @@ h3 {
 }
 
 .pfp-mask {
+  position: absolute;
+  top: -200%;
   box-shadow: 0 0 0 4px blue;
   
   border-radius: 50%;
   padding: 0.25rem;
   background-color: white;
+}
+
+.pfp-mask > div {
+  width: 125px;
+  height: 125px;
+}
+
+.pfp-mask-cont {
+  width: 150px;
+  margin-left: 1rem;
+}
+
+.up-btn-wrap {
+  display: flex;
+  align-items: flex-end;
+  margin-left: auto;
 }
 
 .h-footer {
@@ -686,6 +713,12 @@ li > button {
   justify-content: center;
 }
 
+.userpf-cont {
+  max-width: 1000px;
+  min-width: 1000px;
+  min-height: 300px;
+}
+
 .up-bg {
   
   /* top: 0;
@@ -753,4 +786,11 @@ li > button {
  .center-tab {
   max-width: 520px;
  }
+
+}
+
+@media screen and (max-width: 1000px) {
+  .userpf-cont {
+    min-width: 800px;
+  }
 }
