@@ -6,6 +6,7 @@ import Image from "next/image"
 import { BsPersonCircle } from "react-icons/bs"
 import { formatUsername } from "@/app/_utils/formatStrings"
 import UserAddFriend from "@/app/_components/buttons/userAddFrd"
+import UserpageNav from "@/app/_components/userpage/userpageNav"
 
 async function fetchUser(id) {
     const res = await fetch(`http://localhost:4000/api/user/getPage/?id=${id}`)
@@ -58,7 +59,7 @@ export default async function UserDetails({ params }) {
                     </div>
                 </div>
                 <div>
-                    <button>Post</button>
+                    <UserpageNav></UserpageNav>
                 </div>
                 
             

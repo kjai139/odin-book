@@ -29,6 +29,7 @@
   --cmtModalBg:#e2e8f0;
 
   --backgroundColor: #cbd5e1;
+  --navTxtColor: #65676B;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -591,6 +592,10 @@ li > button {
   background-color: var(--modalbg);
 }
 
+.upg-nav {
+  color: var(--navTxtColor);
+  font-weight: 600;
+}
 
 
 .header-li.selected {
@@ -765,9 +770,7 @@ li > button {
 }
 
 
-.cmt-editor {
-  
-}
+
 
 .date-txt {
   color: gray;
@@ -780,6 +783,13 @@ li > button {
 
 .num-count {
   color:#868e96;
+}
+
+.up-btns {
+  background-color: rgb(87, 87, 199);
+  padding: .25rem .50rem;
+  color: white;
+  border-radius: 8px;
 }
 
 @media screen and (max-width: 1024px) {

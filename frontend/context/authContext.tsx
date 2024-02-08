@@ -13,7 +13,8 @@ interface AuthContexType {
     isAuthenticated: () => void,
     signOut: () => void,
     doneLoading: boolean,
-    pathname: string
+    pathname: string,
+    previousURL: string | undefined | null,
 }
 
 
@@ -31,6 +32,8 @@ const AuthProvider:React.FC<AuthProviderProps> = ({children}) => {
     const pathname = usePathname()
    
     const [doneLoading, setDoneLoading] = useState(true)
+    const [previousURL, setPreviousURL] = useState<any>()
+    const [curURL, setCurURL] = useState()
 
     const isAuthenticated = async () => {
         try {
@@ -53,6 +56,7 @@ const AuthProvider:React.FC<AuthProviderProps> = ({children}) => {
                 setUser(null)
                 console.log('user is not authenticated')
                 if (pathname !== '/'){
+                    setPreviousURL(pathname)
                     router.push('/')
                 }
                 
@@ -86,9 +90,17 @@ const AuthProvider:React.FC<AuthProviderProps> = ({children}) => {
         
     }, [user])
 
+    
+
+    useEffect(() => {
+        let curURL = localStorage.getItem('curURL')
+        localStorage.setItem('prevURL', curURL)
+        localStorage.setItem('curURL', pathname)
+    }, [pathname])
+
 
     return (
-        <AuthContext.Provider value={{user, isAuthenticated, signOut, doneLoading, pathname, setUser}}>
+        <AuthContext.Provider value={{user, isAuthenticated, signOut, doneLoading, pathname, setUser, previousURL}}>
             {children}
         </AuthContext.Provider>
     )

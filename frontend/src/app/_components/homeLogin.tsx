@@ -55,8 +55,13 @@ export default function HomeLogin () {
             })
 
             if (response.data.success) {
+                let prevURL = localStorage.getItem('prevURL')
+                if (prevURL) {
+                    router.push(prevURL)
+                } else {
+                    router.push('/dashboard')
+                }
                 
-                router.push('/dashboard')
             }
         } catch (err:any) {
             setIsLoading(false)
