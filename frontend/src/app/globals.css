@@ -769,7 +769,10 @@ li > button {
   pointer-events: inherit;
 }
 
-
+.up-content-cont {
+  max-width: 1000px;
+  margin: auto;
+}
 
 
 .date-txt {

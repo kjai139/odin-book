@@ -12,7 +12,7 @@ export default function UserpageNav ({selected}) {
             <li className={`header-li ${selected === 'post' ? 'selected' : ''}`}>
                 <button className="head-btn">Post</button>
             </li>
-            <li className={`header-li ${selected === 'post' ? 'selected' : ''}`}>
+            <li className={`header-li ${selected === 'friends' ? 'selected' : ''}`}>
                 <button className="head-btn">Friends</button>
             </li>
         </ul>

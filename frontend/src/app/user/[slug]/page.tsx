@@ -1,4 +1,4 @@
-
+'use client'
 import { User } from "../../../../interfaces/user.interface"
 
 import { notFound } from "next/navigation"
@@ -7,24 +7,54 @@ import { BsPersonCircle } from "react-icons/bs"
 import { formatUsername } from "@/app/_utils/formatStrings"
 import UserAddFriend from "@/app/_components/buttons/userAddFrd"
 import UserpageNav from "@/app/_components/userpage/userpageNav"
+import axiosInstance from '../../../../axios'
+import { useEffect, useState } from "react"
+import UserPostTab from "@/app/_components/userpage/userPostTab"
 
-async function fetchUser(id) {
+/* async function fetchUser(id) {
     const res = await fetch(`http://localhost:4000/api/user/getPage/?id=${id}`)
     if (!res.ok) return undefined
     return res.json()
-}
+} */
+
+// SSR fetch
 
 
-export default async function UserDetails({ params }) {
+export default function UserDetails({ params }) {
 
-    const user = await fetchUser(params.slug)
+    /* const user = await fetchUser(params.slug)
     console.log(params.slug)
 
     if (!user) {
         notFound()
     } else {
         console.log('USER:', user.userInfo)
+    } */
+
+    const [userInfo, setUserInfo] = useState<User>()
+    const [selectedTab, setSelectedTab] = useState('post')
+
+    const getPageInfo = async () => {
+        try {
+            const response = await axiosInstance.get(`/api/user/getPage/?id=${params.slug}`)
+
+            if (response.data.userInfo) {
+                setUserInfo(response.data.userInfo)
+                console.log(response.data.userInfo)
+            } else {
+                notFound()
+            }
+
+        } catch (err) {
+            console.error(err)
+        }
     }
+
+    useEffect(() => {
+        getPageInfo()
+    }, [])
+
+    
     
     
     return (
@@ -44,30 +74,30 @@ export default async function UserDetails({ params }) {
                     <div className="rounded-full bg-white p-2 border-2 border-solid border-white relative pfp-mask-cont">
                         <div className="pfp-mask">
                             <div className="rounded-full overflow-hidden pfp-img-div">
-                            {user.userInfo.image ?
-                            <Image src={user.userInfo.image} width={125} height={125} alt="user profile picture" priority></Image> :
+                            {userInfo?.image ?
+                            <Image src={userInfo.image} width={125} height={125} alt="user profile picture" priority></Image> :
                             <BsPersonCircle className="backup-user-img" size={125}></BsPersonCircle> 
                             }
                             </div>
                         </div>
                     </div>
                     <div>
-                        <h1>{formatUsername(user.userInfo.name)}</h1>
+                        <h1>{userInfo && userInfo.name ? formatUsername(userInfo.name) : 'Loading...'}</h1>
                     </div>
                     <div className="up-btn-wrap">
-                            <UserAddFriend pgId={user.userInfo._id}></UserAddFriend>
+                            <UserAddFriend pgId={userInfo?._id}></UserAddFriend>
                     </div>
                 </div>
-                <div>
-                    <UserpageNav></UserpageNav>
+                <div className="p-2">
+                    <UserpageNav selected={selectedTab}></UserpageNav>
                 </div>
                 
             
             </div>
         </div>
         </div>
-        <div className="up-content-cont">
-
+        <div className="up-content-cont py-4 px-2">
+            <UserPostTab bio={userInfo && JSON.parse(userInfo.bio)} ></UserPostTab>
         </div>
         </>
     )

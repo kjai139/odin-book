@@ -10,10 +10,11 @@ const limit = 280
 
 interface UserBioProps {
 
-    bio: any
+    bio: any,
+    mode: any
 }
 
-export default function UserBio ({bio}:UserBioProps) {
+export default function UserBio ({bio, mode}:UserBioProps) {
 
     
 
@@ -117,7 +118,7 @@ export default function UserBio ({bio}:UserBioProps) {
 
 
     return (
-        <div className='vtt rounded-xl flex flex-col h-full justify-between'>
+        <div className='vtt rounded flex flex-col h-full justify-between'>
             {isLoading && 
             <div className="overlay-cmt"></div>
             }
@@ -130,6 +131,12 @@ export default function UserBio ({bio}:UserBioProps) {
             </button>
 
         </div>}
+        {
+            mode === 'up' &&
+            <span className="p-2">
+                <h3 className="border-b border-CED0D4">Intro</h3>
+            </span>
+        }
         <EditorContent editor={editor} style={{
             
             minHeight: '5rem',
@@ -141,10 +148,10 @@ export default function UserBio ({bio}:UserBioProps) {
        { isEditable && <span className='num-count flex justify-end'>
         {editor.storage.characterCount.characters()}/{limit} characters
         </span>}
-        <div className="flex justify-end">
+        { mode !== 'up' && <div className="flex justify-end">
         <button className="py-1 px-4 bg-blue-500 text-white shadow rounded-lg" onClick={isEditable ? handleUpdateBio : () => setIsEditable(true)}>{isEditable ? `Update bio` : 'Edit bio'}</button>
         </div>
-       
+       }
         
         </div>
     )

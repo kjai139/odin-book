@@ -8,6 +8,8 @@ const { generateRandomString } = require('./imageController')
 const { PutObjectCommand, CopyObjectCommand, DeleteObjectCommand } = require('@aws-sdk/client-s3')
 const s3Client = require('../../s3Client')
 const socketConfig = require('../socket')
+const Post = require('../../models/postModel')
+const Comment = require('../../models/commentModel')
 
 
 exports.create_user_post = [
@@ -436,8 +438,17 @@ exports.user_getPage_get = async (req, res) => {
             }
         })
 
+        const [recentPosts, recentCmts] = await Promise.all([
+            Post.find({ author: req.query.id }).sort({ createdAt: -1}).limit(5),
+            Comment.find({ author: req.query.id}).sort({ createdAt: -1}).limit(5)
+
+        ])
+
+        const combinedResults = [...recentPosts, ...recentCmts].sort((a, b) => b.createdAt - a.createdAt)
+
         res.json({
-            userInfo: userInfo
+            userInfo: userInfo,
+            recentActivity: combinedResults
         })
 
     } catch (err) {
