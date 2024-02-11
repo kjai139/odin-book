@@ -429,6 +429,10 @@ exports.user_getPage_get = async (req, res) => {
     try {
         console.log('GETTING PAGE:', req.query.id)
         const userId = req.query.id
+        const postperPage = 5
+        const skip = (req.query.pageNum - 1) * postperPage
+        const totalPosts = await Post.countDocuments({ author: req.query.id})
+        const totalPages = Math.ceil( totalPosts / postperPage)
 
         const userInfo = await User.findById(userId).populate({
             path: 'posts',
@@ -437,18 +441,22 @@ exports.user_getPage_get = async (req, res) => {
                 limit: 3
             }
         })
+        //recent posts + comments but just going to have posts instead
 
-        const [recentPosts, recentCmts] = await Promise.all([
+        /* const [recentPosts, recentCmts] = await Promise.all([
             Post.find({ author: req.query.id }).sort({ createdAt: -1}).limit(5),
             Comment.find({ author: req.query.id}).sort({ createdAt: -1}).limit(5)
 
         ])
 
-        const combinedResults = [...recentPosts, ...recentCmts].sort((a, b) => b.createdAt - a.createdAt)
+        const combinedResults = [...recentPosts, ...recentCmts].sort((a, b) => b.createdAt - a.createdAt) */
+
+        const recentPosts = await Post.find({ author: req.query.id}).sort({ createdAt: -1}).skip(skip).limit(postperPage)
 
         res.json({
             userInfo: userInfo,
-            recentActivity: combinedResults
+            recentPosts: recentPosts,
+            totalPages: totalPages
         })
 
     } catch (err) {

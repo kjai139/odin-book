@@ -41,6 +41,8 @@ export default function UserDetails({ params }) {
             if (response.data.userInfo) {
                 setUserInfo(response.data.userInfo)
                 console.log(response.data.userInfo)
+                console.log('recent activity:', response.data.recentPosts)
+                console.log('totalpages', response.data.totalPages)
             } else {
                 notFound()
             }
