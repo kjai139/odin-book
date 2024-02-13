@@ -81,6 +81,7 @@ export default function UserPosts() {
                         </div>
                     )
                 })}
+                
                 </div>
             </div>
             

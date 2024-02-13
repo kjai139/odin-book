@@ -131,12 +131,7 @@ export default function UserBio ({bio, mode}:UserBioProps) {
             </button>
 
         </div>}
-        {
-            mode === 'up' &&
-            <span className="p-2">
-                <h3 className="border-b border-CED0D4">Intro</h3>
-            </span>
-        }
+        
         <EditorContent editor={editor} style={{
             
             minHeight: '5rem',

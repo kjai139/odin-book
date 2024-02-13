@@ -451,7 +451,7 @@ exports.user_getPage_get = async (req, res) => {
 
         const combinedResults = [...recentPosts, ...recentCmts].sort((a, b) => b.createdAt - a.createdAt) */
 
-        const recentPosts = await Post.find({ author: req.query.id}).sort({ createdAt: -1}).skip(skip).limit(postperPage)
+        const recentPosts = await Post.find({ author: req.query.id}).sort({ createdAt: -1}).skip(skip).limit(postperPage).populate('author').populate('videos')
 
         res.json({
             userInfo: userInfo,

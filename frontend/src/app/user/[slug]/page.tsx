@@ -8,8 +8,9 @@ import { formatUsername } from "@/app/_utils/formatStrings"
 import UserAddFriend from "@/app/_components/buttons/userAddFrd"
 import UserpageNav from "@/app/_components/userpage/userpageNav"
 import axiosInstance from '../../../../axios'
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import UserPostTab from "@/app/_components/userpage/userPostTab"
+import InfiScroll from "@/app/_components/scroll/infiscroll"
 
 /* async function fetchUser(id) {
     const res = await fetch(`http://localhost:4000/api/user/getPage/?id=${id}`)
@@ -33,6 +34,10 @@ export default function UserDetails({ params }) {
 
     const [userInfo, setUserInfo] = useState<User>()
     const [selectedTab, setSelectedTab] = useState('post')
+    const [recentPosts, setRecentPosts] = useState([])
+    const [totalPages, setTotalPages] = useState()
+    const [pageDisplaying, setPageDisplaying] = useState(1)
+    
 
     const getPageInfo = async () => {
         try {
@@ -43,6 +48,8 @@ export default function UserDetails({ params }) {
                 console.log(response.data.userInfo)
                 console.log('recent activity:', response.data.recentPosts)
                 console.log('totalpages', response.data.totalPages)
+                setRecentPosts(response.data.recentPosts)
+                setTotalPages(response.data.totalPages)
             } else {
                 notFound()
             }
@@ -55,6 +62,20 @@ export default function UserDetails({ params }) {
     useEffect(() => {
         getPageInfo()
     }, [])
+
+    const getMorePosts = async () => {
+        try {
+            const response = await axiosInstance.get(`/api/user/getMore/?page=${pageDisplaying + 1}`)
+
+            if (response.data.newPage) {
+
+            }
+
+
+        } catch (err) {
+            console.error(err)
+        }
+    }
 
     
     
@@ -99,7 +120,8 @@ export default function UserDetails({ params }) {
         </div>
         </div>
         <div className="up-content-cont py-4 px-2">
-            <UserPostTab bio={userInfo && JSON.parse(userInfo.bio)} ></UserPostTab>
+            <UserPostTab bio={userInfo && JSON.parse(userInfo.bio)} recentPosts={recentPosts}></UserPostTab>
+        <InfiScroll loadMore={() => console.log('loading more...')}></InfiScroll>
         </div>
         </>
     )
