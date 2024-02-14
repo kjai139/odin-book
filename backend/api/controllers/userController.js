@@ -465,3 +465,39 @@ exports.user_getPage_get = async (req, res) => {
         })
     }
 }
+
+exports.user_page_getMore = async (req, res) => {
+    
+   
+    try {
+        const postPerPage = 5
+        const skip = (req.query.page - 1) * postPerPage
+        const totalPosts = await Post.countDocuments({ author: req.query.id})
+        const totalPages = Math.ceil( totalPosts / postPerPage)
+        debug('totaluserpages:', totalPages)
+        debug('curuserPage:', req.query.page )
+
+        if (totalPages >= req.query.curPage ) {
+            const newPosts = await Post.find({ author: req.query.id}).sort({ createdAt: -1}).skip(skip).limit(postPerPage).populate('author').populate('videos')
+
+            res.json({
+                newPage: newPosts,
+                totalPages: totalPages,
+                
+            })
+        } else {
+            res.json({
+                newPage: null
+            })
+        }
+
+        
+
+
+
+    } catch (err) {
+        res.status(500).json({
+            message: err.message
+        })
+    }
+}

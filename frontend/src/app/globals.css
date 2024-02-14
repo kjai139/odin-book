@@ -611,7 +611,7 @@ li > button {
 }
 
 .expanded-false {
-  border-bottom: 2px solid var(--dashbgC);
+  /* border-bottom: 2px solid var(--dashbgC); */
 }
 
 .expanded-false > div {

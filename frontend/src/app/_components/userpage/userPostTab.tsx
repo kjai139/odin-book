@@ -35,12 +35,12 @@ export default function UserPostTab ({bio, recentPosts}:UserPostTabProps) {
 
                 {/* right */}
                 <div className="flex flex-col flex-2 gap-4 min-w-0">
-                    <div className="vtt rounded p-2 flex flex-col gap-2">
+                    {/* <div className="vtt rounded p-2 flex flex-col gap-2">
                   
                     <span className="border-b border-CED0D4">
                         <h3>Recent Posts</h3>
                     </span> 
-                    </div>
+                    </div> */}
         
                     {recentPosts && recentPosts.length !== 0 ? recentPosts.map((post) => {
                         return (
