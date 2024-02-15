@@ -214,6 +214,8 @@ exports.postOnly_get = async (req, res) => {
 exports.postTimeline_get = async (req, res) => {
     try {
         const userId = new mongoose.Types.ObjectId(req.user._id)
+
+        const mostRecentPost = await Post.find({ author: req.user._id}).sort({createdAt: -1}).limit(1).populate('author')
         
 
         const posts = await Post.aggregate([
@@ -262,7 +264,8 @@ exports.postTimeline_get = async (req, res) => {
 
         res.json({
             timeline: posts,
-            updatedBio: req.user.bio
+            updatedBio: req.user.bio,
+            mostRecent: mostRecentPost
         })
     } catch (err) {
         res.status(500).json({
@@ -278,15 +281,19 @@ exports.post_likePost_post = async (req, res) => {
         const postId = req.body.postId
         const thePost = await Post.findById(postId).populate('author')
 
-        if (thePost.didUserLike) {
-            thePost.didUserLike = false
+        if (thePost.didUserLike && !thePost.didUserDislike) {
             thePost.likes -= 1
+            thePost.didUserLike = false
+            
 
-        } else if (!thePost.didUserLike) {
-            thePost.didUserLike = true
+        } else if (!thePost.didUserLike && thePost.didUserDislike) {
             thePost.likes += 1
             thePost.dislikes -= 1
             thePost.didUserDislike = false
+            thePost.didUserLike = true
+        } else if (!thePost.didUserLike && !thePost.didUserDislike) {
+            thePost.likes += 1
+            thePost.didUserLike = true
         }
 
         const updatedPost = await thePost.save()
@@ -310,14 +317,17 @@ exports.post_dislike_post = async (req, res) => {
         const postId = req.body.postId
         const thePost = await Post.findById(postId).populate('author')
 
-        if (thePost.didUserDislike) {
+        if (thePost.didUserDislike && !thePost.didUserLike) {
             thePost.didUserDislike = false
             thePost.dislikes -= 1
-        } else if (!thePost.didUserDislike) {
+        } else if (!thePost.didUserDislike && thePost.didUserLike) {
             thePost.didUserLike = false
             thePost.didUserDislike = true
             thePost.dislikes += 1
             thePost.likes -= 1
+        } else if (!thePost.didUserDislike && !thePost.didUserLike) {
+            thePost.didUserDislike = true
+            thePost.dislikes += 1
         }
 
         const updatedPost = await thePost.save()

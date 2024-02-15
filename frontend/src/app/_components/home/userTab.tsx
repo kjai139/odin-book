@@ -44,7 +44,7 @@ export default function UserTab () {
 
     const [updatedBio, setUpdatedBio] = useState()
 
-    const [yourRecentPost, setYourRecentPost] = useState()
+    const [mostRecentPost, setMostRecentPost] = useState<Post[]>()
     const [friendsRecentPost, setFriendsRecentPost] = useState<Post[]>([])
 
     
@@ -166,6 +166,7 @@ export default function UserTab () {
             if (response.data.timeline) {
                 console.log(response.data.timeline)
                 setFriendsRecentPost(response.data.timeline)
+                setMostRecentPost(response.data.mostRecent)
                 console.log(response.data.updatedBio)
                 setUpdatedBio(JSON.parse(response.data.updatedBio))
                 
@@ -243,35 +244,35 @@ export default function UserTab () {
                     <VideoUploader setVideoData={setVideoData}></VideoUploader>
                     </div>
                     <h3>Your most recent post</h3>
-                    {user && user.posts &&
+                    {user && mostRecentPost && mostRecentPost[0] &&
                     <>  
                         <div className="post-cont rounded shadow">
                         <div className='flex gap-2 p-2 items-center'>
-                        {user.posts[0].author.image ?
+                        {mostRecentPost[0].author.image ?
                         <div className='relative post-pfp-cont rounded-full overflow-hidden'>
-                        <Image src={user.posts[0].author.image} fill={true} sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" alt='user pic' priority={true}></Image>
+                        <Image src={mostRecentPost[0].author.image} fill={true} sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" alt='user pic' priority={true}></Image>
                         </div>
                         :
                         <BsPersonCircle className="backup-user-img" size={40}></BsPersonCircle> 
                         }
                         <div>
-                            <p className='text-sm'>{formatUsername(user.posts[0].author.name)}</p>
-                            <p className='date-txt'>{formatDate(user.posts[0].createdAt)}</p>
+                            <p className='text-sm'>{formatUsername(mostRecentPost[0].author.name)}</p>
+                            <p className='date-txt'>{formatDate(mostRecentPost[0].createdAt)}</p>
                         </div>
 
                         </div>
-                        <HTMLRender editorOBJ={user.posts[0].body}></HTMLRender>
-                        {user.posts[0].videos && user.posts[0].videos.length > 0 &&
-                                        user.posts[0].videos.map((video) => {
+                        <HTMLRender editorOBJ={mostRecentPost[0].body}></HTMLRender>
+                        {mostRecentPost[0].videos && mostRecentPost[0].videos.length > 0 &&
+                                        mostRecentPost[0].videos.map((video) => {
                                             return (
                                                 <ReactPlayer key={video._id} url={video.url} controls={true} width="100%" height="auto"></ReactPlayer>
                                             )
                                         })
                         }
                                         <div className="p-2 text-sm">
-                                            <p>{`${user.posts[0].likes} likes and ${user.posts[0].dislikes} dislikes.`}</p>
+                                            <p>{`${mostRecentPost[0].likes} likes and ${mostRecentPost[0].dislikes} dislikes.`}</p>
                                         </div>
-                                        <LikeDislikeCmt thePost={user.posts[0]} setRenderState={setFriendsRecentPost}></LikeDislikeCmt>
+                                        <LikeDislikeCmt thePost={mostRecentPost[0]} setRenderState={setMostRecentPost}></LikeDislikeCmt>
                         
                         </div>
                     </>

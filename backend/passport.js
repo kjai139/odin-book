@@ -34,6 +34,8 @@ passport.use(new LocalStrategy(
                         gender: user.gender,
                         friendlist: user.friendlist,
                         friendReq: user.friendReq,
+                        facebookId: user.facebookId,
+                        posts: user.posts,
                         status: user.status,
                         uniqueId: user.uniqueId,
                         bio: user.bio
@@ -121,21 +123,31 @@ passport.use(new JwtStrategy(options, async (jwt_payload, done) => {
 
     try {
         
-        const user = await User.findById(jwt_payload._id).populate({
-            path: 'posts',
-            options: {
-                limit: 10,
-                sort: {
-                    createdAt: -1
-                },
-                populate: {
-                    path: 'author'
-                }
-            }
-        })
+        const user = await User.findById(jwt_payload._id)
+    
 
         if (user) {
-            return done(null, user)
+            const newToken = jwt.sign({
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                phoneNumber: user.phoneNumber,
+                image: user.image,
+                gender: user.gender,
+                friendlist: user.friendlist,
+                friendReq: user.friendReq,
+                facebookId: user.facebookId,
+                posts: user.posts,
+                status: user.status,
+                uniqueId: user.uniqueId,
+                bio: user.bio
+
+
+            }, process.env.JWT_SECRET_KEY, {
+                expiresIn: '1hr'
+            })
+            
+            return done(null, {user, token: newToken})
         } else {
             return done(null, false, {
                 reroute: true

@@ -8,12 +8,13 @@ const { io } = require('../socket')
 
 //handle after passport jwt
 exports.authenticateJwt = (req, res, next) => {
-    if (req.user) {
-        debug(`user authenticated: ${req.user._id}`)
+    const { user, token } = req.user
+    if (user) {
+        debug(`user authenticated: ${user._id}`)
         
         res.json({
             success: true,
-            user: req.user
+            user: user
         })
     } else {
         
@@ -26,4 +27,19 @@ exports.authenticateJwt = (req, res, next) => {
         
         
     
+}
+
+exports.refreshJwt = (req, res, next) => {
+    const { user , token } = req.user
+
+    res.cookie('jwt', token, {
+        httpOnly: true,
+        secure: true,
+        maxAge: 60 * 60 * 1000,
+        sameSite: 'None'
+    })
+
+    req.user = user
+    debug('refreshed jwt token sent to client')
+    next()
 }
