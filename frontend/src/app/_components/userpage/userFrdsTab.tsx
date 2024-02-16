@@ -1,22 +1,46 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import axiosInstance from '../../../../axios'
 import { UserPortrait } from '../SVGRComponent'
 import Image from 'next/image'
 import { formatUsername } from '@/app/_utils/formatStrings'
 import { User } from '../../../../interfaces/user.interface'
+import { useRouter } from 'next/navigation'
 
-export default function UserpageFrdsTab ({pageUserId}) {
+interface UserpageFrdsTabProps {
+    pageUserId: string
+}
+
+export default function UserpageFrdsTab ({pageUserId}:UserpageFrdsTabProps) {
+
+    const router = useRouter()
 
     const [userFrds, setuserFrds] = useState<User[]>([])
 
     const getUserFriends = async () => {
         try {
-            const response = await axiosInstance.get(`/api/user/updateFL?get=${pageUserId}`)
+            const response = await axiosInstance.get(`/api/user/updateFL?get=${pageUserId}`, {
+                withCredentials: true
+            })
 
-        } catch (err) {
+            if (response.data.newUser) {
+                setuserFrds(response.data.newUser.friendlist)
+            }
 
+        } catch (err:any) {
+            console.error(err)
+            if (err.response && err.response.status === 401) {
+                router.push('/')
+            }
         }
     }
+
+    const viewUserPage = (id:string) => {
+        router.push(`/user/${id}`)
+    }
+
+    useEffect(() => {
+        getUserFriends()
+    }, [])
 
 
     return (
@@ -37,7 +61,7 @@ export default function UserpageFrdsTab ({pageUserId}) {
                         <span className="font-bold">{formatUsername(node.name)}</span>
                         <div className="flex flex-col gap-1 mt-auto">
                             
-                            <button className="suggest-v-btn">View</button>
+                            <button className="suggest-v-btn" onClick={() => viewUserPage(node._id)}>View</button>
                         </div>
                     </div>
                 )

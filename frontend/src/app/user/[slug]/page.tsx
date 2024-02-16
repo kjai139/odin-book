@@ -12,6 +12,7 @@ import { useEffect, useRef, useState } from "react"
 import UserPostTab from "@/app/_components/userpage/userPostTab"
 import InfiScroll from "@/app/_components/scroll/infiscroll"
 import { Post } from "../../../../interfaces/post.interface"
+import UserpageFrdsTab from "@/app/_components/userpage/userFrdsTab"
 
 /* async function fetchUser(id) {
     const res = await fetch(`http://localhost:4000/api/user/getPage/?id=${id}`)
@@ -51,6 +52,7 @@ export default function UserDetails({ params }) {
                 console.log('totalpages', response.data.totalPages) */
                 setRecentPosts(response.data.recentPosts)
                 setTotalPages(response.data.totalPages)
+                setPagesDisplaying(1)
             } else {
                 notFound()
             }
@@ -61,8 +63,11 @@ export default function UserDetails({ params }) {
     }
 
     useEffect(() => {
-        getPageInfo()
-    }, [])
+        if (selectedTab === 'post') {
+            getPageInfo()
+        }
+
+    }, [selectedTab])
 
     const getMorePosts = async () => {
         try {
@@ -120,7 +125,7 @@ export default function UserDetails({ params }) {
                         <h1>{userInfo && userInfo.name ? formatUsername(userInfo.name) : 'Loading...'}</h1>
                     </div>
                     <div className="up-btn-wrap">
-                            <UserAddFriend pgId={userInfo?._id}></UserAddFriend>
+                            { userInfo && <UserAddFriend pgId={userInfo._id}></UserAddFriend>}
                     </div>
                 </div>
                 <div className="p-2">
@@ -134,10 +139,16 @@ export default function UserDetails({ params }) {
         { selectedTab === 'post' &&
             <div className="up-content-cont py-4 px-2">
             {recentPosts && userInfo && <UserPostTab bio={userInfo && userInfo.bio && JSON.parse(userInfo.bio)} recentPosts={recentPosts}></UserPostTab>}
-        { recentPosts && recentPosts.length > 0 && totalPages > pagesDisplaying &&
+        { selectedTab === 'post' && recentPosts && recentPosts.length > 0 && totalPages > pagesDisplaying &&
             <InfiScroll loadMore={getMorePosts}></InfiScroll>
             }
         </div>}
+        { selectedTab === 'friends' &&
+        <div className="up-content-cont py-4 px-2">
+            <UserpageFrdsTab pageUserId={params.slug}></UserpageFrdsTab>
+
+        </div>
+        }
         </>
     )
 }
