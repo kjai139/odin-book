@@ -15,6 +15,7 @@ export default function UserpageFrdsTab ({pageUserId}:UserpageFrdsTabProps) {
     const router = useRouter()
 
     const [userFrds, setuserFrds] = useState<User[]>([])
+    const [isDoneLoading, setIsDoneLoading] = useState(false)
 
     const getUserFriends = async () => {
         try {
@@ -24,6 +25,7 @@ export default function UserpageFrdsTab ({pageUserId}:UserpageFrdsTabProps) {
 
             if (response.data.newUser) {
                 setuserFrds(response.data.newUser.friendlist)
+                setIsDoneLoading(true)
             }
 
         } catch (err:any) {
@@ -45,9 +47,14 @@ export default function UserpageFrdsTab ({pageUserId}:UserpageFrdsTabProps) {
 
     return (
         <div>
+            {isDoneLoading && userFrds.length === 0 &&
+            <div className='vtt rounded p-4'>
+                <p>User has no friends.</p>
+            </div>
+            }
              <div className="suggest-grid">
             
-            {userFrds && userFrds.map((node) => {
+            {isDoneLoading && userFrds && userFrds.map((node) => {
                 return (
                     <div key={node._id} className="p-4 rounded shadow flex flex-col gap-2 bg-white">
                         <div className="suggest-img-cont relative flex-1">

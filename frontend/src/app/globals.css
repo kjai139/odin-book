@@ -487,6 +487,30 @@ input[type='text'], input[type='password'], input[type='email'] {
   gap:0.5rem;
 }
 
+.up-url-txt {
+  position: relative;
+}
+
+.up-url-cont:hover {
+  cursor: pointer;
+}
+
+.up-url-txt::after {
+  
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #0d0d0d;
+  transition: width 0.3s ease;
+}
+
+.up-url-txt:hover::after {
+  width: 100%;
+}
+
 .tt-cont {
   background-color: var(--dashbContentBg);
   border: 2px solid #64748b;

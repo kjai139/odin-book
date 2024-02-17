@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import { useAuth } from "../../../../context/authContext"
 import { addFriend } from "@/app/_utils/friends"
 import axiosInstance from '../../../../axios'
+import ResultModal from "@/app/_modals/resultModal"
 
 interface UserAddFriendProps {
     pgId: string
@@ -12,7 +13,7 @@ interface UserAddFriendProps {
 export default function UserAddFriend({pgId}:UserAddFriendProps) {
 
     const { user, isAuthenticated } = useAuth()
-    const [resultMsg, setResultMsg] = useState()
+    const [resultMsg, setResultMsg] = useState('')
 
     const handleAddFriend = async (id:string, userId:string) => {
         const response = await addFriend(id, userId)
@@ -43,12 +44,15 @@ export default function UserAddFriend({pgId}:UserAddFriendProps) {
 
     return (
         <>
+        {resultMsg &&
+        <ResultModal resultMsg={resultMsg} closeModal={() => setResultMsg('')}/>
+        }
         <div className="flex gap-2 ">
             { user && 
             <>
             <button className="up-btns">Message</button>
             { user._id !== pgId && !user.friendlist.includes(pgId) &&
-                <button className="up-btns" onClick={() => handleAddFriend(user._id, pgId)}>Add friend</button>}
+                <button className="up-btns" onClick={() => handleAddFriend(pgId, user._id)}>Add friend</button>}
             {/* {user._id !== pgId  && user.friendlist.includes(pgId) &&
             <button className="up-btns">Remove friend</button>
             } */}

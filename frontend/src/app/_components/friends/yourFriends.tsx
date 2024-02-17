@@ -82,7 +82,7 @@ export default function YourFriends () {
             { isDoneLoading && displayingFriendlist && displayingFriendlist.length > 0 ? displayingFriendlist.map((node) => {
                 return (
                     <div key={node._id} className="flex justify-between bg-white p-4 rounded shadow items-center">
-                        <div className="flex gap-2">
+                        <div className="flex gap-2 up-url-cont" onClick={() => router.push(`/user/${node._id}`)}>
                             <div className="w-8 h-8 relative rounded-full overflow-hidden">
                             {node.image ?
                             <Image src={node.image} alt="user profile picture" fill={true} sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"></Image> : 
@@ -90,7 +90,7 @@ export default function YourFriends () {
                             }
                             </div>
                         
-                            <h3>{formatUsername(node.name)}</h3>
+                            <h3 className="up-url-txt">{formatUsername(node.name)}</h3>
                         </div>
                         <div className="flex gap-4">
                             <button onClick={() => startPromptRemoveFrd(node._id, node.name)}>Remove Friend</button>

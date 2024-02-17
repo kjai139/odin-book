@@ -28,7 +28,13 @@ export default function UserPostTab ({bio, recentPosts}:UserPostTabProps) {
                     <h3 className="border-b border-CED0D4">Intro</h3>
                 </span>
                     <div>
-                    <UserBio bio={bio} mode={'up'}></UserBio>
+                    { bio ? 
+                    <UserBio bio={bio} mode={'up'}></UserBio> 
+                    :
+                    <div className="py-2">
+                        <p>User does not have a bio.</p>
+                    </div>
+                    }
                     </div>
                 </div>
                 </div>
@@ -69,7 +75,7 @@ export default function UserPostTab ({bio, recentPosts}:UserPostTabProps) {
                             </div>
                         )
                     }) : 
-                    <span>
+                    <span className="vtt rounded p-4">
                         <p>User has no posts.</p>
                     </span>
                     }

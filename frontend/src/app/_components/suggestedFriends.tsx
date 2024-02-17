@@ -1,4 +1,4 @@
-import { User, useAuth } from "../../../context/authContext"
+import { useAuth } from "../../../context/authContext"
 import axiosInstance from '../../../axios'
 import { useEffect, useState } from "react"
 import Image from "next/image"
@@ -6,9 +6,12 @@ import { UserPortrait } from "./SVGRComponent"
 import { formatUsername } from "../_utils/formatStrings"
 import { addFriend } from "../_utils/friends"
 import ResultModal from "../_modals/resultModal"
+import { User } from "../../../interfaces/user.interface"
+import { useRouter } from "next/navigation"
 
 
 export default function SuggestedFriends() {
+    const router = useRouter()
 
     const { user } = useAuth()
 
@@ -51,6 +54,10 @@ export default function SuggestedFriends() {
 
     }
 
+    const viewFriendPage = (pageId:string) => {
+        router.push(`/user/${pageId}`)
+    }
+
 
 
     return (
@@ -73,7 +80,7 @@ export default function SuggestedFriends() {
                         <span className="font-bold">{formatUsername(node.name)}</span>
                         <div className="flex flex-col gap-1 mt-auto">
                             <button onClick={() => handleAddFriend(node._id, user._id)} className="suggest-af-btn rounded p-1">Add Friend</button>
-                            <button className="suggest-v-btn">View</button>
+                            <button className="suggest-v-btn" onClick={()=> viewFriendPage(node._id)}>View</button>
                         </div>
                     </div>
                 )
