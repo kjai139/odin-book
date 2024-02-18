@@ -11,6 +11,7 @@ import AccountDModal from '../_modals/accountDetailModal'
 import { usePathname, useRouter } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
+import DashboardMobileNav from './home/mobile/dashboardNav'
 
 interface DashboardProps {
   
@@ -57,9 +58,7 @@ export default function DashboardHeader() {
 
     return (
         <div className="fixed hh w-screen flex px-2 dash-head shadow">
-                <div>
-
-                </div>
+                <DashboardMobileNav></DashboardMobileNav>
                 
                 <ul className="flex gap-8 items-center">
                 {

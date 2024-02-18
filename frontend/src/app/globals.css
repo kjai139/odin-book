@@ -120,6 +120,7 @@ h3 {
 
 .h-footer {
   margin: 0 auto;
+  padding-left: 10px;
 }
 
 .login-wrap, .h-footer {
@@ -829,5 +830,21 @@ li > button {
 @media screen and (max-width: 1000px) {
   .userpf-cont {
     min-width: 800px;
+  }
+}
+
+/* mobile small */
+
+@media screen and (max-width: 480px) {
+  .login-wrap {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .login-wrap > div {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
   }
 }
