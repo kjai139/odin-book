@@ -820,6 +820,16 @@ li > button {
   border-radius: 8px;
 }
 
+.burger-menu {
+  left: -10px;
+  background-color: var(--dashbContentBg);
+}
+
+.burger-menu > li:hover {
+  background-color: var(--dashBtnhover);
+  color: blue;
+}
+
 @media screen and (max-width: 1024px) {
  .center-tab {
   max-width: 520px;
@@ -846,5 +856,13 @@ li > button {
     display: flex;
     flex-direction: column;
     margin-bottom: 15px;
+  }
+
+  .dashb-l-side {
+    display: none;
+  }
+
+  .header-menu {
+    display: none;
   }
 }
