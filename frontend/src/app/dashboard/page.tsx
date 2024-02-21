@@ -17,7 +17,7 @@ import Loading from "./friends/loading"
 
 export default function Dashboard () {
 
-    const { user, isAuthenticated, signOut } = useAuth()
+    const { user, setSelectedTab, selectedTab } = useAuth()
     const router = useRouter()
     const [displaying, setDisplaying] = useState<number>(0)
     
@@ -43,10 +43,10 @@ export default function Dashboard () {
     
     return (
         <>
-            <DashboardLeftSideBar selectTab={setDisplaying}></DashboardLeftSideBar>
+            <DashboardLeftSideBar selectTab={setSelectedTab}></DashboardLeftSideBar>
             <div className="flex-1 center-tab">
             <div className="flex flex-col gap-4 mt-8"> 
-            {contentMapping[displaying]}
+            {contentMapping[selectedTab]}
             </div>
             </div>
             

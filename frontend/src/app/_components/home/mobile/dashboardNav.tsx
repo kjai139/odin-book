@@ -1,6 +1,8 @@
 
+import { usePathname, useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { RxHamburgerMenu } from 'react-icons/rx'
+import { useAuth } from '../../../../../context/authContext'
 
 type NavObjects = {
     icon:any,
@@ -15,11 +17,20 @@ interface DashboardMobileNavProps {
 }
 
 export default function DashboardMobileNav ({navRoutes}:DashboardMobileNavProps) {
-
+    const router = useRouter()
     const [isExpanded, setIsExpanded] = useState(false)
+    const pathname = usePathname()
+    const { setSelectedTab, selectedTab } = useAuth()
 
     const toggleMenu = () => {
         setIsExpanded(!isExpanded)
+    }
+
+
+
+    const changeRoute = (url:string) => {
+        setSelectedTab(0)
+        router.push(url)
     }
 
 
@@ -32,11 +43,11 @@ export default function DashboardMobileNav ({navRoutes}:DashboardMobileNavProps)
                 </button>
 
             </div>
-            <ul className='burger-menu absolute p-2 flex flex-col gap-2'>
+            <ul className={`burger-menu absolute p-2 flex flex-col gap-2 ${isExpanded ? undefined : 'hidden'}`}>
                {navRoutes && navRoutes.map((node) => {
                 return (
-                    <li key={node.id} className='px-4 py-2'>
-                        <button className='flex items-center gap-2'>
+                    <li key={node.id} className={`px-4 py-2 burger-btn ${pathname === node.url ? 'selected' : undefined}`}>
+                        <button className={`flex items-center gap-2`} onClick={() => changeRoute(node.url)}>
                             <div>
                                 {node.icon}
                             </div>
@@ -50,6 +61,23 @@ export default function DashboardMobileNav ({navRoutes}:DashboardMobileNavProps)
                     </li>
                 )
                })}
+               {/* {pathname === '/dashboard' &&
+               <>
+               <li className={`px-4 py-2 ${selectedTab === 2 && 'bm-selected'}`}>
+                <button onClick={() => setSelectedTab(2)}>
+                <p>View all of your posts</p>
+                </button>
+                   
+               </li>
+               <li className={`px-4 py-2 ${selectedTab === 3 && 'bm-selected'}`}>
+               <button onClick={() => setSelectedTab(3)}>
+                <p>View your video posts</p>
+                </button>
+               </li>
+               </>
+               } */}
+               
+               
 
             </ul>
         </div>

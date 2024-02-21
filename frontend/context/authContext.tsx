@@ -15,6 +15,8 @@ interface AuthContexType {
     doneLoading: boolean,
     pathname: string,
     previousURL: string | undefined | null,
+    setSelectedTab: React.Dispatch<React.SetStateAction<number>>,
+    selectedTab: number
 }
 
 
@@ -34,6 +36,7 @@ const AuthProvider:React.FC<AuthProviderProps> = ({children}) => {
     const [doneLoading, setDoneLoading] = useState(true)
     const [previousURL, setPreviousURL] = useState<any>()
     const [curURL, setCurURL] = useState()
+    const [selectedTab, setSelectedTab] = useState<number>(0)
 
     const isAuthenticated = async () => {
         try {
@@ -100,7 +103,7 @@ const AuthProvider:React.FC<AuthProviderProps> = ({children}) => {
 
 
     return (
-        <AuthContext.Provider value={{user, isAuthenticated, signOut, doneLoading, pathname, setUser, previousURL}}>
+        <AuthContext.Provider value={{user, isAuthenticated, signOut, doneLoading, pathname, setUser, previousURL, setSelectedTab, selectedTab}}>
             {children}
         </AuthContext.Provider>
     )

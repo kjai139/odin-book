@@ -443,6 +443,11 @@ input[type='text'], input[type='password'], input[type='email'] {
   background-color:var(--dashBtnhover)
 }
 
+.bm-selected {
+  pointer-events: none;
+  font-weight: bold;
+}
+
 .dashb-l-side > li > button {
   padding: .5rem 1rem;
   border-radius: var(--roundedR);
@@ -623,7 +628,7 @@ li > button {
 }
 
 
-.header-li.selected {
+.header-li.selected, .burger-btn.selected {
   border-color: blue;
   color: blue;
   pointer-events: none;
@@ -858,8 +863,13 @@ li > button {
     margin-bottom: 15px;
   }
 
+  .db-g-cont {
+    flex-direction: column;
+  }
+
   .dashb-l-side {
-    display: none;
+    position: static;
+    max-width: 100%;
   }
 
   .header-menu {
