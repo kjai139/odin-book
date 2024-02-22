@@ -143,8 +143,11 @@ export default function UserBio ({bio, mode}:UserBioProps) {
        { isEditable && <span className='num-count flex justify-end'>
         {editor.storage.characterCount.characters()}/{limit} characters
         </span>}
-        { mode !== 'up' && <div className="flex justify-end">
-        <button className="py-1 px-4 bg-blue-500 text-white shadow rounded-lg" onClick={isEditable ? handleUpdateBio : () => setIsEditable(true)}>{isEditable ? `Update bio` : 'Edit bio'}</button>
+        { mode !== 'up' && <div className="flex justify-end gap-2">
+            {isEditable && 
+            <button className="py-1 px-4 bg-blue-500 text-white shadow rounded-lg" onClick={() => setIsEditable(false)}>Cancel</button>
+            }
+        <button className="py-1 px-4 bg-blue-500 text-white shadow rounded-lg" onClick={isEditable ? handleUpdateBio : () => setIsEditable(true)}>{isEditable ? `Save changes` : 'Edit bio'}</button>
         </div>
        }
         

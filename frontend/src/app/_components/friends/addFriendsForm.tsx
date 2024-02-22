@@ -51,17 +51,17 @@ export default function AddFriends () {
         <>
             <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
                 <label className="font-bold">ADD FRIEND</label>
-                <div className="relative flex">
+                <div className="relative flex frd-add-div">
                 <input {...register('username', { 
                     required: 'Please enter a username.', 
                     pattern: { 
                         value:/^[a-zA-Z\s]+#[a-zA-Z0-9]+$/i,
                         message: 'Invalid format.Ex.Joey#2412'
-                        } })} className="flex-1 p-2 rounded" maxLength={25} autoComplete="off" placeholder="Enter name here... Ex.Joey#1234">
+                        } })} className="flex-1 p-2 rounded frd-add-inp" maxLength={25} autoComplete="off" placeholder="Enter name here... Ex.Joey#1234">
 
                 </input>
                 { errors.username && <p className="absolute top-full text-red-500 text-bold">{errors.username.message}</p> }
-                <div className={`flex justify-end absolute top-0 right-0 ${isLoading && 'na-wrap'}`}>
+                <div className={`flex absolute top-0 right-0 ${isLoading && 'na-wrap'}`}>
                     <button type="submit" className={`bg-blue-500 py-1 px-2 my-1 mx-1 rounded ${isLoading && 'disabledBtn'}`}>Send request</button>
                 </div>
                 </div>

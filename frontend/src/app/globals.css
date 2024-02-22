@@ -835,6 +835,10 @@ li > button {
   color: blue;
 }
 
+.frd-add-div {
+  justify-content: space-between;
+}
+
 @media screen and (max-width: 1024px) {
  .center-tab {
   max-width: 520px;
@@ -865,6 +869,7 @@ li > button {
 
   .db-g-cont {
     flex-direction: column;
+    gap: 10px;
   }
 
   .dashb-l-side {
@@ -875,4 +880,45 @@ li > button {
   .header-menu {
     display: none;
   }
+
+  .userbio {
+    flex-direction: column;
+  }
+
+  .up-cont {
+    max-width: none;
+  }
+
+  .pfp-cont {
+    flex: 1;
+    aspect-ratio: 1/1;
+    max-width: 240px;
+  }
+
+  .pfp-label {
+    display:flex;
+    justify-content: center;
+  }
+
+  .post-icons {
+    padding: 3px 5px;
+  }
+
+  /* friendstab */
+  .frd-div {
+    padding: 8px;
+  }
+
+  .frd-remove-btn {
+    font-size: 14px;
+  }
+
+  .frd-add-div {
+    height: 40px;
+  }
+
+  .frd-add-inp {
+    font-size: 11px;
+  }
+  
 }

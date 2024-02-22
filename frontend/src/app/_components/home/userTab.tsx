@@ -195,7 +195,7 @@ export default function UserTab () {
                     <div className="flex-1 up-cont flex flex-col gap-4">
                         { tempPfp || user.image ?
                         <>
-                         <label htmlFor="imageInput" className={`${isImgSaving && 'disabled'}`}>
+                         <label htmlFor="imageInput" className={`${isImgSaving && 'disabled'} pfp-label`}>
                          <input type="file" onChange={handleImgUpload} ref={fileInputRef} id="imageInput" accept="image/*" style={{
                              display: 'none'
                          }}></input>
