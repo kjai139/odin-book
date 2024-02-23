@@ -20,7 +20,7 @@ export default function UserPostTab ({bio, recentPosts}:UserPostTabProps) {
 
     return (
         <div className="flex flex-col up-content-cont">
-            <div className="flex gap-4">
+            <div className="flex gap-4 userp-content-cont">
                 {/* left */}
                 <div className="flex flex-col flex-1">
                 <div className="vtt rounded p-2">

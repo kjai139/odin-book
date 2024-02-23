@@ -839,6 +839,10 @@ li > button {
   justify-content: space-between;
 }
 
+.top-nav-burger > div {
+  display: none;
+}
+
 @media screen and (max-width: 1024px) {
  .center-tab {
   max-width: 520px;
@@ -854,7 +858,10 @@ li > button {
 
 /* mobile small */
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 480px), (max-width:700px) {
+  .top-nav-burger > div {
+    display: flex;
+  }
   .login-wrap {
     flex-direction: column;
     align-items: center;
@@ -865,6 +872,10 @@ li > button {
     display: flex;
     flex-direction: column;
     margin-bottom: 15px;
+  }
+
+  .center-tab {
+    max-width: 100%;
   }
 
   .db-g-cont {
@@ -919,6 +930,43 @@ li > button {
 
   .frd-add-inp {
     font-size: 11px;
+  }
+
+  .signup-error.arr-left {
+    right:-50%;
+    position: relative;
+    text-wrap: nowrap;
+  }
+
+  .signup-error.arr-right {
+    position: static;
+  }
+
+  /* userpage */
+  .userpf-cont {
+    min-width: 0;
+    min-height: 100px;
+
+  }
+
+  .userp-content-cont {
+    flex-direction: column;
+  }
+
+  .userpfp-outer {
+    align-items: center;
+  }
+
+  .pfp-mask {
+    position: static;
+  }
+
+  .userpg-top-cont {
+    flex: 1;
+  }
+
+  .up-btn-wrap {
+    display: none;
   }
   
 }

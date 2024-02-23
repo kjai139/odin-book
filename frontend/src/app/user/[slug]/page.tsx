@@ -102,7 +102,7 @@ export default function UserDetails({ params }) {
         <div className="up-bg rounded shadow">
         <div className="userpg-bg">
         
-            <div className="flex flex-col">
+            <div className="flex flex-col userpg-top-cont">
                 <div className="userpf-cont">
                     <div className="d-img">
 
@@ -110,7 +110,7 @@ export default function UserDetails({ params }) {
                     {/* <h1>USER DETAILS PAGE: {params.slug}</h1> */}
                 </div>
 
-                <div className="flex border-b border-solid border-gray gap-2 pb-4">
+                <div className="userpfp-outer flex border-b border-solid border-gray gap-2 pb-4">
                     <div className="rounded-full bg-white p-2 border-2 border-solid border-white relative pfp-mask-cont">
                         <div className="pfp-mask">
                             <div className="rounded-full overflow-hidden pfp-img-div">
@@ -121,7 +121,7 @@ export default function UserDetails({ params }) {
                             </div>
                         </div>
                     </div>
-                    <div>
+                    <div className="up-pfp-txt">
                         <h1>{userInfo && userInfo.name ? formatUsername(userInfo.name) : 'Loading...'}</h1>
                     </div>
                     <div className="up-btn-wrap">
