@@ -162,7 +162,7 @@ let callbackURL
 if (process.env.NODE_ENV === 'production') {
     callbackURL = ''
 } else {
-    callbackURL = 'http://localhost/login/facebook'
+    callbackURL = 'http://localhost:3000/login/facebook'
 }
 
 passport.use(new FacebookStrategy({
