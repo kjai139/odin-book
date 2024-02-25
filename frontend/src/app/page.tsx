@@ -45,6 +45,14 @@ export default function Home() {
     const initializeFacebookSDK = async () => {
       await loadFacebookSDK()
       FB.getLoginStatus(function(response) {
+        if (response.status === 'connected') {
+          console.log('user already connected')
+          FB.api('/me', {fields: 'id, name, email, picture.type(normal)'}, function(response) {
+            console.log('response from api', response)
+          })
+        } else {
+          console.log('user is not connected')
+        }
         console.log(response)
       })
 
@@ -54,6 +62,28 @@ export default function Home() {
     
   }, [])
 
+  const loginFacebook = () => {
+    FB.getLoginStatus(function(response) {
+      if (response.status !== 'connected') {
+        console.log('Logging user in...')
+        FB.login(function(response) {
+          if (response.status === 'connected') {
+            console.log('User is logged into FB')
+          }
+        }, {
+          scope: 'public_profile, email'
+        })
+      }
+    })
+   
+  }
+
+  const logoutFacebook = () => {
+    FB.logout(function(response) {
+      console.log(response)
+    })
+  }
+
   
 
 
@@ -61,6 +91,8 @@ export default function Home() {
 
 
   return (
+    <>
+    
     <div className="home-grid">
       
     <main className="flex justify-center items-center bg-login-bg w-screen flex-col">
@@ -70,12 +102,19 @@ export default function Home() {
         <p>Yapp away with the world.</p>
         </div>
         <HomeLogin></HomeLogin>
+        <div className="flex flex-col">
+          <button onClick={loginFacebook}>Login with FB</button>
+          <button onClick={logoutFacebook}>LOG OUT OF FB</button>
+        </div>
+        
         
       </div>
+      
       
     </main>
       <HomeFooter></HomeFooter>
     </div>
+    </>
     
   )
 }

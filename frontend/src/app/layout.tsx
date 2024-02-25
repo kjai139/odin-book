@@ -21,6 +21,7 @@ export default function RootLayout({
     <AuthProvider>
       <html lang="en">
         <body className={inter.className}>
+        <div id="fb-root"></div>
           {children}
         
         </body>
