@@ -4,11 +4,14 @@ import { useEffect } from "react";
 import { useAuth } from "../../context/authContext";
 import HomeFooter from "./_components/homeFooter";
 import HomeLogin from "./_components/homeLogin";
+import axiosInstance from '.././../axios'
+import { useRouter } from "next/navigation";
 
 
 export default function Home() {
 
   const { isAuthenticated, doneLoading } = useAuth()
+  const router = useRouter()
 
   useEffect(() => {
     isAuthenticated()
@@ -62,6 +65,23 @@ export default function Home() {
     
   }, [])
 
+  const loginAppFromFacebook = async ({fbUser}) => {
+    try {
+      const response = await axiosInstance.post('/api/auth/facebook/login', {
+        username: fbUser.name,
+        fbId: fbUser.id,
+        email: fbUser.email,
+        image: fbUser.picture
+      })
+
+      if (response.data.success) {
+        router.push('/dashboard')
+      }
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
   const loginFacebook = () => {
     FB.getLoginStatus(function(response) {
       if (response.status !== 'connected') {
@@ -69,10 +89,19 @@ export default function Home() {
         FB.login(function(response) {
           if (response.status === 'connected') {
             console.log('User is logged into FB')
+            FB.api('/me', {fields: 'id, name, email, picture.type(normal)'}, function(response) {
+              console.log('response from api', response)
+              loginAppFromFacebook(response)
+            })
           }
         }, {
           scope: 'public_profile, email'
         })
+      } else if (response.status === 'connected') {
+          FB.api('/me', {fields: 'id, name, email, picture.type(normal)'}, function(response) {
+            console.log('response from api', response)
+            loginAppFromFacebook(response)
+          })
       }
     })
    
