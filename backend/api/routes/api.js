@@ -1,5 +1,5 @@
 const express = require('express')
-const { create_user_post, user_login_post, user_signOut_delete, user_suggested_find, user_add_friend_req_post, user_friendreq_get, user_fl_get, user_pfp_change, user_pfp_save, user_bio_update_post, user_get_updatedBio, user_getPage_get, user_page_getMore } = require('../controllers/userController')
+const { create_user_post, user_login_post, user_signOut_delete, user_suggested_find, user_add_friend_req_post, user_friendreq_get, user_fl_get, user_pfp_change, user_pfp_save, user_bio_update_post, user_get_updatedBio, user_getPage_get, user_page_getMore, user_login_facebook } = require('../controllers/userController')
 const router = express.Router()
 const passport = require('../../passport')
 const { authenticateJwt, refreshJwt } = require('../middleware/authenticateJwt')
@@ -39,7 +39,10 @@ router.get('/auth/check', passport.authenticate('jwt', {session: false}), authen
 
 router.delete('/auth/signOut', user_signOut_delete)
 
-router.get('/auth/facebook', passport.authenticate('facebook', {session: false}), authenticateJwt )
+/* router.get('/auth/facebook', passport.authenticate('facebook', {session: false}), authenticateJwt ) */
+//fb login using sdk instead of passport
+router.post('/auth/facebook/login', user_login_facebook)
+
 
 router.post('/image/temp/post', passport.authenticate('jwt', {session: false}), refreshJwt, upload.single('image'), image_temp_upload_post)
 

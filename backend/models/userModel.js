@@ -40,7 +40,7 @@ const UserSchema = new Schema({
     }],
     gender: {
         type:String,
-        enum:['Male', 'Female', 'Other']
+        enum:['Male', 'Female', 'Other', 'Unknown']
     },
     facebookId: {
         type:String,

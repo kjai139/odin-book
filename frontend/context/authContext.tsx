@@ -39,6 +39,7 @@ const AuthProvider:React.FC<AuthProviderProps> = ({children}) => {
     const [selectedTab, setSelectedTab] = useState<number>(0)
 
     const isAuthenticated = async () => {
+       
         try {
             
             const response = await axiosInstance.get('/api/auth/check', {

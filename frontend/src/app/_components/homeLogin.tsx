@@ -11,9 +11,13 @@ import { useRouter } from 'next/navigation'
 import LoadingModal from "../_modals/loadingModal"
 import ResultModal from "../_modals/resultModal"
 import { useAuth } from "../../../context/authContext"
-import { getServerSideProps } from "next/dist/build/templates/pages"
+import { FaFacebook } from "react-icons/fa6"
 
-export default function HomeLogin () {
+interface HomeLoginProps {
+    fbSignin: () => void
+}
+
+export default function HomeLogin ({fbSignin}:HomeLoginProps) {
 
     const router = useRouter()
     const { isAuthenticated, doneLoading, user, pathname } = useAuth()
@@ -81,6 +85,11 @@ export default function HomeLogin () {
     }, [formState, reset])
     // console.log(watch('username'))
 
+    const LogInWithFacebook = (e) => {
+        e.preventDefault()
+        fbSignin()
+    }
+
    
 
     
@@ -106,6 +115,14 @@ export default function HomeLogin () {
                 </div>
                 <div className="justify-center flex">
                 <button className="bg-blue-500 text-white rounded py-2 px-4" type="button" onClick={() => setIsCreateFormOpen(true)}>Create new account</button>
+                </div>
+                <div className="justify-center flex">
+                    <button onClick={LogInWithFacebook}>
+                        <div className="flex items-center gap-2">
+                            <FaFacebook size={20}></FaFacebook>
+                            <p>Log in with Facebook</p>
+                        </div>
+                    </button>
                 </div>
             </form>
             <div className={`overlay flex justify-center items-center ${isCreateFormOpen ? 'active' : 'inactive'}`}>

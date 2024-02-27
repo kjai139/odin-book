@@ -10,6 +10,10 @@ const s3Client = require('../../s3Client')
 const socketConfig = require('../socket')
 const Post = require('../../models/postModel')
 const Comment = require('../../models/commentModel')
+const crypto = require('crypto')
+const jwt = require('jsonwebtoken')
+require('dotenv').config()
+
 
 
 exports.create_user_post = [
@@ -493,6 +497,151 @@ exports.user_page_getMore = async (req, res) => {
 
         
 
+
+
+    } catch (err) {
+        res.status(500).json({
+            message: err.message
+        })
+    }
+}
+
+
+
+//test jwt
+
+exports.test_jwt_send = async (req, res) => {
+    const token = jwt.sign({
+        _id: '21421421',
+        name: 'bob jones',
+        email: 'test2414@gmail.com',
+        /* phoneNumber: user.phoneNumber,
+        image: user.image,
+        gender: user.gender,
+        friendlist: user.friendlist,
+        friendReq: user.friendReq,
+        facebookId: user.facebookId,
+        posts: user.posts,
+        status: user.status,
+        uniqueId: user.uniqueId,
+        bio: user.bio */
+
+
+    }, process.env.JWT_SECRET_KEY, {
+        expiresIn: '1hr'
+    })
+
+    res.cookie('jwt', token, {
+        httpOnly: true,
+        secure: true,
+        maxAge: 60 * 60 * 1000,
+        sameSite: 'None'
+    })
+
+
+    debug('cookie sent from test jwt')
+    res.json({
+        success: true
+    })
+}
+
+//login via facebook
+
+exports.user_login_facebook = async (req, res) => {
+   
+    try {
+        const generateRandomString = (len) => {
+            const numbytes = Math.ceil(len / 2)
+            const randomBytes = crypto.randomBytes(numbytes)
+            const randomstr = randomBytes.toString('hex').slice(0, len)
+
+            return randomstr
+        }
+        const username = req.body.username
+        const fbId = req.body.fbId
+        const email = req.body.email
+        const userPfp = req.body.image
+        let gender 
+        if (req.body.gender !== 'male' | 'female') {
+            gender = 'Unknown'
+        }
+
+        
+
+        const registeredUser = await User.findOne({email: email})
+
+        if (registeredUser) {
+            registeredUser.name = username
+            registeredUser.image = userPfp
+            registeredUser.facebookId = fbId
+            registeredUser.gender = gender
+
+            await registeredUser.save()
+
+            const token = jwt.sign({
+                _id: registeredUser._id,
+                name: registeredUser.name,
+                email: registeredUser.email
+               
+
+
+            }, process.env.JWT_SECRET_KEY, {
+                expiresIn: '1hr'
+            })
+
+            res.cookie('jwt', token, {
+                httpOnly: true,
+                secure: true,
+                maxAge: 60 * 60 * 1000,
+                sameSite: 'None'
+            })
+
+            debug('Existing user found via facebook login')
+
+            res.json({
+                user: registeredUser
+            })
+
+
+
+        } else {
+            const newUser = new User ({
+                name: username,
+                email: email,
+                image: userPfp,
+                password: `${generateRandomString(5)}Z`,
+                facebookId: fbId,
+                gender: gender
+
+            })
+
+            await newUser.save()
+
+
+            const token = jwt.sign({
+                _id: newUser._id,
+                name: newUser.name,
+                email: newUser.email
+               
+
+
+            }, process.env.JWT_SECRET_KEY, {
+                expiresIn: '1hr'
+            })
+
+            res.cookie('jwt', token, {
+                httpOnly: true,
+                secure: true,
+                maxAge: 60 * 60 * 1000,
+                sameSite: 'None'
+            })
+
+            debug('New user created via FB login')
+
+            res.json({
+                user: newUser
+            })
+        }
 
 
     } catch (err) {

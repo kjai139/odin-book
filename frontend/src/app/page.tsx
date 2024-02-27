@@ -65,16 +65,32 @@ export default function Home() {
     
   }, [])
 
-  const loginAppFromFacebook = async ({fbUser}) => {
+  const testJwt = async () => {
+    try {
+      const response = await axiosInstance.post('/api/auth/testJwt')
+      if (response.data.success) {
+        console.log('CHECK JWT TOKEN')
+      }
+
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  const loginAppFromFacebook = async (fbUser) => {
     try {
       const response = await axiosInstance.post('/api/auth/facebook/login', {
         username: fbUser.name,
         fbId: fbUser.id,
         email: fbUser.email,
-        image: fbUser.picture
+        image: fbUser.picture.url,
+        gender: fbUser?.gender
+      }, {
+        withCredentials: true
       })
 
-      if (response.data.success) {
+      if (response.data.user) {
+        console.log('Logged in from facebook')
         router.push('/dashboard')
       }
     } catch (err) {
@@ -89,7 +105,7 @@ export default function Home() {
         FB.login(function(response) {
           if (response.status === 'connected') {
             console.log('User is logged into FB')
-            FB.api('/me', {fields: 'id, name, email, picture.type(normal)'}, function(response) {
+            FB.api('/me', {fields: 'id, name, email, picture.type(normal), gender'}, function(response) {
               console.log('response from api', response)
               loginAppFromFacebook(response)
             })
@@ -98,7 +114,7 @@ export default function Home() {
           scope: 'public_profile, email'
         })
       } else if (response.status === 'connected') {
-          FB.api('/me', {fields: 'id, name, email, picture.type(normal)'}, function(response) {
+          FB.api('/me', {fields: 'id, name, email, picture.type(normal), gender'}, function(response) {
             console.log('response from api', response)
             loginAppFromFacebook(response)
           })
@@ -130,11 +146,11 @@ export default function Home() {
         <h1 className="ht">Yappers</h1>
         <p>Yapp away with the world.</p>
         </div>
-        <HomeLogin></HomeLogin>
-        <div className="flex flex-col">
-          <button onClick={loginFacebook}>Login with FB</button>
-          <button onClick={logoutFacebook}>LOG OUT OF FB</button>
-        </div>
+        <HomeLogin fbSignin={loginFacebook}></HomeLogin>
+        {/* <div className="flex flex-col">
+          
+          <button onClick={testJwt}>TEST JWT</button>
+        </div> */}
         
         
       </div>
