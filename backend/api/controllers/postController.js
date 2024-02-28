@@ -74,7 +74,8 @@ exports.post_create_post = async (req, res) => {
         res.json({
             message: 'Post created',
             success: true,
-            updatedUser: theUser
+            updatedUser: theUser,
+            mostRecentPost: newPost
         })
 
     } catch (err) {
@@ -138,7 +139,8 @@ exports.post_vid_create_post = async (req, res) => {
             success: true,
             message: `video uploaded successfully. URL:https://${bucketName}.s3.us-east-2.amazonaws.com/${req.file.key}`,
             url:`https://${bucketName}.s3.us-east-2.amazonaws.com/${req.file.Key}`,
-            updatedUser: theUser
+            updatedUser: theUser,
+            mostRecentPost: newPost
         })
 
     } catch(err) {

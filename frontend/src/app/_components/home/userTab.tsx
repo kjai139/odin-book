@@ -17,6 +17,7 @@ import { AiOutlineLike, AiOutlineDislike } from 'react-icons/ai'
 import { FaRegComment } from "react-icons/fa"
 import LikeDislikeCmt from "../buttons/likeDislikeCmt"
 import UserBio from "./userBio"
+import LoadingModal from "@/app/_modals/loadingModal"
 
 
 export default function UserTab () {
@@ -46,6 +47,9 @@ export default function UserTab () {
 
     const [mostRecentPost, setMostRecentPost] = useState<Post[]>()
     const [friendsRecentPost, setFriendsRecentPost] = useState<Post[]>([])
+
+    const [resetForm, setResetForm] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
 
     
 
@@ -110,11 +114,13 @@ export default function UserTab () {
     }
 
     const createGeneralPost = async () => {
+        
         try {
             console.log('general post data:', postData)
             console.log('general video data:', videoData)
             const formData = new FormData()
             if (postData && !videoData) {
+                setIsLoading(true)
                 const json = postData.getJSON()
                 const response = await axiosInstance.post('/api/post/create' , {
                     content: json
@@ -123,11 +129,14 @@ export default function UserTab () {
                 })
 
                 if (response.data.success) {
+                    setIsLoading(false)
                     console.log(response.data.message)
                     setResultMsg(response.data.message)
+                    setMostRecentPost(response.data.mostRecentPost)
                 }
 
             } else if (videoData && postData) {
+                setIsLoading(true)
                 formData.append('video', videoData[0])
                 
                 const editorJson = postData.getJSON()
@@ -143,8 +152,10 @@ export default function UserTab () {
                 })
 
                 if (response.data.success) {
+                    setIsLoading(false)
                     console.log(response.data.message)
                     setResultMsg(response.data.message)
+                    setMostRecentPost(response.data.mostRecentPost)
                 }
             } else {
                 console.log('Must write something.')
@@ -184,9 +195,7 @@ export default function UserTab () {
 
     return (
         <>
-            {resultMsg &&
-            <ResultModal resultMsg={resultMsg} closeModal={() => setResultMsg('')}></ResultModal>
-            }
+            
             { user &&
             <div className="flex flex-col gap-4"> 
             <h3>Welcome, {formatUsername(user.name)}#{user.uniqueId}!</h3>
@@ -235,11 +244,17 @@ export default function UserTab () {
                 <h3>What's on your mind?</h3>
                     
                 <div className="flex flex-col gap-2 bg-white p-4 relative shadow rounded">
+                {resultMsg &&
+                <ResultModal resultMsg={resultMsg} closeModal={() => setResultMsg('')}></ResultModal>
+                }
+                {isLoading &&
+                <LoadingModal></LoadingModal>
+                }
                     
                     <div className="vtt-post-cont p-2">
                     <button className="vtt-post-btn py-1 px-4 rounded-lg text-white" onClick={createGeneralPost}>Post</button>
                     </div>
-                    <DefaultTiptap setPost={setPostData}></DefaultTiptap>
+                    <DefaultTiptap setPost={setPostData} resetForm={resetForm}></DefaultTiptap>
 
                     <VideoUploader setVideoData={setVideoData}></VideoUploader>
                     </div>

@@ -5,12 +5,12 @@ import CharacterCount from '@tiptap/extension-character-count'
 import Placeholder from '@tiptap/extension-placeholder'
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { RiBold, RiItalic } from 'react-icons/ri'
 
 const limit = 300
 
-const DefaultTiptap = ({setPost}) => {
+const DefaultTiptap = ({setPost, resetForm}) => {
 
     const [characters, setCharacters] = useState(0)
     const editor = useEditor({
@@ -45,10 +45,18 @@ const DefaultTiptap = ({setPost}) => {
     const handleItalics = () => {
         editor.commands.toggleItalic()
     }
+    useEffect(() => {
+        if (resetForm && editor) {
+            editor.commands.clearContent()
+        }
+
+    }, [resetForm])
 
     if (!editor) {
         return null
     }
+
+    
 
 
     return (
