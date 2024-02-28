@@ -45,7 +45,7 @@ export default function UserTab () {
 
     const [updatedBio, setUpdatedBio] = useState()
 
-    const [mostRecentPost, setMostRecentPost] = useState<Post[]>()
+    const [mostRecentPost, setMostRecentPost] = useState<Post[]>([])
     const [friendsRecentPost, setFriendsRecentPost] = useState<Post[]>([])
 
     const [resetForm, setResetForm] = useState(false)
@@ -132,7 +132,9 @@ export default function UserTab () {
                     setIsLoading(false)
                     console.log(response.data.message)
                     setResultMsg(response.data.message)
-                    setMostRecentPost(response.data.mostRecentPost)
+                    setResetForm(true)
+                    setMostRecentPost([response.data.mostRecentPost])
+                    console.log(response.data)
                 }
 
             } else if (videoData && postData) {
@@ -254,7 +256,7 @@ export default function UserTab () {
                     <div className="vtt-post-cont p-2">
                     <button className="vtt-post-btn py-1 px-4 rounded-lg text-white" onClick={createGeneralPost}>Post</button>
                     </div>
-                    <DefaultTiptap setPost={setPostData} resetForm={resetForm}></DefaultTiptap>
+                    <DefaultTiptap setPost={setPostData} resetForm={resetForm} setResetForm={setMostRecentPost}></DefaultTiptap>
 
                     <VideoUploader setVideoData={setVideoData}></VideoUploader>
                     </div>

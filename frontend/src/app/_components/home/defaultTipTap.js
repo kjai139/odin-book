@@ -10,7 +10,7 @@ import { RiBold, RiItalic } from 'react-icons/ri'
 
 const limit = 300
 
-const DefaultTiptap = ({setPost, resetForm}) => {
+const DefaultTiptap = ({setPost, resetForm, setResetForm}) => {
 
     const [characters, setCharacters] = useState(0)
     const editor = useEditor({
@@ -48,6 +48,7 @@ const DefaultTiptap = ({setPost, resetForm}) => {
     useEffect(() => {
         if (resetForm && editor) {
             editor.commands.clearContent()
+            setResetForm(false)
         }
 
     }, [resetForm])

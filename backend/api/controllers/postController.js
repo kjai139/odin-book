@@ -46,6 +46,7 @@ exports.post_create_post = async (req, res) => {
         })
 
         await newPost.save()
+        await newPost.populate('author')
 
         const theUser = await User.findOneAndUpdate({_id: req.user._id}, {
             $addToSet: {
