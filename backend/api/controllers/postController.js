@@ -92,6 +92,7 @@ exports.post_vid_create_post = async (req, res) => {
         const bucketName = 'odinbookkjai'
         debug('file:', req.file)
         debug('body', req.body)
+        
 
         const newVideo = new Video({
             url: `https://${bucketName}.s3.us-east-2.amazonaws.com/${req.file.key}`
@@ -109,6 +110,7 @@ exports.post_vid_create_post = async (req, res) => {
         })
 
         await newPost.save()
+        await newPost.populate('author videos')
 
         const theUser = await User.findOneAndUpdate({_id: req.user._id}, {
             $addToSet: {
@@ -218,7 +220,7 @@ exports.postTimeline_get = async (req, res) => {
     try {
         const userId = new mongoose.Types.ObjectId(req.user._id)
 
-        const mostRecentPost = await Post.find({ author: req.user._id}).sort({createdAt: -1}).limit(1).populate('author')
+        const mostRecentPost = await Post.find({ author: req.user._id}).sort({createdAt: -1}).limit(1).populate('author videos')
         
 
         const posts = await Post.aggregate([

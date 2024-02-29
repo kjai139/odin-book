@@ -7,7 +7,8 @@ let origin
 if (process.env.NODE_ENV === 'production') {
     origin = ''
 } else {
-    origin = ['http://localhost:3000', 'http://localhost:3001', 'https://d9cd-67-71-136-24.ngrok-free.app']
+    origin = ['http://localhost:3000', 'http://localhost:3001']
+    //add origin domain
 }
 
 module.exports = (server) => {

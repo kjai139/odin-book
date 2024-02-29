@@ -23,7 +23,7 @@ const s3Upload = multer({
             cb(null, {fieldName: file.fieldname})
         },
         key: function (req, file, cb) {
-            cb(null, `videos/temp/${Date.now().toString()}${file.originalname}`)
+            cb(null, `videos/perm/${Date.now().toString()}${file.originalname}`)
         },
         contentType: multerS3.AUTO_CONTENT_TYPE,
         acl: 'public-read'

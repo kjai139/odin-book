@@ -5,7 +5,8 @@ const port = process.env.PORT || 4000
 const mongodb = process.env.MONGO_DB 
 const mongoose = require('mongoose')
 const cors = require('cors')
-const allowedOrigins = ['http://localhost:3000', 'http://localhost:3001', 'https://d9cd-67-71-136-24.ngrok-free.app']
+const allowedOrigins = ['http://localhost:3000', 'http://localhost:3001']
+//add origin domain
 const passport = require('../passport')
 const cookieParser = require('cookie-parser')
 const { Server } = require('socket.io')

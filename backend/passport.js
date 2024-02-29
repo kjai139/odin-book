@@ -162,12 +162,12 @@ let callbackURL
 if (process.env.NODE_ENV === 'production') {
     callbackURL = ''
 } else {
-    callbackURL = 'https://a6b8-67-71-136-24.ngrok-free.app/api/auth/facebook'
+    callbackURL = ''
 }
 
-passport.use(new FacebookStrategy({
-    clientID: '892340555959244',
-    clientSecret: '02b981921ea9c3c53a4c12d1cefb543d',
+/* passport.use(new FacebookStrategy({
+    clientID:'' ,
+    clientSecret: '',
     callbackURL: callbackURL,
     profileFields: ['id', 'name', 'picture', 'gender', 'email']
     // the callback that gets called when a user successfully authenticates with fb
@@ -250,7 +250,7 @@ passport.use(new FacebookStrategy({
         return done(err)
     }
     
-}))
+})) */
 
 
 module.exports = passport;

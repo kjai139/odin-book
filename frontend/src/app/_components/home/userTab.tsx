@@ -141,10 +141,8 @@ export default function UserTab () {
                 setIsLoading(true)
                 formData.append('video', videoData[0])
                 
-                const editorJson = postData.getJSON()
+                const editorJson = JSON.stringify(postData.getJSON())
                 formData.append('content', editorJson)
-            
-                formData.append('content', '')
                 
                 
 
@@ -157,7 +155,8 @@ export default function UserTab () {
                     setIsLoading(false)
                     console.log(response.data.message)
                     setResultMsg(response.data.message)
-                    setMostRecentPost(response.data.mostRecentPost)
+                    setResetForm(true)
+                    setMostRecentPost([response.data.mostRecentPost])
                 }
             } else {
                 console.log('Must write something.')
@@ -165,6 +164,11 @@ export default function UserTab () {
             }
 
         } catch(err) {
+            if (err.response.status === 401) {
+                router.push('/')
+            }
+            setIsLoading(false)
+            setResultMsg('An error has occured.')
             console.error(err)
         }
     }
@@ -180,6 +184,7 @@ export default function UserTab () {
                 console.log(response.data.timeline)
                 setFriendsRecentPost(response.data.timeline)
                 setMostRecentPost(response.data.mostRecent)
+                console.log(response.data.mostRecent)
                 console.log(response.data.updatedBio)
                 setUpdatedBio(JSON.parse(response.data.updatedBio))
                 
@@ -279,7 +284,7 @@ export default function UserTab () {
 
                         </div>
                         <HTMLRender editorOBJ={mostRecentPost[0].body}></HTMLRender>
-                        {mostRecentPost[0].videos && mostRecentPost[0].videos.length > 0 &&
+                        {mostRecentPost && mostRecentPost[0] &&
                                         mostRecentPost[0].videos.map((video) => {
                                             return (
                                                 <ReactPlayer key={video._id} url={video.url} controls={true} width="100%" height="auto"></ReactPlayer>
