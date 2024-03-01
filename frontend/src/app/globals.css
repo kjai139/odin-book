@@ -830,6 +830,21 @@ li > button {
   background-color: var(--dashbContentBg);
 }
 
+.po-modal {
+  background-color: var(--dashbContentBg);
+}
+
+.po-modal:hover {
+  cursor: pointer;
+  background-color: var(--dashBtnhover);
+}
+
+.post-menu:hover {
+  cursor: pointer;
+  background-color: var(--dashBtnhover);
+
+}
+
 .burger-menu > li:hover {
   background-color: var(--dashBtnhover);
   color: blue;

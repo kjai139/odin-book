@@ -4,20 +4,20 @@ import Image from "next/image"
 import { UserPortrait } from "../SVGRComponent"
 import axiosInstance from '../../../../axios'
 import { formatUsername, formatDate } from "@/app/_utils/formatStrings"
-import { ProgressBar } from "react-loader-spinner"
+
 import { useRouter } from "next/navigation"
 import VideoUploader from "./videoUploader"
 import DefaultTiptap from "./defaultTipTap"
 import ResultModal from "@/app/_modals/resultModal"
 import HTMLRender from "./htmlRender"
-import { BsPersonCircle } from "react-icons/bs"
+import { BsPersonCircle, BsThreeDots } from "react-icons/bs"
 import { Post } from "../../../../interfaces/post.interface"
 import ReactPlayer from "react-player"
-import { AiOutlineLike, AiOutlineDislike } from 'react-icons/ai'
-import { FaRegComment } from "react-icons/fa"
+
 import LikeDislikeCmt from "../buttons/likeDislikeCmt"
 import UserBio from "./userBio"
 import LoadingModal from "@/app/_modals/loadingModal"
+import GeneralPost from "../generalPost"
 
 
 export default function UserTab () {
@@ -267,37 +267,7 @@ export default function UserTab () {
                     </div>
                     <h3>Your most recent post</h3>
                     {user && mostRecentPost && mostRecentPost[0] &&
-                    <>  
-                        <div className="post-cont rounded shadow">
-                        <div className='flex gap-2 p-2 items-center'>
-                        {mostRecentPost[0].author.image ?
-                        <div className='relative post-pfp-cont rounded-full overflow-hidden'>
-                        <Image src={mostRecentPost[0].author.image} fill={true} sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" alt='user pic' priority={true}></Image>
-                        </div>
-                        :
-                        <BsPersonCircle className="backup-user-img" size={40}></BsPersonCircle> 
-                        }
-                        <div>
-                            <p className='text-sm'>{formatUsername(mostRecentPost[0].author.name)}</p>
-                            <p className='date-txt'>{formatDate(mostRecentPost[0].createdAt)}</p>
-                        </div>
-
-                        </div>
-                        <HTMLRender editorOBJ={mostRecentPost[0].body}></HTMLRender>
-                        {mostRecentPost && mostRecentPost[0] &&
-                                        mostRecentPost[0].videos.map((video) => {
-                                            return (
-                                                <ReactPlayer key={video._id} url={video.url} controls={true} width="100%" height="auto"></ReactPlayer>
-                                            )
-                                        })
-                        }
-                                        <div className="p-2 text-sm">
-                                            <p>{`${mostRecentPost[0].likes} likes and ${mostRecentPost[0].dislikes} dislikes.`}</p>
-                                        </div>
-                                        <LikeDislikeCmt thePost={mostRecentPost[0]} setRenderState={setMostRecentPost}></LikeDislikeCmt>
-                        
-                        </div>
-                    </>
+                        <GeneralPost post={mostRecentPost} setPost={setMostRecentPost}></GeneralPost>
                     }
                     {
                         user && user.friendlist.length > 0 &&
