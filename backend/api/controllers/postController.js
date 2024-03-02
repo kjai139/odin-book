@@ -284,7 +284,7 @@ exports.postTimeline_get = async (req, res) => {
 exports.post_likePost_post = async (req, res) => {
     try {
         const postId = req.body.postId
-        const thePost = await Post.findById(postId).populate('author')
+        const thePost = await Post.findById(postId).populate('author videos')
 
         if (thePost.didUserLike && !thePost.didUserDislike) {
             thePost.likes -= 1
@@ -320,7 +320,7 @@ exports.post_likePost_post = async (req, res) => {
 exports.post_dislike_post = async (req, res) => {
     try {
         const postId = req.body.postId
-        const thePost = await Post.findById(postId).populate('author')
+        const thePost = await Post.findById(postId).populate('author videos')
 
         if (thePost.didUserDislike && !thePost.didUserLike) {
             thePost.didUserDislike = false

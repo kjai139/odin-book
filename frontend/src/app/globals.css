@@ -830,8 +830,17 @@ li > button {
   background-color: var(--dashbContentBg);
 }
 
+.po-modal-cont {
+  background-color: var(--dashbContentBg);
+  z-index: 2;
+}
+
 .po-modal {
   background-color: var(--dashbContentBg);
+}
+
+.pm-expanded {
+  background-color: var(--dashBtnhover);
 }
 
 .po-modal:hover {
@@ -843,6 +852,10 @@ li > button {
   cursor: pointer;
   background-color: var(--dashBtnhover);
 
+}
+
+.pm-btn-txt {
+  text-wrap: nowrap;
 }
 
 .burger-menu > li:hover {

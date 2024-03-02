@@ -8,15 +8,19 @@ import LikeDislikeCmt from "./buttons/likeDislikeCmt"
 import { Post } from "../../../interfaces/post.interface"
 import { useState } from "react"
 import PostModal from "../_modals/postModal"
+import { useAuth } from "../../../context/authContext"
 
 interface GeneralPostProps {
-    post: Post[],
-    setPost: React.Dispatch<React.SetStateAction<Post[]>>
+    post: Post,
+    setPost: any,
+    mode: 'single' | 'array'
 }
 
-export default function GeneralPost ({post, setPost}:GeneralPostProps) {
+export default function GeneralPost ({post, setPost, mode}:GeneralPostProps) {
 
     const [isMenuExpanded, setIsMenuExpanded] = useState(false)
+
+    const { user } = useAuth()
 
     const toggleExpandBtn = () => {
         setIsMenuExpanded(prev => !prev)
@@ -27,41 +31,41 @@ export default function GeneralPost ({post, setPost}:GeneralPostProps) {
 
     return (
         <>
-        {post && post[0] &&
+        {post &&
             
                 <div className="post-cont rounded shadow">
                 <div className='flex gap-2 p-2 items-center'>
-                {post[0].author.image ?
+                {post.author.image ?
                 <div className='relative post-pfp-cont rounded-full overflow-hidden'>
-                <Image src={post[0].author.image} fill={true} sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" alt='user pic' priority={true}></Image>
+                <Image src={post.author.image} fill={true} sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" alt='user pic' priority={true}></Image>
                 </div>
                 :
                 <BsPersonCircle className="backup-user-img" size={40}></BsPersonCircle> 
                 }
                 <div>
-                    <p className='text-sm'>{formatUsername(post[0].author.name)}</p>
-                    <p className='date-txt'>{formatDate(post[0].createdAt)}</p>
+                    <p className='text-sm'>{formatUsername(post.author.name)}</p>
+                    <p className='date-txt'>{formatDate(post.createdAt)}</p>
                 </div>
                 <div className="ml-auto relative"> 
-                <button className="post-menu p-2" onClick={toggleExpandBtn}>
+                <button className={`post-menu p-2 ${isMenuExpanded && 'pm-expanded'}`} onClick={toggleExpandBtn}>
                     <BsThreeDots size={20}></BsThreeDots>
                 </button>
-                    <PostModal isExpanded={isMenuExpanded}></PostModal>
+                    <PostModal isExpanded={isMenuExpanded} postId={post.author._id} userId={user._id}></PostModal>
                 </div>
 
                 </div>
-                <HTMLRender editorOBJ={post[0].body}></HTMLRender>
-                {post && post[0] &&
-                                post[0].videos.map((video:any) => {
+                <HTMLRender editorOBJ={post.body}></HTMLRender>
+                {post &&
+                                post.videos.map((video:any) => {
                                     return (
                                         <ReactPlayer key={video._id} url={video.url} controls={true} width="100%" height="auto"></ReactPlayer>
                                     )
                                 })
                 }
                                 <div className="p-2 text-sm">
-                                    <p>{`${post[0].likes} likes and ${post[0].dislikes} dislikes.`}</p>
+                                    <p>{`${post.likes} likes and ${post.dislikes} dislikes.`}</p>
                                 </div>
-                                <LikeDislikeCmt thePost={post[0]} setRenderState={setPost}></LikeDislikeCmt>
+                                <LikeDislikeCmt thePost={post} setRenderState={setPost} mode={mode}></LikeDislikeCmt>
                 
                 </div>
             

@@ -7,5 +7,6 @@ export interface Comment {
     body: String,
     createdAt: Date,
     likes: Number, 
-    dislikes: Number
+    dislikes: Number,
+    _id: string,
 }

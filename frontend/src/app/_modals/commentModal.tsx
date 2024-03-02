@@ -15,11 +15,10 @@ import ResultModal from "./resultModal"
 
 interface CommentModalProps {
     thePost: Post,
-    setRenderState: React.Dispatch<React.SetStateAction<Post[]>>,
     isShowing: boolean
 }
 
-export default function CommentModal ({thePost, setRenderState, isShowing}:CommentModalProps) {
+export default function CommentModal ({thePost,isShowing}:CommentModalProps) {
 
     const [postCmts, setPostCmts] = useState<Comment[]>([])
     const [isLoading, setIsLoading] = useState(false)
@@ -27,6 +26,7 @@ export default function CommentModal ({thePost, setRenderState, isShowing}:Comme
     const [totalPages, setTotalPages] = useState<number>()
     const [curPage, setCurPage] = useState<number>(1)
     const [totalComments, setTotalComments] = useState(0)
+    const [userComments, setUserComments] = useState<Comment[]>([])
 
     const editor = useEditor({
         extensions: [
@@ -163,7 +163,18 @@ export default function CommentModal ({thePost, setRenderState, isShowing}:Comme
                 {totalComments === 0 ? 'No Comments' : `${totalComments} ${totalComments === 1 ? 'Comment' : 'Comments'}`}
             </span>
             )}
+        {/* the user comments just posted */}
+        { isShowing && userComments && userComments.map((node) => {
+            return (
+                <div key={node._id} className="post-cmts">
+                    <CommentRenderer comment={node}></CommentRenderer>
+                    
+                </div>
+            )
+        }) 
         
+        }
+        {/* post comments */}
         {isShowing && postCmts && postCmts.map ((node:any) => {
 
             return (

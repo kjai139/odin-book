@@ -45,7 +45,7 @@ export default function UserTab () {
 
     const [updatedBio, setUpdatedBio] = useState()
 
-    const [mostRecentPost, setMostRecentPost] = useState<Post[]>([])
+    const [mostRecentPost, setMostRecentPost] = useState<Post>()
     const [friendsRecentPost, setFriendsRecentPost] = useState<Post[]>([])
 
     const [resetForm, setResetForm] = useState(false)
@@ -133,7 +133,7 @@ export default function UserTab () {
                     console.log(response.data.message)
                     setResultMsg(response.data.message)
                     setResetForm(true)
-                    setMostRecentPost([response.data.mostRecentPost])
+                    setMostRecentPost(response.data.mostRecentPost[0])
                     console.log(response.data)
                 }
 
@@ -156,7 +156,7 @@ export default function UserTab () {
                     console.log(response.data.message)
                     setResultMsg(response.data.message)
                     setResetForm(true)
-                    setMostRecentPost([response.data.mostRecentPost])
+                    setMostRecentPost(response.data.mostRecentPost[0])
                 }
             } else {
                 console.log('Must write something.')
@@ -183,7 +183,7 @@ export default function UserTab () {
             if (response.data.timeline) {
                 console.log(response.data.timeline)
                 setFriendsRecentPost(response.data.timeline)
-                setMostRecentPost(response.data.mostRecent)
+                setMostRecentPost(response.data.mostRecent[0])
                 console.log(response.data.mostRecent)
                 console.log(response.data.updatedBio)
                 setUpdatedBio(JSON.parse(response.data.updatedBio))
@@ -261,13 +261,13 @@ export default function UserTab () {
                     <div className="vtt-post-cont p-2">
                     <button className="vtt-post-btn py-1 px-4 rounded-lg text-white" onClick={createGeneralPost}>Post</button>
                     </div>
-                    <DefaultTiptap setPost={setPostData} resetForm={resetForm} setResetForm={setMostRecentPost}></DefaultTiptap>
+                    <DefaultTiptap setPost={setPostData} resetForm={resetForm} setResetForm={setResetForm}></DefaultTiptap>
 
                     <VideoUploader setVideoData={setVideoData}></VideoUploader>
                     </div>
                     <h3>Your most recent post</h3>
-                    {user && mostRecentPost && mostRecentPost[0] &&
-                        <GeneralPost post={mostRecentPost} setPost={setMostRecentPost}></GeneralPost>
+                    {user && mostRecentPost &&
+                        <GeneralPost post={mostRecentPost} setPost={setMostRecentPost} mode="single"></GeneralPost>
                     }
                     {
                         user && user.friendlist.length > 0 &&
@@ -277,34 +277,7 @@ export default function UserTab () {
                         {
                             friendsRecentPost && friendsRecentPost.map((node) => {
                                 return (
-                                    <div key={node._id} className="post-cont rounded shadow">
-                                        <div className='flex gap-2 p-2 items-center'>
-                                        {node.author.image ?
-                                        <div className='relative post-pfp-cont rounded-full overflow-hidden'>
-                                        <Image src={node.author.image} fill={true} sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" alt='user pic' priority={true}></Image>
-                                        </div>
-                                        :
-                                        <BsPersonCircle className="backup-user-img" size={40}></BsPersonCircle> 
-                                        }
-                                        <div>
-                                            <p className='text-sm'>{formatUsername(node.author.name)}</p>
-                                            <p className='date-txt'>{formatDate(node.createdAt)}</p>
-                                        </div>
-
-                                        </div>
-                                        <HTMLRender editorOBJ={node.body}></HTMLRender>
-                                        {node.videos && node.videos.length > 0 &&
-                                        node.videos.map((video) => {
-                                            return (
-                                                <ReactPlayer key={video._id} url={video.url} controls={true} width="100%" height="auto"></ReactPlayer>
-                                            )
-                                        })
-                                        }
-                                        <div className="p-2 text-sm">
-                                            <p>{`${node.likes} likes and ${node.dislikes} dislikes.`}</p>
-                                        </div>
-                                        <LikeDislikeCmt thePost={node} setRenderState={setFriendsRecentPost}></LikeDislikeCmt>
-                                        </div>
+                                    <GeneralPost key={node._id} post={node} setPost={setFriendsRecentPost} mode={'array'}></GeneralPost>
                                 )
                             })
                         }

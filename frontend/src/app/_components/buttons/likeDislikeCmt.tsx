@@ -7,10 +7,11 @@ import CommentModal from "@/app/_modals/commentModal"
 
 interface LikeDisLikeCmtProps {
     thePost: Post,
-    setRenderState: React.Dispatch<React.SetStateAction<Post[]>>
+    setRenderState: React.Dispatch<React.SetStateAction<Post | Post[]>>,
+    mode: 'single' | 'array'
 }
 
-export default function LikeDislikeCmt ({thePost, setRenderState}:LikeDisLikeCmtProps) {
+export default function LikeDislikeCmt ({thePost, setRenderState, mode}:LikeDisLikeCmtProps) {
 
     const [isCmtModalOpen, setIsCmtModalOpen] = useState(false)
 
@@ -24,8 +25,14 @@ export default function LikeDislikeCmt ({thePost, setRenderState}:LikeDisLikeCmt
                 withCredentials: true
             })
             if (response.data.updatedPost) {
-                setRenderState((prev) => prev.map((post) => (post._id === thePost._id ? response.data.updatedPost : post)))
-                console.log(`post ${thePost._id} updated in likes`)
+                if (mode === 'single') {
+                    setRenderState(response.data.updatedPost)
+                } else if (mode === 'array') {
+                    setRenderState((prev) => prev.map((post) => (post._id === thePost._id ? response.data.updatedPost : post)))
+                
+                }
+                
+                
                 
             }
             
@@ -48,7 +55,13 @@ export default function LikeDislikeCmt ({thePost, setRenderState}:LikeDisLikeCmt
             })
 
             if (response.data.updatedPost) {
-                setRenderState((prev) => prev.map((post) => post._id === thePost._id ? response.data.updatedPost : post ))
+                
+                if (mode === 'single') {
+                    setRenderState(response.data.updatedPost)
+                } else if (mode === 'array') {
+                    setRenderState((prev) => prev.map((post) => (post._id === thePost._id ? response.data.updatedPost : post)))
+                
+                }
             }
             
 
@@ -59,9 +72,6 @@ export default function LikeDislikeCmt ({thePost, setRenderState}:LikeDisLikeCmt
 
     
 
-    const displayCommentModal = () => {
-
-    }
 
     return (
         <div className="">
@@ -84,7 +94,7 @@ export default function LikeDislikeCmt ({thePost, setRenderState}:LikeDisLikeCmt
                 
             </div>
             
-            <CommentModal thePost={thePost} setRenderState={setRenderState} isShowing={isCmtModalOpen}></CommentModal>
+            <CommentModal thePost={thePost} isShowing={isCmtModalOpen}></CommentModal>
             
         </div>
     )
