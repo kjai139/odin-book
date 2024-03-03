@@ -7,15 +7,16 @@ exports.comment_create_post = async (req, res) => {
         const cmtPerPage = 3
         const pageNum = req.body.pageNum
         const skip = (pageNum - 1) * cmtPerPage
+        const totalskip = req.body.skip + 1 + skip
         
-        const totalComments = await Post.findById(req.body.postId).populate('comments').select('comments').then(post => post.comments.length)
-        const totalPages = Math.ceil(totalComments / cmtPerPage)
+        
         const newComment = new Comment({
             author: req.user._id,
             body: JSON.stringify(req.body.content)
         })
 
         await newComment.save()
+        await newComment.populate('author')
 
         const thePost = await Post.findByIdAndUpdate(req.body.postId, {
             $addToSet: {
@@ -30,16 +31,21 @@ exports.comment_create_post = async (req, res) => {
             },
             options: {
                 sort: { createdAt: -1 },
-                skip: skip,
+                skip: totalskip,
                 limit: cmtPerPage
             }
         })
+
+        const totalComments = await Post.findById(req.body.postId).populate('comments').select('comments').then(post => post.comments.length)
+        const totalPages = Math.ceil(totalComments / cmtPerPage)
         /* debug('THE POST FROM CMT', thePost) */
 
 
         res.json({
             updatedComments: thePost.comments,
-            totalPages: totalPages
+            totalPages: totalPages,
+            newUserComment: newComment,
+            totalComments: totalComments
         })
 
 
@@ -53,10 +59,12 @@ exports.comment_create_post = async (req, res) => {
 
 exports.comments_load_get = async (req, res) => {
     try {
-        const { postId, pageNum } = req.query
+        const { postId, pageNum, skip } = req.query
         const cmtPerPage = 3
-        const skip = (pageNum - 1) * cmtPerPage
-        debug(postId)
+        const baseSkip = (pageNum - 1) * cmtPerPage
+        const totalSkip = Number(skip) + baseSkip
+        
+        debug('LOADING COMMENTS WITH TOTAL SKIP:', totalSkip)
         const totalComments = await Post.findById(postId).populate('comments').select('comments').then(post => post.comments.length)
         const totalPages = Math.ceil(totalComments / cmtPerPage)
 
@@ -67,7 +75,7 @@ exports.comments_load_get = async (req, res) => {
             },
             options: {
                 sort: { createdAt: -1 },
-                skip: skip,
+                skip: totalSkip,
                 limit: cmtPerPage
             }
             
@@ -77,7 +85,8 @@ exports.comments_load_get = async (req, res) => {
         res.json({
             comments: thePost.comments,
             totalPages: totalPages,
-            totalComments: totalComments
+            totalComments: totalComments,
+            curPage: pageNum
         })
 
     } catch (err) {

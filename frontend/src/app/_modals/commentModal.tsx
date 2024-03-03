@@ -54,7 +54,8 @@ export default function CommentModal ({thePost,isShowing}:CommentModalProps) {
             const response = await axiosInstance.post('/api/comment/post', {
                 content: editor?.getJSON(),
                 postId: thePost._id,
-                pageNum: curPage
+                pageNum: curPage,
+                skip: userComments.length
             }, {
                 withCredentials: true
             })
@@ -63,7 +64,9 @@ export default function CommentModal ({thePost,isShowing}:CommentModalProps) {
                 setIsLoading(false)
                 console.log('updated post w comment:', response.data.updatedComments)
                 setPostCmts(response.data.updatedComments)
+                setUserComments(prev => [response.data.newUserComment, ...prev])
                 setTotalPages(response.data.totalPages)
+                setTotalComments(response.data.totalComments)
                 editor?.commands.clearContent()
             }
 
@@ -99,15 +102,16 @@ export default function CommentModal ({thePost,isShowing}:CommentModalProps) {
 
     const viewMoreComments = async () => {
         try {
+            console.log(`Getting comments page ${curPage + 1}`)
             
-            const response = await axiosInstance.get(`/api/comments/get/?postId=${thePost._id}&pageNum=${curPage + 1}`, {
+            const response = await axiosInstance.get(`/api/comments/get/?postId=${thePost._id}&pageNum=${curPage + 1}&skip=${userComments.length}`, {
                 withCredentials: true
             })
 
             if (response.data.comments) {
                 setCurPage(prevPage => prevPage + 1)
-                console.log(response.data.comments)
-                console.log('total pages of comments:', response.data.totalPages)
+                console.log(`PAGE ${response.data.curPage}`, response.data.comments)
+                console.log('new total pages of comments:', response.data.totalPages)
                 setPostCmts(prev => [...prev, ...response.data.comments])
                 setTotalPages(response.data.totalPages)
 
@@ -121,6 +125,10 @@ export default function CommentModal ({thePost,isShowing}:CommentModalProps) {
         if (isShowing && thePost) {
             console.log(thePost, 'thePost from cmt modal')
             loadPostComments()
+        } else if (!isShowing && thePost) {
+            setUserComments([])
+            setCurPage(1)
+            setPostCmts([])
         }
     }, [isShowing, thePost])
 
