@@ -343,9 +343,6 @@ input[type='text'], input[type='password'], input[type='email'] {
   color: var(--labelC);
 }
 
-.like-cont {
-  
-}
 
 .center-tab {
   max-width: 800px;
