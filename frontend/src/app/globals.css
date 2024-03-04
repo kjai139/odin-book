@@ -759,7 +759,9 @@ li > button {
   background-color: white;
 }
 
-.p-blank:hover {
+
+
+.p-blank:hover, .cm-expanded {
   background-color: var(--dashbgC);
 }
 

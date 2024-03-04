@@ -1,7 +1,8 @@
 const Post = require('../../models/postModel')
 const User = require('../../models/userModel')
+const Comment = require('../../models/commentModel')
 const debug = require('debug')('odin-book:postController')
-const { CopyObjectCommand, PutObjectCommand } = require('@aws-sdk/client-s3')
+const { CopyObjectCommand, PutObjectCommand, DeleteObjectCommand } = require('@aws-sdk/client-s3')
 const s3Client = require('../../s3Client')
 const { generateRandomString } = require('./imageController')
 const Video = require('../../models/videoModel')
@@ -340,6 +341,48 @@ exports.post_dislike_post = async (req, res) => {
         res.json({
             updatedPost: updatedPost
         })
+
+    } catch (err) {
+        res.status(500).json({
+            message: err.message
+        })
+    }
+}
+
+
+exports.post_delete_recent = async (req, res) => {
+    try {
+        const { postId } = req.body
+
+        const thePost = await Post.findById(postId).populate('videos')
+        //delete all post comments
+        await Comment.deleteMany({_id: {$in: thePost.comments}})
+
+        //delete videos from s3
+        for (const video of thePost.videos) {
+            const url = video.url
+            const urlparts = url.split('/')
+            const bucketName = urlparts[2].split('.')[0]
+            const key = urlparts.slice(3).join('/')
+
+            const bucketParams = {
+                Bucket: bucketName,
+                Key: key
+            }
+
+            const data = await s3Client.send(new DeleteObjectCommand(bucketParams))
+            console.log(`${bucketName} -  ${key} successfully deleted`)
+        }
+
+        //delete the post
+        await thePost.deleteOne({_id: postId})
+        
+        const mostRecentPost = await Post.find({ author: req.user._id}).sort({createdAt: -1}).limit(1).populate('author videos')
+
+        res.json({
+            mostRecent: mostRecentPost
+        })
+        
 
     } catch (err) {
         res.status(500).json({

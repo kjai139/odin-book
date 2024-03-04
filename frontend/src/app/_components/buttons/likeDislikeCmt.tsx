@@ -2,7 +2,7 @@ import { AiOutlineDislike, AiOutlineLike } from "react-icons/ai"
 import { FaRegComment } from "react-icons/fa"
 import axiosInstance from '../../../../axios'
 import { Post } from "../../../../interfaces/post.interface"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import CommentModal from "@/app/_modals/commentModal"
 
 interface LikeDisLikeCmtProps {
@@ -70,6 +70,12 @@ export default function LikeDislikeCmt ({thePost, setRenderState, mode}:LikeDisL
         }
     }
 
+    useEffect(() => {
+        if (thePost) {
+            setIsCmtModalOpen(false)
+        }
+    }, [thePost])
+
     
 
 
@@ -86,7 +92,7 @@ export default function LikeDislikeCmt ({thePost, setRenderState, mode}:LikeDisL
                     <AiOutlineDislike></AiOutlineDislike>
 
                 </button>
-                <button className="post-icons" onClick={() => setIsCmtModalOpen(!isCmtModalOpen)}>
+                <button className={`post-icons ${isCmtModalOpen && 'cm-expanded'}`} onClick={() => setIsCmtModalOpen(!isCmtModalOpen)}>
                     <p>Comment</p>
                     <FaRegComment></FaRegComment>
 

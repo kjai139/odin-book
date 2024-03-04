@@ -63,7 +63,7 @@ export default function CommentModal ({thePost,isShowing}:CommentModalProps) {
             if (response.data.updatedComments) {
                 setIsLoading(false)
                 console.log('updated post w comment:', response.data.updatedComments)
-                setPostCmts(response.data.updatedComments)
+                /* setPostCmts(response.data.updatedComments) */
                 setUserComments(prev => [response.data.newUserComment, ...prev])
                 setTotalPages(response.data.totalPages)
                 setTotalComments(response.data.totalComments)

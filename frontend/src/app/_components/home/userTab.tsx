@@ -133,7 +133,7 @@ export default function UserTab () {
                     console.log(response.data.message)
                     setResultMsg(response.data.message)
                     setResetForm(true)
-                    setMostRecentPost(response.data.mostRecentPost[0])
+                    setMostRecentPost(response.data.mostRecentPost)
                     console.log(response.data)
                 }
 
@@ -156,7 +156,7 @@ export default function UserTab () {
                     console.log(response.data.message)
                     setResultMsg(response.data.message)
                     setResetForm(true)
-                    setMostRecentPost(response.data.mostRecentPost[0])
+                    setMostRecentPost(response.data.mostRecentPost)
                 }
             } else {
                 console.log('Must write something.')
@@ -169,6 +169,23 @@ export default function UserTab () {
             }
             setIsLoading(false)
             setResultMsg('An error has occured.')
+            console.error(err)
+        }
+    }
+
+    const deleteRecentPost = async (id:string) => {
+        try {
+            const response = await axiosInstance.post('/api/post/delete-recent', {
+                postId: id
+            }, {
+                withCredentials: true
+            })
+
+            if (response.data.mostRecent) {
+                setMostRecentPost(response.data.mostRecent[0])
+            }
+
+        } catch (err) {
             console.error(err)
         }
     }
@@ -267,7 +284,7 @@ export default function UserTab () {
                     </div>
                     <h3>Your most recent post</h3>
                     {user && mostRecentPost &&
-                        <GeneralPost post={mostRecentPost} setPost={setMostRecentPost} mode="single"></GeneralPost>
+                        <GeneralPost post={mostRecentPost} setPost={setMostRecentPost} mode="single" modalDeletePost={deleteRecentPost}></GeneralPost>
                     }
                     {
                         user && user.friendlist.length > 0 &&

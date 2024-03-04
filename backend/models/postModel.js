@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const Video = require('../models/videoModel')
 const User = require('../models/userModel')
+const Comment = require('../models/commentModel')
 
 const PostSchema = new Schema({
     title: {
@@ -51,5 +52,7 @@ const PostSchema = new Schema({
         }
     ]
 })
+
+
 
 module.exports = mongoose.model('Post', PostSchema)

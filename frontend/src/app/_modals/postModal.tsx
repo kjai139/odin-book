@@ -4,11 +4,12 @@ import { MdDelete, MdReportGmailerrorred } from 'react-icons/md'
 interface PostModalProps {
     isExpanded: boolean,
     postId: string,
-    userId: string
+    userId: string,
+    modalDeletePost: (id:string) => Promise<void>,
 }
 
 
-export default function PostModal ({isExpanded, postId, userId}:PostModalProps) {
+export default function PostModal ({isExpanded, postId, userId, modalDeletePost}:PostModalProps) {
 
 
     return (
@@ -16,7 +17,7 @@ export default function PostModal ({isExpanded, postId, userId}:PostModalProps) 
             <div>
                { postId === userId && 
                <div className='p-2'>
-                <button className='po-modal'>
+                <button className='po-modal' onClick={modalDeletePost}>
                     <div className='flex items-center p-2 rounded'>
             
                         <MdDelete size={20}></MdDelete>

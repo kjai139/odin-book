@@ -6,17 +6,18 @@ import HTMLRender from "./home/htmlRender"
 import ReactPlayer from "react-player"
 import LikeDislikeCmt from "./buttons/likeDislikeCmt"
 import { Post } from "../../../interfaces/post.interface"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import PostModal from "../_modals/postModal"
 import { useAuth } from "../../../context/authContext"
 
 interface GeneralPostProps {
     post: Post,
     setPost: any,
-    mode: 'single' | 'array'
+    mode: 'single' | 'array',
+    modalDeletePost: (id:string) => Promise<void>,
 }
 
-export default function GeneralPost ({post, setPost, mode}:GeneralPostProps) {
+export default function GeneralPost ({post, setPost, mode, modalDeletePost}:GeneralPostProps) {
 
     const [isMenuExpanded, setIsMenuExpanded] = useState(false)
 
@@ -25,6 +26,12 @@ export default function GeneralPost ({post, setPost, mode}:GeneralPostProps) {
     const toggleExpandBtn = () => {
         setIsMenuExpanded(prev => !prev)
     }
+
+    useEffect(() => {
+        if (post) {
+            setIsMenuExpanded(false)
+        }
+    }, [post])
 
     
 
@@ -50,7 +57,7 @@ export default function GeneralPost ({post, setPost, mode}:GeneralPostProps) {
                 <button className={`post-menu p-2 ${isMenuExpanded && 'pm-expanded'}`} onClick={toggleExpandBtn}>
                     <BsThreeDots size={20}></BsThreeDots>
                 </button>
-                    <PostModal isExpanded={isMenuExpanded} postId={post.author._id} userId={user._id}></PostModal>
+                    <PostModal isExpanded={isMenuExpanded} postId={post.author._id} userId={user._id} modalDeletePost={() => modalDeletePost(post._id)}></PostModal>
                 </div>
 
                 </div>

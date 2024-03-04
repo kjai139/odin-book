@@ -5,7 +5,7 @@ const passport = require('../../passport')
 const { authenticateJwt, refreshJwt } = require('../middleware/authenticateJwt')
 const multer = require('multer')
 const { image_temp_upload_post } = require('../controllers/imageController')
-const { post_create_post, post_vid_create_post, video_posts_get, postOnly_get, postTimeline_get, post_likePost_post, post_dislike_post } = require('../controllers/postController')
+const { post_create_post, post_vid_create_post, video_posts_get, postOnly_get, postTimeline_get, post_likePost_post, post_dislike_post, post_delete_recent } = require('../controllers/postController')
 
 const storage = multer.memoryStorage()
 const upload = multer({storage: storage, limits:{ fileSize: 2 * 1024 * 1024} })
@@ -94,5 +94,7 @@ router.get('/user/getBio',passport.authenticate('jwt', { session: false }), refr
 router.get('/user/getPage/', user_getPage_get)
 
 router.get('/user/getMore/', user_page_getMore)
+
+router.post('/post/delete-recent', passport.authenticate('jwt', { session: false}), refreshJwt, post_delete_recent)
 
 module.exports = router
