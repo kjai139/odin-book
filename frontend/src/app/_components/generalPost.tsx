@@ -14,7 +14,7 @@ interface GeneralPostProps {
     post: Post,
     setPost: any,
     mode: 'single' | 'array',
-    modalDeletePost: (id:string) => Promise<void>,
+    modalDeletePost?: any,
 }
 
 export default function GeneralPost ({post, setPost, mode, modalDeletePost}:GeneralPostProps) {
@@ -38,7 +38,7 @@ export default function GeneralPost ({post, setPost, mode, modalDeletePost}:Gene
 
     return (
         <>
-        {post &&
+        {post && user &&
             
                 <div className="post-cont rounded shadow">
                 <div className='flex gap-2 p-2 items-center'>

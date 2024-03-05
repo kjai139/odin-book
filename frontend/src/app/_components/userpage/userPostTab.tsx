@@ -1,11 +1,11 @@
 import UserBio from "../home/userBio";
-import axiosInstance from '../../../../axios'
 import { Post } from "../../../../interfaces/post.interface";
 import PostRenderer from "../postRenderer";
 import ReactPlayer from "react-player";
 import Image from "next/image";
 import { BsPersonCircle } from "react-icons/bs";
 import { formatUsername, formatDate } from "@/app/_utils/formatStrings";
+
 
 interface UserPostTabProps {
     bio: string,
@@ -51,7 +51,8 @@ export default function UserPostTab ({bio, recentPosts}:UserPostTabProps) {
                     {recentPosts && recentPosts.length !== 0 ? recentPosts.map((post) => {
                         return (
                             
-                            <div key={post._id} className="vtt rounded">
+                            
+                             <div key={post._id} className="vtt rounded">
                                 <div className='flex gap-2 p-2 items-center'>
                                 {post.author.image ?
                                 <div className='relative post-pfp-cont'>
@@ -72,7 +73,7 @@ export default function UserPostTab ({bio, recentPosts}:UserPostTabProps) {
                                         <ReactPlayer key={vid._id} url={vid.url} controls={true} width="100%" height="auto"></ReactPlayer>
                                     )
                                 })}
-                            </div>
+                            </div> 
                         )
                     }) : 
                     <span className="vtt rounded p-4">

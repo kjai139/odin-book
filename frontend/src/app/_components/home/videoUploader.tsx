@@ -4,11 +4,12 @@ import ReactPlayer from 'react-player/file'
 
 
 interface VideoUploaderProps {
-    setVideoData: Dispatch<SetStateAction<File[] | null>>
+    setVideoData: Dispatch<SetStateAction<File[] | null>>,
+    size: 'normal' | 'small'
 }
 
 
-export default function VideoUploader ({setVideoData}:VideoUploaderProps) {
+export default function VideoUploader ({setVideoData, size}:VideoUploaderProps) {
 
     const [previewVideo, setPreviewVideo] = useState('')
     const [previewVolume, setPreviewVolume] = useState()
@@ -51,8 +52,8 @@ export default function VideoUploader ({setVideoData}:VideoUploaderProps) {
 
 
     return (
-        <section>
-        <div {...getRootProps({ className: 'dropzone'})}>
+        <section className="p-4">
+        <div {...getRootProps({ className: `dropzone ${size === 'small' && 'small'}`})}>
             <input {...getInputProps()}>
             </input>
             {

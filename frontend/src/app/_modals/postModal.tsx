@@ -5,7 +5,7 @@ interface PostModalProps {
     isExpanded: boolean,
     postId: string,
     userId: string,
-    modalDeletePost: (id:string) => Promise<void>,
+    modalDeletePost: any,
 }
 
 

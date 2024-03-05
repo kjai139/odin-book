@@ -566,16 +566,6 @@ input[type='text'], input[type='password'], input[type='email'] {
   background-color: var(--ttactiveC);
 }
 
-.ProseMirror {
-  
-  
-  
-}
-
-.loading-screen {
-  
-  
-}
 
 .pfp-cont {
   position: relative;
@@ -842,7 +832,7 @@ li > button {
   background-color: var(--dashBtnhover);
 }
 
-.po-modal:hover {
+.po-modal:hover, .post-btn:hover {
   cursor: pointer;
   background-color: var(--dashBtnhover);
 }
@@ -868,6 +858,14 @@ li > button {
 
 .top-nav-burger > div {
   display: none;
+}
+
+.dropzone.small {
+  padding: 10px;
+}
+
+.post-icons:active {
+  background-color: var(--dashBtnhover);
 }
 
 @media screen and (max-width: 1024px) {

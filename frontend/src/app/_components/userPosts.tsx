@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react'
 import axiosInstance from '../../../axios'
 import { Post } from '../../../interfaces/post.interface'
 import ReactPlayer from 'react-player'
+import GeneralPost from './generalPost'
 
 export default function UserPosts() {
 
@@ -34,6 +35,27 @@ export default function UserPosts() {
         getPostsOnly()
     }, [])
 
+    const deletePost = async (id:string) => {
+        try {
+            const response = await axiosInstance.post('/api/post/delete-single', {
+                postId: id
+            }, {
+                withCredentials: true
+            })
+
+            if (response.data.success) {
+                setRecentPosts((prev) => {
+                    return prev?.filter(post => post._id !== id )
+                })
+            }
+
+        } catch (err) {
+            console.error(err)
+        }
+    }
+
+
+
 
 
 
@@ -50,7 +72,8 @@ export default function UserPosts() {
 
 
                     return (
-                        <div key={node._id} className='post-cont rounded shadow'>
+                        <GeneralPost post={node} mode='array' setPost={setRecentPosts} modalDeletePost={deletePost}></GeneralPost>
+                       /*  <div key={node._id} className='post-cont rounded shadow'>
                             
                             <div className='flex gap-2 p-2 items-center'>
                                 {node.author.image ?
@@ -78,7 +101,7 @@ export default function UserPosts() {
                             </div>
                            
 
-                        </div>
+                        </div> */
                     )
                 })}
                 

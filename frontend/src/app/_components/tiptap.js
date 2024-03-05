@@ -25,9 +25,10 @@ import axiosInstance from '../../../axios'
 import { useAuth } from '../../../context/authContext'
 import { useRouter } from 'next/navigation'
 import Placeholder from '@tiptap/extension-placeholder'
+import VideoUploader from './home/videoUploader'
 
 
-const TipTap = ({type}) => {
+const TipTap = ({type, setMostRecentPost}) => {
     const editor = useEditor({
         extensions: [
             StarterKit.configure({
@@ -53,9 +54,12 @@ const TipTap = ({type}) => {
     const [linkUrl, setLinkUrl] = useState('')
     const [displayLinkInput, setDisplayLinkInput] = useState(false)
     const { user, setUser } = useAuth()
+    const [videoData, setVideoData] = useState(null)
 
     const imageRef = useRef(null)
     const urlInputRef = useRef(null)
+    const [isLoading, setIsLoading] = useState(false)
+    const [resultMsg, setResultMsg] = useState('')
 
     const router = useRouter()
 
@@ -94,6 +98,64 @@ const TipTap = ({type}) => {
                 // if used for posts
                 if (type === 'post') {
                     try {
+                        
+                        console.log('general video data:', videoData)
+                        const formData = new FormData()
+                        if (postData && !videoData) {
+                            setIsLoading(true)
+                            
+                            const response = await axiosInstance.post('/api/post/create' , {
+                                content: json
+                            }, {
+                                withCredentials: true
+                            })
+            
+                            if (response.data.success) {
+                                setIsLoading(false)
+                                console.log(response.data.message)
+                                setResultMsg(response.data.message)
+                                editor.commands.clearContent()
+                                setMostRecentPost(response.data.mostRecentPost)
+
+                                
+                                
+                            }
+            
+                        } else if (videoData && postData) {
+                            setIsLoading(true)
+                            formData.append('video', videoData[0])
+                            
+                            const editorJson = JSON.stringify(postData.getJSON())
+                            formData.append('content', editorJson)
+                            
+                            
+            
+                            const response = await axiosInstance.post('/api/post/create2', formData, {
+                                withCredentials: true,
+                                timeout: 10000,
+                            })
+            
+                            if (response.data.success) {
+                                setIsLoading(false)
+                                console.log(response.data.message)
+                                setResultMsg(response.data.message)
+                                editor.commands.clearContent()
+                                setMostRecentPost(response.data.mostRecentPost)
+                            }
+                        } else {
+                            console.log('Must write something.')
+                            setResultMsg('Must write something to post.')
+                        }
+            
+                    } catch(err) {
+                        if (err.response.status === 401) {
+                            router.push('/')
+                        }
+                        setIsLoading(false)
+                        setResultMsg('An error has occured.')
+                        console.error(err)
+                    }
+                    /* try {
                         const response = await axiosInstance.post('/api/post/create', {
                             content: json
                         }, {
@@ -110,7 +172,7 @@ const TipTap = ({type}) => {
                     } catch (err) {
                         console.log('Error creating post:', err)
                     }
-                    // used for comments
+                    // used for comments */
                 } else if (type === 'comment') {
 
                 }
@@ -294,9 +356,10 @@ const TipTap = ({type}) => {
                 
             }}></EditorContent>
             
-            <div className='flex justify-end'>
-                <div className='p-2'>
-                    <button onClick={handleCreatePost}>Create post</button>
+            <div className='flex flex-col'>
+                <VideoUploader setVideoData={setVideoData} size='small'></VideoUploader>
+                <div className='p-2 flex justify-end'>
+                    <button onClick={handleCreatePost} className='post-btn py-2 px-4'>Create post</button>
                 </div>
             </div>
         </div>
